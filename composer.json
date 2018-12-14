@@ -1,0 +1,14 @@
+{
+    "name": "hmusche/travelblog",
+    "description": "Simple Blog for World Travelling purposes",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Hendrick",
+            "email": "hmusche@gmail.com"
+        }
+    ],
+    "require": {
+        "catfan/Medoo": "^1.6"
+    }
+}
