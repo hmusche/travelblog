@@ -101,7 +101,7 @@ class View {
     }
 
     /**
-     * Magic method to return data from View obkect
+     * Magic method to return data from View object
      * @param  String $key
      * @return Mixed
      */
