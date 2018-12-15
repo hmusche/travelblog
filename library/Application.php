@@ -6,14 +6,22 @@ use TravelBlog\Controller;
 use TravelBlog\Registry;
 use Medoo\Medoo;
 
+/**
+ * Base Application class to pull everything together, get Configuration, Controller, and dispatch the request
+ */
 class Application {
     protected $_controller;
 
+    /**
+     * Get Configuration and set in Registry, and create Controller class
+     */
     public function __construct() {
-        $config = include('config/config.php');
+        /**
+         * Merge credentials.php in config dir for secrets not to be pushed in git
+         */
         $credentials = include('config/credentials.php');
-
-        $config = array_merge_recursive($config, $credentials);
+        $config      = include('config/config.php');
+        $config      = array_merge_recursive($config, $credentials);
 
         Registry::set('app.config', $config);
         Registry::set('app.db', new Medoo($config['db']));
@@ -21,6 +29,9 @@ class Application {
         $this->_controller = Controller::getController();
     }
 
+    /**
+     * Dispatch the controller
+     */
     public function run() {
         $this->_controller->dispatch();
     }

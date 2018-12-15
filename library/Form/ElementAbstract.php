@@ -14,8 +14,8 @@ abstract class ElementAbstract {
 
     abstract public function populate(Array $data);
 
-    public function __construct($name, $config, $value = null) {
-        $defaultConfig = [
+    public function __construct($name, $options, $value = null) {
+        $defaultOptions = [
             'attributes' => [
                 'type' => 'text'
             ],
@@ -24,13 +24,13 @@ abstract class ElementAbstract {
             ]
         ];
 
-        $config = array_merge_recursive($defaultConfig, $config);
+        $options = array_merge_recursive($defaultOptions, $options);
 
         $this->_name = $name;
         $this->_value = $value;
-        $this->_attributes = array_merge($config['attributes'], $this->_attributes);
+        $this->_attributes = array_merge($options['attributes'], $this->_attributes);
 
-        foreach ($config['validators'] as $validator => $validatorOptions) {
+        foreach ($options['validators'] as $validator => $validatorOptions) {
             $validatorClass = "\\TravelBlog\\Form\\Validator\\" . ucfirst(Util::toCamelCase($validator));
             $validatorHash = serialize($validatorOptions) . $validator;
 
