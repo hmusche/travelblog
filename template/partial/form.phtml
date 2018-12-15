@@ -1,0 +1,12 @@
+<form method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
+    <?php if ($this->errors): ?>
+        Errors encountered
+    <?php endif; ?>
+    <?php foreach ($this->elements as $key => $element): ?>
+        <?php echo $element; ?>
+    <?php endforeach; ?>
+
+    <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
+
+    <?php echo $this->submit; ?>
+</form>

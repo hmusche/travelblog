@@ -1,0 +1,4 @@
+<input <?php echo $this->element->getAttributeString(); ?> name="<?php echo $this->element->getName(); ?>" value="<?php echo $this->element->getValue(); ?>">
+<?php if ($this->element->hasErrors()): ?>
+    <?php echo implode('<br>', $this->element->getErrors()); ?>
+<?php endif; ?>

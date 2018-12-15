@@ -13,7 +13,9 @@ class Request {
         'action' => 'index',
         'get' => [],
         'post' => [],
-        'params' => []
+        'params' => [],
+        'is_xhr' => false,
+        'method' => ''
     ];
 
     protected function __construct() {
@@ -69,6 +71,10 @@ class Request {
                 }
             }
         }
+
+        self::$_request['is_xhr'] = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+
+        self::$_request['method'] = strtolower($_SERVER['REQUEST_METHOD']);
     }
 
 }

@@ -20,4 +20,8 @@ class Model {
         return $this->_db->get($this->_name, $join, $columns, $where);
     }
 
+    public function update($data, $where) {
+        return $this->_db->update($this->_name, $data, $where);
+    }
+
 }

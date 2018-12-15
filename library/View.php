@@ -16,7 +16,7 @@ class View {
 
     public function setData(Array $values) {
         foreach ($values as $key => $value) {
-            $this->_data[$key] = $value;
+            $this->$key = $value;
         }
     }
 
@@ -33,9 +33,29 @@ class View {
 
         ob_start();
 
-        require_once $template;
+        require $template;
 
         return ob_get_clean();
+    }
+
+    public function partial($template, Array $data = null) {
+        $partialView = clone self::$_instance;
+        $partialView->clearData();
+        $partialView->setData($data);
+
+        return $partialView->render($template);
+    }
+
+    public function clearData() {
+        $this->_data = [];
+    }
+
+    public function __set($key, $value) {
+        $this->_data[$key] = $value;
+    }
+
+    public function __get($key) {
+        return array_key_exists($key, $this->_data) ? $this->_data[$key] : null;
     }
 
     static public function getInstance() {

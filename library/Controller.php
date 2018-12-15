@@ -32,12 +32,18 @@ class Controller {
             throw new \Exception("Unknown Action $action");
         }
 
+        $this->preDispatch();
+        $this->$method();
+        $this->postDispatch();
+    }
+
+    public function preDispatch() {
         $defaultTemplate = $this->_request->get('controller') . DIRECTORY_SEPARATOR . $this->_request->get('action') . '.phtml';
 
         $this->_view->template = $defaultTemplate;
+    }
 
-        $this->$method();
-
+    public function postDispatch() {
         echo $this->_view->render();
     }
 }
