@@ -119,7 +119,7 @@ class Form {
          */
         $return = $this->fireCallback($formData);
 
-        if ($req->get['is_xhr']) {
+        if ($req->get('is_xhr')) {
             echo json_encode([
                 'status' => $this->_errors === [] && $return ? 'success' : 'error'
             ]);

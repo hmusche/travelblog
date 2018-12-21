@@ -7,10 +7,19 @@ use TravelBlog\Model;
 class User extends Model {
     protected $_name = 'user';
 
-    public function login($login, $credential) {
-        $user = $this->get('*', ['login' => $login]);
+    public function login($data) {
+        $user = $this->get('*', ['login' => $data['login']]);
 
-        var_dump($user);
+        if ($user && password_verify($data['password'], $user['password'])) {
+            session_regenerate_id();
+            unset($user['password']);
+
+            $_SESSION['user'] = $user;
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function setPassword($data) {
@@ -18,14 +27,15 @@ class User extends Model {
             return false;
         }
 
-        $user = $this->get('*', ['login' => $data['login']]);
+        $user = $this->get(['id', 'password'], ['login' => $data['login']]);
 
         if ($user['password'] && (!isset($data['old_password']) || password_verify($data['old_password'], $user['password']))) {
             return false;
         }
 
         return $this->update([
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT)
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+            'token'    => null
         ], [
             'id' => $user['id']
         ]);

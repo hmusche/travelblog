@@ -18,4 +18,8 @@ class Util {
 
         return lcfirst($string);
     }
+
+    static public function isLoggedIn() {
+        return isset($_SESSION['user']);
+    }
 }
