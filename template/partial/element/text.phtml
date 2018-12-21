@@ -1,4 +1,8 @@
-<input <?php echo $this->element->getAttributeString(); ?> name="<?php echo $this->element->getName(); ?>" value="<?php echo $this->element->getValue(); ?>">
-<?php if ($this->element->hasErrors()): ?>
-    <?php echo implode('<br>', $this->element->getErrors()); ?>
-<?php endif; ?>
+
+<div class="form-group">
+    <label for="element-<?php echo $this->element->getName(); ?>"><?php echo $this->element->getLabel(); ?></label>
+    <input class="form-control" <?php echo $this->element->getAttributeString(); ?> id="element-<?php echo $this->element->getName(); ?>" name="<?php echo $this->element->getName(); ?>" value="<?php echo $this->element->getValue(); ?>">
+    <?php if ($this->element->hasErrors()): ?>
+        <small class="form-text text-alert"><?php echo implode('<br>', $this->element->getErrors()); ?></small>
+    <?php endif; ?>
+</div>

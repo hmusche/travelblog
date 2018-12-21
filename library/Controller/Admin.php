@@ -15,6 +15,8 @@ class Admin extends Controller {
         if (!Util::isLoggedIn() && $this->_request->get('action') != 'login') {
             Http::redirect('admin/login');
         }
+
+        $this->_view->user = $_SESSION['user'];
     }
 
     public function indexAction() {

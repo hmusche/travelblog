@@ -1,0 +1,7 @@
+<?php if ($this->request->get('controller') == 'admin'): ?>
+    <?php if (!in_array($this->request->get('action'), ['login', 'logout'])): ?>
+        <?php echo $this->render('partial/menu/admin.phtml'); ?>
+    <?php endif; ?>
+<?php else: ?>
+    <?php echo $this->render('partial/menu/frontend.phtml'); ?>
+<?php endif; ?>

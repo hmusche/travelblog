@@ -58,6 +58,8 @@ class Controller {
         $defaultTemplate = $this->_request->get('controller') . DIRECTORY_SEPARATOR . $this->_request->get('action') . '.phtml';
 
         $this->_view->template = $defaultTemplate;
+        $this->_view->request  = $this->_request;
+        $this->_view->webhost  = Registry::get('app.config')['host'] . Registry::get('app.config')['path'];
     }
 
     /**

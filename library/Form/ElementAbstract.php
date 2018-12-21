@@ -11,6 +11,7 @@ abstract class ElementAbstract {
     protected $_validators = [];
     protected $_errors     = [];
     protected $_value;
+    protected $_label;
 
     abstract public function populate(Array $data);
 
@@ -28,6 +29,7 @@ abstract class ElementAbstract {
 
         $this->_name = $name;
         $this->_value = $value;
+        $this->_label = isset($options['label']) ? $options['label'] : ucfirst($name);
         $this->_attributes = array_merge($options['attributes'], $this->_attributes);
 
         foreach ($options['validators'] as $validator => $validatorOptions) {
@@ -66,6 +68,13 @@ abstract class ElementAbstract {
 
     public function getValue() {
         return $this->_value;
+    }
+
+    public function getLabel() {
+        /**
+         * @todo: translate
+         */
+        return $this->_label;
     }
 
     public function getAttributes() {
