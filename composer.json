@@ -9,6 +9,8 @@
         }
     ],
     "require": {
-        "catfan/Medoo": "^1.6"
+        "catfan/Medoo": "^1.6",
+        "twbs/bootstrap": "4.0.0",
+        "components/jquery": "^3.3"
     }
 }

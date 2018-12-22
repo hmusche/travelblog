@@ -23,4 +23,8 @@ class Http {
         header('Location: ' . $location, true, $status);
         exit;
     }
+
+    static public function setCacheHeader() {
+        
+    }
 }
