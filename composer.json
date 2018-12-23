@@ -11,6 +11,7 @@
     "require": {
         "catfan/Medoo": "^1.6",
         "twbs/bootstrap": "4.0.0",
-        "components/jquery": "^3.3"
+        "components/jquery": "^3.3",
+        "ext-intl": "*"
     }
 }
