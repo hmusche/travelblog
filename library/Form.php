@@ -24,6 +24,10 @@ class Form {
      */
     protected $_callback;
 
+    protected $_loadCallback;
+
+    protected $_id;
+
     /**
      * Array of Elements of current Form
      * @var Array
@@ -79,9 +83,11 @@ class Form {
         $req = Request::getInstance();
 
         /**
-         * Don't do anything unless we post
+         * If we don't do a post, then load data
          */
         if ($req->get('method') != 'post') {
+            $this->_loadData();
+
             return true;
         }
 
@@ -114,20 +120,36 @@ class Form {
             $formData[$element->getName()] = $element->getValue();
         }
 
+        $where = [];
+
+        if ($this->_id) {
+            $where['id'] = $this->_id;
+        }
+
         /**
          * Call callback and handle response. If XHR, just repond with json, otherwise do redirect
          */
-        $return = $this->fireCallback($formData);
+        $return = $this->fireCallback($formData, $where);
 
         if ($req->get('is_xhr')) {
             echo json_encode([
                 'status' => $this->_errors === [] && $return ? 'success' : 'error'
             ]);
         } else if ($return && $this->_errors === []) {
-            Http::redirect($this->_redirect);
+            Http::redirect($this->getRedirect($return));
         }
 
         return $this->_errors === [];
+    }
+
+    protected function _loadData() {
+        if ($this->_loadCallback && $this->_id) {
+            $data = call_user_func($this->_loadCallback, $this->_id);
+
+            if ($data) {
+                $this->setData($data);
+            }
+        }
     }
 
     /**
@@ -174,14 +196,23 @@ class Form {
      * @param  Array $data Data to pass to method
      * @return Mixed       Return of called method
      */
-    public function fireCallback($data) {
-        $return = call_user_func($this->_callback, $data);
+    public function fireCallback($data, $where = []) {
+        $return = call_user_func($this->_callback, $data, $where);
 
         if (!$return) {
             $this->_errors['global'] = 'General error';
         }
 
         return $return;
+    }
+
+    public function addLoadCallback($id, $callback) {
+        if ($id) {
+            $this->_loadCallback = $callback;
+            $this->_id = $id;
+        }
+
+        return $this;
     }
 
     /**
@@ -193,6 +224,22 @@ class Form {
         $this->_redirect = $location;
 
         return $this;
+    }
+
+    public function getRedirect($id = null) {
+        if ($this->_redirect) {
+            return $this->_redirect;
+        }
+
+        $req = Request::getInstance();
+
+        $location = $req->get('controller') . '/' . $req->get('action');
+
+        if ($id && is_numeric($id)) {
+            $location .= '/id/' . $id;
+        }
+
+        return $location;
     }
 
     /**
