@@ -14,13 +14,13 @@ class View {
 
     /**
      * Current Template for View
-     * @var String
+     * @var string
      */
     protected $_template;
 
     /**
      * Data to be used in View
-     * @var Array
+     * @var array
      */
     protected $_data = [];
 
@@ -31,7 +31,7 @@ class View {
 
     /**
      * Set Template for View
-     * @param String $template
+     * @param string $template
      */
     public function setTemplate($template) {
         $this->_template = $template;
@@ -39,7 +39,7 @@ class View {
 
     /**
      * Set array of data directly to View
-     * @param Array $values
+     * @param array $values
      */
     public function setData(Array $values) {
         foreach ($values as $key => $value) {
@@ -49,8 +49,8 @@ class View {
 
     /**
      * Render current template with current data
-     * @param  String $template Optional, if null current set template is used
-     * @return String           Rendered template
+     * @param  string $template Optional, if null current set template is used
+     * @return string           Rendered template
      */
     public function render($template = null) {
         if ($template === null) {
@@ -72,11 +72,11 @@ class View {
 
     /**
      * Renders given template with subset of data
-     * @param  String $template Template name to use
-     * @param  Array  $data     Data for template
-     * @return String           Rendered partial
+     * @param  string $template Template name to use
+     * @param  array  $data     Data for template
+     * @return string           Rendered partial
      */
-    public function partial($template, Array $data = null) {
+    public function partial($template, array $data = []) {
         $partialView = clone self::$_instance;
         $partialView->clearData();
         $partialView->setData($data);
@@ -93,8 +93,8 @@ class View {
 
     /**
      * Magic setter to set values in view
-     * @param String $key
-     * @param Mixed  $value
+     * @param string $key
+     * @param mixed  $value
      */
     public function __set($key, $value) {
         $this->_data[$key] = $value;
@@ -102,8 +102,8 @@ class View {
 
     /**
      * Magic method to return data from View object
-     * @param  String $key
-     * @return Mixed
+     * @param  string $key
+     * @return mixed
      */
     public function __get($key) {
         return array_key_exists($key, $this->_data) ? $this->_data[$key] : null;
