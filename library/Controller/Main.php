@@ -2,7 +2,7 @@
 
 namespace TravelBlog\Controller;
 
-use TravelBlog\Controller;
+use Solsken\Controller;
 
 class Main extends Controller {
     public function indexAction() {

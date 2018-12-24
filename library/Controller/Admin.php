@@ -2,11 +2,13 @@
 
 namespace TravelBlog\Controller;
 
-use TravelBlog\Http;
-use TravelBlog\Controller;
+use Solsken\Http;
+use Solsken\Controller;
 use TravelBlog\Model\User;
-use TravelBlog\Form;
-use TravelBlog\Util;
+use TravelBlog\Model\Post;
+use Solsken\Form;
+use Solsken\Util;
+use Solsken\Table;
 
 class Admin extends Controller {
     public function preDispatch() {
@@ -16,10 +18,59 @@ class Admin extends Controller {
             Http::redirect('admin/login');
         }
 
-        $this->_view->user = $_SESSION['user'];
+        if (Util::isLoggedIn()) {
+            $this->_view->user = $_SESSION['user'];
+        }
     }
 
     public function indexAction() {
+        $postModel = new Post;
+        $posts = $postModel->getPosts([
+            'draft',
+            'active',
+            'archived'
+        ], 20, 0, 'updated');
+
+        $table = new Table();
+        $table->addColumns([
+            'title' => [],
+            'updated' => [
+                'formatters' => [
+                    'date'
+                ]
+            ]
+        ])->setData($posts);
+
+        $this->_view->table = $table;
+
+        $this->_view->posts = $posts;
+    }
+
+    public function postAction() {
+        $id        = $this->_request->getParam('id');
+        $postModel = new Post;
+
+        if ($id) {
+            $post = $postModel->getPost($id);
+
+            if (!$post) {
+                Http::redirect('admin/post/');
+            }
+        }
+
+        $form = new Form('post', [$postModel, 'updatePost']);
+        $form->addLoadCallback($id, [$postModel, 'getPost'])->addElements([
+            [
+                'name' => 'title',
+            ], [
+                'name' => 'text',
+                'type' => 'textarea'
+            ]
+        ]);
+
+        $form->handle();
+
+        $this->_view->form = $form;
     }
 
     public function loginAction() {

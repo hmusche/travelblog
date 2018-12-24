@@ -2,9 +2,9 @@
 
 namespace TravelBlog\Controller;
 
-use TravelBlog\Http;
-use TravelBlog\Request;
-use TravelBlog\Controller;
+use Solsken\Http;
+use Solsken\Request;
+use Solsken\Controller;
 
 class Asset extends Controller {
 

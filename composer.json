@@ -12,6 +12,13 @@
         "catfan/Medoo": "^1.6",
         "twbs/bootstrap": "4.0.0",
         "components/jquery": "^3.3",
-        "ext-intl": "*"
-    }
+        "ext-intl": "*",
+        "hmusche/solsken": "master@dev"
+    },
+    "repositories": [
+        {
+              "url": "git@github.com:hmusche/solsken.git",
+              "type": "vcs"
+        }
+    ]
 }

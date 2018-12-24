@@ -25,5 +25,12 @@ spl_autoload_register(function ($class) {
     return false;
 });
 
-$app = new TravelBlog\Application();
+/**
+ * Merge credentials.php in config dir for secrets not to be pushed in git
+ */
+$credentials = include('config/credentials.php');
+$config      = include('config/config.php');
+$config      = array_merge_recursive($config, $credentials);
+
+$app = new Solsken\Application($config);
 $app->run();
