@@ -2,7 +2,7 @@
 
 namespace TravelBlog\Model;
 
-use TravelBlog\Model;
+use Solsken\Model;
 
 class User extends Model {
     protected $_name = 'user';
