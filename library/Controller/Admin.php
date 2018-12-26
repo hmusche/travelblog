@@ -74,6 +74,12 @@ class Admin extends Controller {
                         'rows' => 10
                     ]
                 ]
+            ], [
+                'name' => 'status',
+                'type' => 'select',
+                'options' => [
+                    'values' => [$postModel, 'getEnumSelect']
+                ]
             ]
         ]);
 
