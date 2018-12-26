@@ -49,7 +49,8 @@ class Asset extends Controller {
         header('Content-Type: text/css');
 
         $cssFiles = [
-            'vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
+            'vendor/twbs/bootstrap/dist/css/bootstrap.min.css',
+            'vendor/components/font-awesome/css/fontawesome-all.min.css'
         ];
 
         $output = '';

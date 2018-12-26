@@ -13,7 +13,8 @@
         "twbs/bootstrap": "4.0.0",
         "components/jquery": "^3.3",
         "ext-intl": "*",
-        "hmusche/solsken": "master@dev"
+        "hmusche/solsken": "master@dev",
+        "components/font-awesome": "^5.4"
     },
     "repositories": [
         {
