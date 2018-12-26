@@ -1,0 +1,29 @@
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th width="100">#</th>
+            <?php foreach ($this->table->getColumns() as $column): ?>
+                <th><?php echo $column->getLabel(); ?></th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->table->getRows() as $key => $row): ?>
+            <tr>
+                <td><?php echo $key+1; ?>
+                    <?php if( $this->table->hasActions()): ?>
+                        <span>
+                        <?php foreach (array_shift($row) as $key => $action): ?>
+                            <?php echo $this->partial('partial/table/action.phtml', $action); ?>
+                        <?php endforeach; ?>
+                    </span>
+                    <?php endif; ?>
+                </td>
+                <?php foreach ($row as $key => $value): ?>
+                    <td><?php echo $value; ?></td>
+                <?php endforeach; ?>
+
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
