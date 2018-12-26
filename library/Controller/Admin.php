@@ -4,11 +4,12 @@ namespace TravelBlog\Controller;
 
 use Solsken\Http;
 use Solsken\Controller;
-use TravelBlog\Model\User;
-use TravelBlog\Model\Post;
 use Solsken\Form;
 use Solsken\Util;
 use Solsken\Table;
+
+use TravelBlog\Model\User;
+use TravelBlog\Model\Post;
 
 class Admin extends Controller {
     public function preDispatch() {
@@ -39,6 +40,9 @@ class Admin extends Controller {
                     'date'
                 ]
             ]
+        ])->addAction('edit', [
+            'href' => 'admin/post/id/{id}',
+            'icon' => 'edit'
         ])->setData($posts);
 
         $this->_view->table = $table;
@@ -64,7 +68,12 @@ class Admin extends Controller {
                 'name' => 'title',
             ], [
                 'name' => 'text',
-                'type' => 'textarea'
+                'type' => 'textarea',
+                'options' => [
+                    'attributes' => [
+                        'rows' => 10
+                    ]
+                ]
             ]
         ]);
 
