@@ -30,7 +30,7 @@ spl_autoload_register(function ($class) {
  */
 $credentials = include('config/credentials.php');
 $config      = include('config/config.php');
-$config      = array_merge_recursive($config, $credentials);
+$config      = array_replace_recursive($config, $credentials);
 
 $app = new Solsken\Application($config);
 $app->run();
