@@ -14,9 +14,23 @@
         "components/jquery": "^3.3",
         "ext-intl": "*",
         "hmusche/solsken": "master@dev",
-        "components/font-awesome": "^5.4"
+        "components/font-awesome": "^5.4",
+        "BlackrockDigital/startbootstrap-clean-blog": "dev-master",
+        "leafo/scssphp": "^0.7.7",
+        "punic/punic": "^3.3"
     },
     "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "BlackrockDigital/startbootstrap-clean-blog",
+                "version": "master",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/BlackrockDigital/startbootstrap-clean-blog/archive/gh-pages.zip"
+                }
+            }
+        },
         {
               "url": "git@github.com:hmusche/solsken.git",
               "type": "vcs"
