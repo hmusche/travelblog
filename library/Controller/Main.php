@@ -2,10 +2,15 @@
 
 namespace TravelBlog\Controller;
 
-use Solsken\Controller;
+use TravelBlog\Controller;
+
+use TravelBlog\Model\Post;
 
 class Main extends Controller {
     public function indexAction() {
-        $this->_view->foo = 'bar';
+        
+        $postModel = new Post;
+
+        $this->_view->posts = $postModel->getPosts();
     }
 }

@@ -1,1 +1,7 @@
-xxx
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <?php foreach ($this->posts as $post): ?>
+            <?php echo $this->partial('partial/post/preview.phtml', $post); ?>
+        <?php endforeach; ?>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="post-preview">
+  <a href="<?php echo $this->webhost . 'post/id/' . $this->id; ?>">
+    <h2 class="post-title"><?php echo $this->title; ?></h2>
+    <h3 class="post-subtitle">
+
+    </h3>
+  </a>
+  <p class="post-meta"><?php echo $this->t('posted.by'); ?>
+    <a href="#"><?php echo $this->author; ?></a>
+    <?php echo $this->t('on'); ?> <?php echo $this->date($this->posted); ?></p>
+</div>

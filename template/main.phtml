@@ -5,14 +5,76 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="<?php echo $this->webhost; ?>asset/css/main.css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <?php echo $this->render('partial/menu.phtml'); ?>
 
-        <div class="container px-3 pt-2">
+        <?php if (false && $this->request->get('controller') !== 'admin'): ?>
+            <!-- Page Header -->
+            <header class="masthead" <?php if (isset($this->header['image'])): ?> style="background-image: url('<?php echo $this->header['image']; ?>')"<?php endif; ?>>
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-10 mx-auto">
+                            <div class="site-heading">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        <?php endif; ?>
+
+        <div class="container">
+            <?php if ($this->mainTitle): ?>
+                <h2 class="bd-title"><php echo $this->mainTitle; ?></h2>
+            <?php endif; ?>
+
             <?php echo $this->render($this->template); ?>
         </div>
 
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <ul class="list-inline text-center">
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+        <script src="<?php echo $this->webhost; ?>asset/js/t/jquery"></script>
         <script src="<?php echo $this->webhost; ?>asset/js/c/<?php echo $this->request->get('controller'); ?>/a/<?php echo $this->request->get('action'); ?>"></script>
     </body>
 </html>
