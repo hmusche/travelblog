@@ -17,6 +17,7 @@ class Post extends Model {
         ], [
             'post.id',
             'title',
+            'subtitle',
             'text',
             'posted',
             'created',
@@ -33,25 +34,34 @@ class Post extends Model {
     }
 
     public function getPosts($states = ['active'], $limit = 10, $offset = 0, $orderby = 'posted') {
-        return $this->select([
+        $posts = $this->select([
             '[>]post_media' => ['id' => 'post_id'],
             '[>]user' => ['user_id' => 'id']
         ], [
             'post.id',
             'text',
             'title',
+            'subtitle',
             'created',
             'updated',
             'posted',
             'status',
             'user.name (author)',
-            'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename>)')
+            'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], [
             'status' => $states,
             'GROUP' => 'post.id',
             'ORDER' => [$orderby => 'DESC'],
             'LIMIT' => [$offset, $limit],
         ]);
+
+        foreach ($posts as $key => $post) {
+            if ($post['files']) {
+                $posts[$key]['files'] = explode(',', $post['files']);
+            }
+        }
+
+        return $posts;
     }
 
     public function updatePost($data, $where = []) {
@@ -85,7 +95,7 @@ class Post extends Model {
             $id = $where['id'];
         }
 
-        if ($pics !== []) {
+        if (isset($pics['name'][0]) && $pics['name'][0] !== '') {
             $postMediaModel = new PostMedia();
             $postMediaModel->handleUpload($id, $pics);
         }
