@@ -1,15 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <a class="navbar-brand" href="<?php echo $this->webhost; ?>">Zum Blog</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="<?php echo $this->webhost; ?>admin">Dash</a>
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="<?php echo $this->webhost; ?>admin/post">AddPost</a>
-        </li>
-    </ul>
 
-    <div class="collapse navbar-collapse  justify-content-end" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbar-main">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $this->webhost; ?>admin/index">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $this->webhost; ?>admin/translation-list">Übersetzungen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $this->webhost; ?>admin/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbar-profile">
         <ul class="navbar-nav ">
 
             <li class="nav-item dropdown">

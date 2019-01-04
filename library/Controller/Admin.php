@@ -7,8 +7,11 @@ use Solsken\Controller;
 use Solsken\Form;
 use Solsken\Util;
 use Solsken\Table;
+use Solsken\Registry;
+use Solsken\I18n;
 
 use TravelBlog\Model\User;
+use TravelBlog\Model\Translation;
 use TravelBlog\Model\Post;
 
 class Admin extends Controller {
@@ -42,7 +45,8 @@ class Admin extends Controller {
             ]
         ])->addAction('edit', [
             'href' => 'admin/post/id/{id}',
-            'icon' => 'edit'
+            'icon' => 'edit',
+            'row'  => true
         ])->setData($posts);
 
         $this->_view->table = $table;
@@ -67,18 +71,43 @@ class Admin extends Controller {
             [
                 'name' => 'title',
             ], [
-                'name' => 'text',
-                'type' => 'textarea',
+                'name' => 'subtitle',
                 'options' => [
-                    'attributes' => [
-                        'rows' => 10
+                    'validators' => [
+                        'required' => false
                     ]
                 ]
             ], [
                 'name' => 'status',
                 'type' => 'select',
                 'options' => [
-                    'values' => [$postModel, 'getEnumSelect']
+                    'values' => [$postModel, 'getEnumSelect'],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name' => 'text',
+                'type' => 'textarea',
+                'options' => [
+                    'attributes' => [
+                        'rows' => 10
+                    ],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name' => 'pics',
+                'type' => 'file',
+                'options' => [
+                    'label' => 'pictures',
+                    'validators' => [
+                        'required' => false
+                    ],
+                    'attributes' => [
+                        'multiple' => 'multiple'
+                    ]
                 ]
             ]
         ]);
@@ -86,6 +115,56 @@ class Admin extends Controller {
         $form->handle();
 
         $this->_view->form = $form;
+    }
+
+    public function translationAction() {
+        $tModel           = new Translation();
+        $supportedLocales = I18n::getInstance()->getSupportedLocales();
+        $key              = $this->_request->getParam('key');
+
+
+        $form = new Form('post', [$tModel, 'updateTranslations']);
+        $form->setRedirect('admin/translation-list')->addLoadCallback($key, [$tModel, 'getKey']);
+        $form->addElement([
+            'name' => 'key'
+        ]);
+
+        foreach ($supportedLocales as $locale) {
+            $locale = substr($locale, 0, 2);
+            $form->addElement([
+                'name' => 'translation_' . $locale,
+                'type' => 'textarea',
+                'options' => [
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ]);
+        }
+
+        $form->handle();
+
+        $this->_view->form = $form;
+
+    }
+
+    public function translationListAction() {
+        $config = Registry::get('app.config');
+        $tModel = new Translation();
+
+        $missing = $tModel->getMissing();
+
+        $table = new Table();
+        $table->addColumns([
+            'key' => [],
+            'locales' => []
+        ])->addAction('edit', [
+            'href' => 'admin/translation/key/{key}',
+            'icon' => 'edit'
+        ])->setData($missing);
+
+        $this->_view->table = $table;
+
     }
 
     public function loginAction() {

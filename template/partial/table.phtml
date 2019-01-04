@@ -1,25 +1,27 @@
-<table class="table table-striped table-bordered">
+<table class="table table-bordered table-responsive-sm<?php if ($this->table->hasRowAction()): ?> table-hover<?php endif; ?>">
     <thead>
         <tr>
-            <th width="100">#</th>
+            <?php if ($this->table->hasActions()): ?>
+                <th></th>
+            <?php endif ?>
             <?php foreach ($this->table->getColumns() as $column): ?>
-                <th><?php echo $column->getLabel(); ?></th>
+                <th><?php echo $this->t($column->getLabel()); ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($this->table->getRows() as $key => $row): ?>
-            <tr>
-                <td><?php echo $key+1; ?>
-                    <?php if( $this->table->hasActions()): ?>
+            <tr<?php if ($row['rowAction']): ?> data-href="<?php echo $this->webhost . $row['rowAction']['href']; ?>"<?php endif; ?>>
+                <?php if($row['actions']): ?>
+                    <td>
                         <span>
-                        <?php foreach (array_shift($row) as $key => $action): ?>
+                        <?php foreach ($row['actions'] as $key => $action): ?>
                             <?php echo $this->partial('partial/table/action.phtml', $action); ?>
                         <?php endforeach; ?>
                     </span>
-                    <?php endif; ?>
                 </td>
-                <?php foreach ($row as $key => $value): ?>
+                <?php endif; ?>
+                <?php foreach ($row['columns'] as $key => $value): ?>
                     <td><?php echo $value; ?></td>
                 <?php endforeach; ?>
             </tr>
