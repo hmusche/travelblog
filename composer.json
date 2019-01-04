@@ -16,8 +16,7 @@
         "hmusche/solsken": "master@dev",
         "components/font-awesome": "^5.4",
         "BlackrockDigital/startbootstrap-clean-blog": "dev-master",
-        "leafo/scssphp": "^0.7.7",
-        "punic/punic": "^3.3"
+        "leafo/scssphp": "^0.7.7"
     },
     "repositories": [
         {
