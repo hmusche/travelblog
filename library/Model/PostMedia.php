@@ -17,7 +17,12 @@ class PostMedia extends Model {
     }
 
     public function getMedia($postId) {
-        return $this->select(['filename', 'name'], ['post_id' => $postId]);
+        return $this->select(['filename', 'name'], [
+            'post_id' => $postId,
+            'ORDER' => [
+                'sort' => 'DESC'
+            ]
+        ]);
     }
 
     public function handleUpload($postId, $uploads) {
@@ -33,14 +38,19 @@ class PostMedia extends Model {
                     mkdir($path, 0755, true);
                 }
 
-                move_uploaded_file($uploads['tmp_name'][$index], $path . $filename);
+                $result = move_uploaded_file($uploads['tmp_name'][$index], $path . $filename);
 
-                $res = $this->insert([
-                    'post_id' => $postId,
-                    'filename' => $filename,
-                    'name' => $name,
-                    'type' => mime_content_type($path . $filename)
-                ]);
+                if (!$result) {
+                    return false;
+                } else {
+                    $res = $this->insert([
+                        'post_id' => $postId,
+                        'filename' => $filename,
+                        'name' => $name,
+                        'type' => mime_content_type($path . $filename),
+                        'sort' => 0
+                    ]);
+                }
             }
         }
     }
