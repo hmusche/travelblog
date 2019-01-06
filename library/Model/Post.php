@@ -82,7 +82,10 @@ class Post extends Model {
         if (!isset($where['id'])) {
             $data['user_id'] = $userId;
             $data['created'] = time();
-            $id = $this->insert($data);
+            $data['status'] = 'draft';
+
+            $this->insert($data);
+            $id = $this->id();
         } else {
             $previous = $this->get(['status'], $where);
 
