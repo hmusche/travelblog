@@ -15,7 +15,31 @@
     }
 }
 
+
+header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading {
+    padding: 80px 0 50px;
+    color: #fff
+}
+
+@media only screen and (min-width: 768px) {
+    header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading {
+        padding:80px 0
+    }
+}
+
 .btn-sm {
-    padding: 8px 10px;
+    padding: 8px 12px;
     font-size: 11px;
+}
+
+.file-preview {
+    .image-wrapper {
+        position: relative;
+
+        .btn {
+            position: absolute;
+            right: 7px;
+            top: 9px;
+        }
+    }
 }

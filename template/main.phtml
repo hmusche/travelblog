@@ -11,15 +11,15 @@
     <body>
         <?php echo $this->render('partial/menu.phtml'); ?>
 
-        <?php if (false && $this->request->get('controller') !== 'admin'): ?>
+        <?php if ($this->header): ?>
             <!-- Page Header -->
             <header class="masthead" <?php if (isset($this->header['image'])): ?> style="background-image: url('<?php echo $this->header['image']; ?>')"<?php endif; ?>>
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-md-10 mx-auto">
-                            <div class="site-heading">
-
+                            <div class="page-heading">
+                                <h1><?php echo $this->t($this->header['title']); ?></h1>
                             </div>
                         </div>
                     </div>
