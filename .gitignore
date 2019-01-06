@@ -2,5 +2,5 @@ config/credentials.php
 vendor/
 composer.lock
 
-asset/
+/asset/
 !asset/index.php
