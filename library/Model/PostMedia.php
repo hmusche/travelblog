@@ -17,12 +17,36 @@ class PostMedia extends Model {
     }
 
     public function getMedia($postId) {
-        return $this->select(['filename', 'name'], [
+        return $this->select(['filename', 'name', 'post_id', 'sort'], [
             'post_id' => $postId,
             'ORDER' => [
                 'sort' => 'DESC'
             ]
         ]);
+    }
+
+    public function deleteMedia($postId, $filename) {
+        $path = $this->_savePath . $postId . DIRECTORY_SEPARATOR;
+
+        $paths = [
+            $path
+        ];
+
+        foreach (['o', 'p', 't'] as $size) {
+            $paths[] = $path . $size . DIRECTORY_SEPARATOR;
+        }
+
+        foreach ($paths as $path) {
+            if (file_exists($path . $filename)) {
+                unlink($path . $filename);
+            }
+        }
+
+        return $this->delete([
+            'post_id' => $postId,
+            'filename' => $filename
+        ]);
+
     }
 
     public function handleUpload($postId, $uploads) {

@@ -1,12 +1,33 @@
-<form action="<?php echo $this->webhost . $this->path; ?>" method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
-    <?php if ($this->errors): ?>
-        Errors encountered
-    <?php endif; ?>
-    <?php foreach ($this->elements as $key => $element): ?>
-        <?php echo $element; ?>
-    <?php endforeach; ?>
+<div class="card">
+    <div class="card-header">
+        <?php echo $this->t(($this->hasData ? 'edit' : 'add') . '.' . $this->formId); ?>
 
-    <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
+        <?php echo $this->submit; ?>
+    </div>
+    <div class="card-body">
+        <form action="<?php echo $this->webhost . $this->path; ?>" method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
+            <?php if ($this->errors): ?>
+                <?php echo $this->t('check.errors'); ?>
+            <?php endif; ?>
+            <?php if ($this->groups): ?>
+                <div class="row">
+                    <?php foreach ($this->groups as $group): ?>
+                        <div class="<?php echo $group['class'] ?: 'col-xs-12'; ?>">
+                            <?php foreach ($group['elements'] as $element): ?>
+                                <?php echo $element; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <?php foreach ($this->elements as $key => $element): ?>
+                    <?php echo $element; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
 
-    <?php echo $this->submit; ?>
-</form>
+            <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
+
+            <?php echo $this->submit; ?>
+        </form>
+    </div>
+</div>

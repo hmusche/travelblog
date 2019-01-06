@@ -1,0 +1,26 @@
+<div class="file-preview">
+    <?php foreach ($this->value as $file): ?>
+        <div class="image-wrapper float-left p-4">
+            <button class="btn btn-danger rounded-circle btn-sm delete-file" data-post-id="<?php echo $file['post_id']; ?>" data-file="<?php echo $file['filename']; ?>">
+                <i class="fas fa-trash"></i>
+            </button>
+            <img class="img-responsive" src="<?php echo $this->webhost; ?>asset/post/s/t/id/<?php echo $file['post_id']; ?>/f/<?php echo $file['filename']; ?>">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <?php echo $this->t('file.name'); ?>
+                    </div>
+                </div>
+                <input style="width: 30px;" type="text" readonly class="form-control" value=<?php echo $file['name']; ?>>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <?php echo $this->t('post.media.order'); ?>
+                    </div>
+                </div>
+                <input style="width: 30px;" type="number" class="form-control" value=<?php echo $file['sort']; ?>>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

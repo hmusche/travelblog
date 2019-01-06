@@ -1,6 +1,6 @@
 
 <div class="form-group">
-    <label for="element-<?php echo $this->element->getName(); ?>"><?php echo $this->element->getLabel(); ?></label>
+    <label for="element-<?php echo $this->element->getName(); ?>"><?php echo $this->t($this->element->getLabel()); ?></label>
     <select class="form-control" <?php echo $this->element->getAttributeString(); ?> id="element-<?php echo $this->element->getName(); ?>" name="<?php echo $this->element->getName(); ?>">
         <?php foreach ($this->element->getSelect() as $key => $value): ?>
             <option value="<?php echo $key; ?>"<?php if ($this->element->getValue() == $key):?> selected="selected"<?php endif; ?>><?php echo $this->t($value); ?></option>

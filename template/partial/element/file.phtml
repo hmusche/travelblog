@@ -1,7 +1,11 @@
 <div class="form-group">
-    <label for="element-<?php echo $this->element->getName(); ?>"><?php echo $this->element->getLabel(); ?></label>
-    <input type="file" class="form-control" <?php echo $this->element->getAttributeString(); ?> id="element-<?php echo $this->element->getName(); ?>" name="<?php echo $this->element->getName(); ?>" value="<?php echo $this->element->getValue(); ?>">
+    <label for="element-<?php echo $this->element->getName(); ?>"><?php echo $this->t($this->element->getLabel()); ?></label>
+    <input type="file" class="form-control" <?php echo $this->element->getAttributeString(); ?> id="element-<?php echo $this->element->getName(); ?>" name="<?php echo $this->element->getName(); ?>" value="">
     <?php if ($this->element->hasErrors()): ?>
         <small class="form-text text-alert"><?php echo implode('<br>', $this->element->getErrors()); ?></small>
+    <?php endif; ?>
+
+    <?php if ($this->element->getValue()): ?>
+        <?php echo $this->element->getPreview(); ?>
     <?php endif; ?>
 </div>

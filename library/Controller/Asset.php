@@ -80,11 +80,11 @@ class Asset extends Controller {
             $req->getParam('a')
         ];
 
-        $assetPath = 'template/';
+        $assetPath = '';
 
         $jsFiles = [
             'jquery' => [
-                'vendor/components/jquery/jquery.slim.min.js',
+                'vendor/components/jquery/jquery.min.js',
                 'vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
             ],
             'base' => []
@@ -99,8 +99,14 @@ class Asset extends Controller {
 
         if (isset($jsFiles[$type])) {
             foreach ($jsFiles[$type] as $file) {
-                if (file_exists($file)) {
-                    $output .= "\n".file_get_contents($file);
+                if ($type == 'base') {
+                    if (file_exists('template/' . $file)) {
+                        $output .= $this->_view->partial($file);
+                    }
+                } else {
+                    if (file_exists($file)) {
+                        $output .= "\n" . file_get_contents($file);
+                    }
                 }
             }
         }

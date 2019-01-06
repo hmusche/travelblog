@@ -13,6 +13,7 @@ use Solsken\I18n;
 use TravelBlog\Model\User;
 use TravelBlog\Model\Translation;
 use TravelBlog\Model\Post;
+use TravelBlog\Model\PostMedia;
 
 class Admin extends Controller {
     public function preDispatch() {
@@ -67,11 +68,24 @@ class Admin extends Controller {
         }
 
         $form = new Form('post', [$postModel, 'updatePost']);
-        $form->addLoadCallback($id, [$postModel, 'getPost'])->addElements([
+        $form->addLoadCallback($id, [$postModel, 'getPost'])->addGroups([
+            [
+                'name' => 'data',
+                'class' => 'col-xs-12 col-md-4'
+            ], [
+                'name' => 'text',
+                'class' => 'col-xs-12 col-md-8'
+            ], [
+                'name' => 'media',
+                'class' => 'col-xs-12 col-md-12'
+            ]
+        ])->addElements([
             [
                 'name' => 'title',
+                'group' => 'data'
             ], [
                 'name' => 'subtitle',
+                'group' => 'data',
                 'options' => [
                     'validators' => [
                         'required' => false
@@ -79,6 +93,7 @@ class Admin extends Controller {
                 ]
             ], [
                 'name' => 'status',
+                'group' => 'data',
                 'type' => 'select',
                 'options' => [
                     'values' => [$postModel, 'getEnumSelect'],
@@ -88,6 +103,7 @@ class Admin extends Controller {
                 ]
             ], [
                 'name' => 'text',
+                'group' => 'text',
                 'type' => 'textarea',
                 'options' => [
                     'attributes' => [
@@ -99,9 +115,11 @@ class Admin extends Controller {
                 ]
             ], [
                 'name' => 'pics',
+                'group' => 'media',
                 'type' => 'file',
                 'options' => [
-                    'label' => 'pictures',
+                    'label' => 'photos',
+                    'preview' => 'post-media',
                     'validators' => [
                         'required' => false
                     ],
@@ -115,6 +133,23 @@ class Admin extends Controller {
         $form->handle();
 
         $this->_view->form = $form;
+    }
+
+    public function deletePostMediaAction() {
+        $postId = $this->_request->getParam('post_id');
+        $file   = $this->_request->getParam('file');
+        $status = 'failed';
+
+        if ($postId && $file) {
+            $pmModel = new PostMedia();
+            if ($pmModel->deleteMedia($postId, $file)) {
+                $status = 'success';
+            }
+
+        }
+
+        echo json_encode(['status' => $status]);
+        exit;
     }
 
     public function translationAction() {
