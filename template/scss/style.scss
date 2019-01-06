@@ -43,3 +43,52 @@ header.masthead .page-heading,header.masthead .post-heading,header.masthead .sit
         }
     }
 }
+
+.image-box {
+    width: 100%;
+    background-color: #efefef;
+
+    .image-wrapper {
+        width: calc(50% - 10px);
+        margin: 5px;
+        float: left;
+        text-align: center;
+        position: relative;
+
+        .image {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        .image:before {
+        	content: "";
+        	display: block;
+        	padding-top: 100%;
+        }
+
+        &.image-several .image {
+            opacity: 0.5;
+        }
+
+        .more {
+            font-family: "Open Sans";
+            position: absolute;
+            top: 44%;
+            left: 0;
+            right: 0;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    }
+
+}
+
+.image-box:after {
+    clear: both;
+}

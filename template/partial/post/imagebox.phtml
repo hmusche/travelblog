@@ -1,0 +1,15 @@
+<div class="image-box">
+    <?php $files = $this->files; $rowCount = count($this->files) >= 4 ? 2 : 1; ?>
+    <?php for ($i = 1; $i <= $rowCount; $i++): ?>
+        <div class="image-wrapper">
+            <div class="image rounded"  style="background-image: url(<?php echo $this->webhost; ?>asset/post/s/t/id/<?php echo $this->id; ?>/f/<?php echo array_shift($files); ?>)"></div>
+        </div>
+        <div class="image-wrapper  <?php if ($rowCount == $i && count($files) > 1): ?>image-several<?php endif; ?>">
+            <div class="image rounded"  style="background-image: url(<?php echo $this->webhost; ?>asset/post/s/t/id/<?php echo $this->id; ?>/f/<?php echo array_shift($files); ?>)"></div>
+            <?php if ($rowCount == $i && count($files) > 1): ?>
+                <span class="more"><?php echo count($files) . " " . $this->t('more.images'); ?></span>
+            <?php endif; ?>
+        </div>
+        <div class="clearfix"></div>
+    <?php endfor; ?>
+</div>

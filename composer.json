@@ -16,6 +16,7 @@
         "hmusche/solsken": "master@dev",
         "components/font-awesome": "^5.4",
         "BlackrockDigital/startbootstrap-clean-blog": "dev-master",
+        "noelboss/featherlight": "dev-master",
         "leafo/scssphp": "^0.7.7"
     },
     "repositories": [
@@ -27,6 +28,17 @@
                 "dist": {
                     "type": "zip",
                     "url": "https://github.com/BlackrockDigital/startbootstrap-clean-blog/archive/gh-pages.zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "noelboss/featherlight",
+                "version": "master",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/noelboss/featherlight/archive/1.7.13.zip"
                 }
             }
         },
