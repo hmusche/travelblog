@@ -86,7 +86,8 @@ class Asset extends Controller {
             'jquery' => [
                 'vendor/components/jquery/jquery.min.js',
                 'vendor/twbs/bootstrap/dist/js/bootstrap.min.js',
-                'vendor/noelboss/featherlight/src/featherlight.js'
+                'vendor/noelboss/featherlight/src/featherlight.js',
+                'vendor/noelboss/featherlight/src/featherlight.gallery.js',
             ],
             'base' => []
         ];
@@ -124,7 +125,8 @@ class Asset extends Controller {
             'vendor/twbs/bootstrap/dist/css/bootstrap.min.css',
             'vendor/components/font-awesome/css/fontawesome-all.min.css',
             'vendor/BlackrockDigital/startbootstrap-clean-blog/css/clean-blog.min.css',
-            'vendor/noelboss/featherlight/src/featherlight.css'
+            'vendor/noelboss/featherlight/src/featherlight.css',
+            'vendor/noelboss/featherlight/src/featherlight.gallery.css'
         ];
 
         foreach ($cssFiles as $file) {

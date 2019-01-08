@@ -33,13 +33,19 @@ header.masthead .page-heading,header.masthead .post-heading,header.masthead .sit
 }
 
 .file-preview {
+    width: 100%;
+
     .image-wrapper {
         position: relative;
+        img {
+            width: 100%;
+        }
 
         .btn {
             position: absolute;
             right: 7px;
             top: 9px;
+            width: 40px;
         }
     }
 }

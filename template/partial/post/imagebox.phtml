@@ -1,15 +1,26 @@
-<div class="image-box">
+<div class="image-box" data-featherlight-gallery data-featherlight-filter="a.gallery-item">
     <?php $files = $this->files; $rowCount = count($this->files) >= 4 ? 2 : 1; ?>
     <?php for ($i = 1; $i <= $rowCount; $i++): ?>
-        <div class="image-wrapper">
-            <div class="image rounded"  style="background-image: url(<?php echo $this->webhost; ?>asset/post/s/t/id/<?php echo $this->id; ?>/f/<?php echo array_shift($files); ?>)"></div>
-        </div>
-        <div class="image-wrapper  <?php if ($rowCount == $i && count($files) > 1): ?>image-several<?php endif; ?>">
-            <div class="image rounded"  style="background-image: url(<?php echo $this->webhost; ?>asset/post/s/t/id/<?php echo $this->id; ?>/f/<?php echo array_shift($files); ?>)"></div>
-            <?php if ($rowCount == $i && count($files) > 1): ?>
-                <span class="more"><?php echo count($files) . " " . $this->t('more.images'); ?></span>
-            <?php endif; ?>
-        </div>
+        <?php for ($j = 0; $j < 2; $j++): ?>
+            <?php
+                $file = array_shift($files);
+                $thumb = $this->webhost . "asset/post/s/t/id/" . $this->id . "/f/" . $file;
+                $preview = $this->webhost . "asset/post/s/p/id/" . $this->id . "/f/" . $file;
+             ?>
+            <a class="gallery-item"  href="<?php echo $preview; ?>">
+                <div class="image-wrapper  <?php if ($j == 1 && $rowCount == $i && count($files) > 0): ?>image-several<?php endif; ?>">
+                    <div class="image rounded"  style="background-image: url(<?php echo $thumb; ?>)"></div>
+                    <?php if ($j == 1 && $rowCount == $i && count($files) > 0): ?>
+                        <span class="more"><?php echo count($files) . " " . $this->t('more.images'); ?></span>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endfor; ?>
         <div class="clearfix"></div>
     <?php endfor; ?>
+    <div class="hidden">
+        <?php foreach ($files as $file): ?>
+            <a class="gallery-item"  href="<?php echo $this->webhost; ?>asset/post/s/p/id/<?php echo $this->id; ?>/f/<?php echo $file; ?>"></a>
+        <?php endforeach; ?>
+    </div>
 </div>
