@@ -1,0 +1,17 @@
+.con-admin {
+    .form-group {
+        label {
+            font-size: 0.8em;
+            margin-bottom: 0.2rem;
+        }
+
+        .form-control {
+            padding: 3px 10px;
+            font-size: 0.9rem;
+        }
+
+        select.form-control:not([size]):not([multiple]) {
+            height: auto;
+        }
+    }
+}

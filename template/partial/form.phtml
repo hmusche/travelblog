@@ -20,14 +20,21 @@
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <?php foreach ($this->elements as $key => $element): ?>
-                    <?php echo $element; ?>
-                <?php endforeach; ?>
+                <div class="row">
+                    <div class="col">
+                        <?php foreach ($this->elements as $key => $element): ?>
+                            <?php echo $element; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             <?php endif; ?>
 
-            <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
-
-            <?php echo $this->submit; ?>
+            <div class="row">
+                <div class="col">
+                    <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
+                    <?php echo $this->submit; ?>
+                </div>
+            </div>
         </div>
     </form>
 </div>
