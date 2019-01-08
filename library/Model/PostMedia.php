@@ -51,12 +51,18 @@ class PostMedia extends Model {
 
     public function handleUpload($postId, $uploads) {
         $files = [];
-
+        
         if (isset($uploads['name'])) {
             foreach ($uploads['name'] as $index => $name) {
                 $suffix   = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 $filename = Util::getUniqueId() . '.' . $suffix;
                 $path     = $this->_savePath . $postId . DIRECTORY_SEPARATOR;
+
+
+
+                if (isset($uploads['error'][$index]) && $uploads['error'][$index]) {
+                    throw new \Exception('Error ' . $uploads['error'][$index] . ' while uploading');
+                }
 
                 if (!file_exists($path)) {
                     mkdir($path, 0755, true);

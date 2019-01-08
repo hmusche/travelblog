@@ -67,7 +67,7 @@ class Post extends Model {
     public function updatePost($data, $where = []) {
         $data['updated'] = time();
         $pics = [];
-
+        
         if (isset($_SESSION['user']['id'])) {
             $userId = $_SESSION['user']['id'];
         } else {

@@ -45,7 +45,7 @@ jQuery('.file-preview .image-wrapper .delete-file').click(function(event) {
             },
             'success': function(res) {
                 if (res.status == 'success') {
-                    el.destroy();
+                    el.remove();
                 }
             }
         });

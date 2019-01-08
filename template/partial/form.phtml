@@ -1,11 +1,11 @@
 <div class="card">
-    <div class="card-header">
-        <?php echo $this->t($this->label); ?>
+    <form action="<?php echo $this->webhost . $this->path; ?>" method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
+        <div class="card-header">
+            <?php echo $this->t($this->label); ?>
 
-        <?php echo $this->submit; ?>
-    </div>
-    <div class="card-body">
-        <form action="<?php echo $this->webhost . $this->path; ?>" method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
+            <?php echo $this->submit; ?>
+        </div>
+        <div class="card-body">
             <?php if ($this->errors): ?>
                 <?php echo $this->t('check.errors'); ?>
             <?php endif; ?>
@@ -28,6 +28,6 @@
             <input type="hidden" value="<?php echo $this->formId; ?>" name="form_id">
 
             <?php echo $this->submit; ?>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
