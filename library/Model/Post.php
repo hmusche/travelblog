@@ -5,6 +5,7 @@ namespace TravelBlog\Model;
 use Solsken\Model;
 
 use TravelBlog\Model\PostMedia;
+use TravelBlog\TimeZoneDb;
 
 use Medoo\Medoo;
 
@@ -23,6 +24,8 @@ class Post extends Model {
             'created',
             'updated',
             'status',
+            'longitude',
+            'latitude',
             'user.name (author)'
         ], ['post.id' => $id]);
 
@@ -67,7 +70,7 @@ class Post extends Model {
     public function updatePost($data, $where = []) {
         $data['updated'] = time();
         $pics = [];
-        
+
         if (isset($_SESSION['user']['id'])) {
             $userId = $_SESSION['user']['id'];
         } else {
@@ -87,10 +90,19 @@ class Post extends Model {
             $this->insert($data);
             $id = $this->id();
         } else {
-            $previous = $this->get(['status'], $where);
+            $previous = $this->get(['status', 'latitude', 'longitude', 'posted'], $where);
+
+            $posted = $previous['posted'];
 
             if ($data['status'] == 'active' && $previous['status'] != 'active') {
                 $data['posted'] = time();
+                $posted = time();
+            }
+
+            if ($data['latitude']) {
+                if ($data['latitude'] != $previous['latitude'] || $data['longitude'] != $previous['longitude']) {
+                    $data['tz_offset'] = (new TimeZoneDb())->getTimeZoneOffset($data['latitude'], $data['longitude'], $posted);
+                }
             }
 
             $this->update($data, $where);

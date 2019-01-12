@@ -1,3 +1,40 @@
+jQuery(document).ready(function() {
+    var geoGroup = document.getElement('.group-geo');
+
+    if (geoGroup) {
+        var location = geoGroup.getElements('input[data-geo]').get('value');
+        geoGroup.getElements('.form-group').addClass('d-none');
+
+        if (location && location[0].length === 0) {
+            location = [];
+        }
+
+        var mapWrapper = new Element('div', {
+            'class': 'geo-map',
+        });
+
+        mapWrapper.inject(geoGroup);
+
+        var geo = new Geo(mapWrapper, location);
+
+        var setLocation = function() {
+            var input;
+
+            Object.forEach(geo.getLocation(), function(value, key) {
+                input = geoGroup.getElement('input[data-geo=' + key + ']');
+
+                if (input) {
+                    console.log(value);
+                    input.set({'value' : value});
+                    console.log(input, input.get('value'));
+                }
+            });
+        }
+
+        geo.setCallback('markerDragEnd', setLocation);
+    }
+});
+
 jQuery('.table-hover tr').click(function() {
     var href = jQuery(this).attr('data-href');
 

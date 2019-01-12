@@ -89,7 +89,9 @@ class Asset extends Controller {
                 'vendor/noelboss/featherlight/src/featherlight.js',
                 'vendor/noelboss/featherlight/src/featherlight.gallery.js',
             ],
-            'base' => []
+            'base' => [
+                'js/main.js'
+            ]
         ];
 
         foreach ($parts as $part) {

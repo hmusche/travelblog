@@ -12,7 +12,7 @@
             <?php if ($this->groups): ?>
                 <div class="row">
                     <?php foreach ($this->groups as $group): ?>
-                        <div class="<?php echo $group['class'] ?: 'col-xs-12'; ?>">
+                        <div class="group-<?php echo $group['name']; ?> <?php echo $group['class'] ?: 'col-xs-12'; ?>">
                             <?php foreach ($group['elements'] as $element): ?>
                                 <?php echo $element; ?>
                             <?php endforeach; ?>

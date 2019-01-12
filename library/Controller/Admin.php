@@ -76,8 +76,11 @@ class Admin extends Controller {
                 'name' => 'text',
                 'class' => 'col-xs-12 col-md-8'
             ], [
+                'name' => 'geo',
+                'class' => 'col-xs-12 col-md-6'
+            ], [
                 'name' => 'media',
-                'class' => 'col-xs-12 col-md-12'
+                'class' => 'col-xs-12 col-md-6'
             ]
         ])->addElements([
             [
@@ -108,6 +111,28 @@ class Admin extends Controller {
                 'options' => [
                     'attributes' => [
                         'rows' => 10
+                    ],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name' => 'longitude',
+                'group' => 'geo',
+                'options' => [
+                    'attributes' => [
+                        'data-geo' => 'longitude'
+                    ],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name' => 'latitude',
+                'group' => 'geo',
+                'options' => [
+                    'attributes' => [
+                        'data-geo' => 'latitude'
                     ],
                     'validators' => [
                         'required' => false
