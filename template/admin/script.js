@@ -24,9 +24,7 @@ jQuery(document).ready(function() {
                 input = geoGroup.getElement('input[data-geo=' + key + ']');
 
                 if (input) {
-                    console.log(value);
                     input.set({'value' : value});
-                    console.log(input, input.get('value'));
                 }
             });
         }

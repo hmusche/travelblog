@@ -3,6 +3,7 @@
 namespace TravelBlog\Model;
 
 use Solsken\Model;
+use Solsken\Util;
 
 use TravelBlog\Model\PostMedia;
 use TravelBlog\TimeZoneDb;
@@ -33,6 +34,8 @@ class Post extends Model {
 
         $post['pics'] = $postMediaModel->getMedia($id);
 
+        $post['slug'] = Util::getSlug($post['title']);
+
         return $post;
     }
 
@@ -49,6 +52,8 @@ class Post extends Model {
             'updated',
             'posted',
             'status',
+            'longitude',
+            'latitude',
             'user.name (author)',
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], [
@@ -59,6 +64,8 @@ class Post extends Model {
         ]);
 
         foreach ($posts as $key => $post) {
+            $posts[$key]['slug'] = Util::getSlug($post['title']);
+
             if ($post['files']) {
                 $posts[$key]['files'] = explode(',', $post['files']);
             }
@@ -92,7 +99,7 @@ class Post extends Model {
         } else {
             $previous = $this->get(['status', 'latitude', 'longitude', 'posted'], $where);
 
-            $posted = $previous['posted'];
+            $posted = $previous ? $previous['posted'] : null;
 
             if ($data['status'] == 'active' && $previous['status'] != 'active') {
                 $data['posted'] = time();
