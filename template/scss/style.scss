@@ -1,11 +1,21 @@
 
 #mainNav {
     position: inherit;
-    background-color: #212529;
-    opacity: .5;
+    background-color: #4c9bea;
+    opacity: .9;
 
     .navbar-toggler {
         color: #fafafa;
+    }
+    .navbar-brand {
+        padding:0;
+        margin:0;
+        width: 50%;
+
+        img {
+            max-height: 60px;
+            max-width: 100%;
+        }
     }
 }
 
