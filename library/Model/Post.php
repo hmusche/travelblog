@@ -78,6 +78,10 @@ class Post extends Model {
         $data['updated'] = time();
         $pics = [];
 
+        if (isset($data['posted']) && ! $data['posted']) {
+            unset($data['posted']);
+        }
+
         if (isset($_SESSION['user']['id'])) {
             $userId = $_SESSION['user']['id'];
         } else {
