@@ -105,7 +105,7 @@ class Post extends Model {
 
             $posted = $previous ? $previous['posted'] : null;
 
-            if ($data['status'] == 'active' && $previous['status'] != 'active') {
+            if ($data['status'] == 'active' && $previous['status'] != 'active' && !$posted) {
                 $data['posted'] = time();
                 $posted = time();
             }
