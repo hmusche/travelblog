@@ -43,6 +43,11 @@ class Admin extends Controller {
                 'formatters' => [
                     'date'
                 ]
+            ],
+            'posted' => [
+                'formatters' => [
+                    'date'
+                ]
             ]
         ])->addAction('edit', [
             'href' => 'admin/post/id/{id}',
@@ -100,6 +105,15 @@ class Admin extends Controller {
                 'type' => 'select',
                 'options' => [
                     'values' => [$postModel, 'getEnumSelect'],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name' => 'posted',
+                'group' => 'data',
+                'type' => 'date',
+                'options' => [
                     'validators' => [
                         'required' => false
                     ]
