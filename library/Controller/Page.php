@@ -13,6 +13,14 @@ class Page extends Controller {
         $this->_view->textBody = 'impressum.text';
     }
 
+    public function aboutusAction() {
+        $this->_view->header = [
+            'title' => 'about.us',
+            'image' => $this->_view->webhost . 'asset/img/aboutus.jpg'
+        ];
+        $this->_view->textBody = 'about.us.text';
+    }
+
     public function postDispatch() {
         $this->_view->template = 'page/template.phtml';
         parent::postDispatch();
