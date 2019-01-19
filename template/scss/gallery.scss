@@ -1,0 +1,48 @@
+.solsken-gallery {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+
+    .gallery-wrapper {
+        position: relative;
+
+        &.easing {
+            transition: all 500ms;
+        }
+
+        .gallery-image-wrapper {
+            float:left;
+            transition: all 500ms;
+
+            &:not(.active) {
+                opacity: 0.2;
+            }
+        }
+    }
+
+    .gallery-controls {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        transition: all 500ms;
+
+        &:not(.done) {
+            background-color: #fff;
+        }
+
+        .gallery-right, .gallery-left {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .gallery-right {
+            right: 0;
+        }
+
+        .gallery-left {
+            left: 0;
+        }
+
+    }
+}

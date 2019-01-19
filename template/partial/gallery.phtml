@@ -1,0 +1,13 @@
+<div class="solsken-gallery">
+    <div class="gallery-wrapper"></div>
+    <div class="gallery-controls">
+        <div class="gallery-left"></div>
+        <div class="gallery-right"></div>
+    </div>
+
+    <div class="d-none image-wrapper">
+        <?php foreach ($this->files as $file): ?>
+            <img src="<?php echo $this->webhost; ?><?php echo $file; ?>">
+        <?php endforeach; ?>
+    </div>
+</div>
