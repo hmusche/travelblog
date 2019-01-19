@@ -11,7 +11,7 @@ var Geo = new Class({
 
         this.map    = this.createMapInstance(wrapper);
         this.map.addControl(new mapboxgl.NavigationControl());
-        
+
         this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
             self.callbacks.markerDragEnd();
         });
@@ -36,7 +36,9 @@ var Geo = new Class({
         return map = new mapboxgl.Map({
             container: wrapper,
             style: 'mapbox://styles/mapbox/' + this.style,
-            zoom: this.zoom
+            zoom: this.zoom,
+            bearingSnap: false,
+            
         });
     },
 
