@@ -11,9 +11,11 @@ class Post extends Controller {
             throw new \Exception('Method not found');
         }
 
+        $postModel = new PostModel;
+        $postId = explode('-', $this->_request->get('action'))[0];
+
         $this->_view->template = 'post/post.phtml';
-
-
+        $this->_view->post = $postModel->getPost($postId);
 
     }
 }

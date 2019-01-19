@@ -38,7 +38,7 @@ class Admin extends Controller {
 
         $table = new Table();
         $table->addColumns([
-            'title' => [],
+            'heading' => [],
             'updated' => [
                 'formatters' => [
                     'date'
@@ -90,7 +90,12 @@ class Admin extends Controller {
         ])->addElements([
             [
                 'name' => 'title',
-                'group' => 'data'
+                'group' => 'data',
+                'options' => [
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
             ], [
                 'name' => 'subtitle',
                 'group' => 'data',
@@ -153,7 +158,7 @@ class Admin extends Controller {
                     ]
                 ]
             ], [
-                'name' => 'pics',
+                'name' => 'files',
                 'group' => 'media',
                 'type' => 'file',
                 'options' => [

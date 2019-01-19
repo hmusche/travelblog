@@ -7,6 +7,8 @@ use Solsken\Model;
 use Solsken\Util;
 use Solsken\Registry;
 
+use Medoo\Medoo;
+
 class PostMedia extends Model {
     protected $_name = 'post_media';
     protected $_savePath;
@@ -17,7 +19,13 @@ class PostMedia extends Model {
     }
 
     public function getMedia($postId) {
-        return $this->select(['filename', 'name', 'post_id', 'sort'], [
+        return $this->select([
+                'filename',
+                'name',
+                'post_id',
+                'sort',
+                'full_path' => Medoo::raw("CONCAT('asset/post/s/p/id/', <post_id>, '/f/', <filename>)")
+            ], [
             'post_id' => $postId,
             'ORDER' => [
                 'sort' => 'DESC'
@@ -51,7 +59,7 @@ class PostMedia extends Model {
 
     public function handleUpload($postId, $uploads) {
         $files = [];
-        
+
         if (isset($uploads['name'])) {
             foreach ($uploads['name'] as $index => $name) {
                 $suffix   = strtolower(pathinfo($name, PATHINFO_EXTENSION));

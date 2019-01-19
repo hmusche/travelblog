@@ -30,6 +30,8 @@ jQuery(document).ready(function() {
         }
 
         geo.setCallback('markerDragEnd', setLocation);
+
+        window.trgeo = geo;
     }
 });
 

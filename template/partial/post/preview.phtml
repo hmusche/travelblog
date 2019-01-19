@@ -1,7 +1,7 @@
 <div class="post-preview">
     <a href="<?php echo $this->webhost . 'post/' . $this->id . "-" . $this->slug; ?>">
         <h2 class="post-title"><?php echo $this->title; ?></h2>
-        <h3 class="post-subtitle"><?php echo $this->subtitle; ?></h3>
+        <h3 class="post-subtitle"><?php echo (!$this->title && !$this->subtitle) ? $this->text : $this->subtitle; ?></h3>
     </a>
     <?php if ($this->files && count($this->files) > 1): ?>
         <?php echo $this->render('partial/post/imagebox.phtml'); ?>

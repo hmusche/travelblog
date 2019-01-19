@@ -1,0 +1,14 @@
+<div class="post">
+    <?php if ($this->post['files']): ?>
+        <?php echo $this->partial('partial/gallery.phtml', ['files' => array_column($this->post['files'], 'full_path')]); ?>
+    <?php endif; ?>
+    <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
+    <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
+
+    <p class="post-meta"><?php echo $this->t('posted.by'); ?>
+        <a href="#"><?php echo $this->post['author']; ?></a>
+        <?php echo $this->t('on'); ?> <?php echo $this->date($this->post['posted']); ?>
+    </p>
+</div>
+
+<?php //var_dump($this); ?>

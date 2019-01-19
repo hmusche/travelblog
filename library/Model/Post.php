@@ -32,7 +32,7 @@ class Post extends Model {
 
         $postMediaModel = new PostMedia();
 
-        $post['pics'] = $postMediaModel->getMedia($id);
+        $post['files'] = $postMediaModel->getMedia($id);
 
         $post['slug'] = Util::getSlug($post['title']);
 
@@ -64,7 +64,8 @@ class Post extends Model {
         ]);
 
         foreach ($posts as $key => $post) {
-            $posts[$key]['slug'] = Util::getSlug($post['title']);
+            $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);
+            $posts[$key]['heading'] = $this->_getPostTitle($post);
 
             if ($post['files']) {
                 $posts[$key]['files'] = explode(',', $post['files']);
@@ -72,6 +73,16 @@ class Post extends Model {
         }
 
         return $posts;
+    }
+
+    protected function _getPostTitle($post) {
+        foreach (['title', 'subtitle', 'text'] as $key) {
+            if (trim($post[$key]) !== '') {
+                return $post[$key];
+            }
+        }
+
+        return '';
     }
 
     public function updatePost($data, $where = []) {
@@ -88,9 +99,9 @@ class Post extends Model {
             return false;
         }
 
-        if (isset($data['pics'])) {
-            $pics = $data['pics'];
-            unset($data['pics']);
+        if (isset($data['files'])) {
+            $pics = $data['files'];
+            unset($data['files']);
         }
 
         if (!isset($where['id'])) {
