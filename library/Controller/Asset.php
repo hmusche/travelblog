@@ -61,6 +61,7 @@ class Asset extends Controller {
             if (file_exists($path . $file)) {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 header('Content-Type: ' . finfo_file($finfo, $path . $file));
+                header('Content-Length: ' . filesize($path . $file));
                 header('Last-modified: ' . gmdate('D, d M Y H:i:s ', filemtime($path . $file)) . 'GMT');
 
                 readfile($path . $file);
@@ -123,6 +124,7 @@ class Asset extends Controller {
         }
 
         header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $lastMTime) . 'GMT');
+        header('Content-Length: ' . strlen($output));
 
         echo $output;
     }
@@ -157,6 +159,7 @@ class Asset extends Controller {
         $output .= $scss->compile('@import "main.scss";');
 
         header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $lastMTime) . 'GMT');
+        header('Content-Length: ' . strlen($output));
 
         echo $output;
     }
