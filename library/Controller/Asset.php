@@ -61,6 +61,7 @@ class Asset extends Controller {
             if (file_exists($path . $file)) {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 header('Content-Type: ' . finfo_file($finfo, $path . $file));
+                header('Last-modified: ' . gmdate('D, d M Y H:i:s ', filemtime($path . $file)) . 'GMT');
 
                 readfile($path . $file);
                 exit;
@@ -101,6 +102,8 @@ class Asset extends Controller {
 
         $output = '';
 
+        $lastMTime = 0;
+
         if (isset($jsFiles[$type])) {
             foreach ($jsFiles[$type] as $file) {
                 if ($type == 'base') {
@@ -110,10 +113,16 @@ class Asset extends Controller {
                 } else {
                     if (file_exists($file)) {
                         $output .= "\n" . file_get_contents($file);
+
+                        if ($lastMTime < filemtime($file)) {
+                            $lastMTime = filemtime($file);
+                        }
                     }
                 }
             }
         }
+
+        header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $lastMTime) . 'GMT');
 
         echo $output;
     }
@@ -131,8 +140,14 @@ class Asset extends Controller {
             'vendor/noelboss/featherlight/src/featherlight.gallery.css'
         ];
 
+        $lastMTime = 0;
+
         foreach ($cssFiles as $file) {
             $output .= file_get_contents($file);
+
+            if ($lastMTime < filemtime($file)) {
+                $lastMTime = filemtime($file);
+            }
         }
 
         $scssPath = 'template/scss/';
@@ -140,6 +155,8 @@ class Asset extends Controller {
         $scss->setImportPaths($scssPath);
 
         $output .= $scss->compile('@import "main.scss";');
+
+        header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $lastMTime) . 'GMT');
 
         echo $output;
     }
