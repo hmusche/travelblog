@@ -6,7 +6,7 @@
     <?php if ($this->files && count($this->files) > 1): ?>
         <?php echo $this->render('partial/post/imagebox.phtml'); ?>
     <?php elseif (isset($this->files[0])): ?>
-        <img class="post-picture" src="<?php echo $this->webhost; ?>asset/post/id/<?php echo $this->id; ?>/f/<?php echo $this->files[0]; ?>">
+        <img class="post-picture" src="<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->id; ?>/f/<?php echo $this->files[0]; ?>">
     <?php endif; ?>
     <p class="post-meta"><?php echo $this->t('posted.by'); ?>
         <a href="#"><?php echo $this->author; ?></a>

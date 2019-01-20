@@ -2,6 +2,7 @@
 
 return [
     'host' => 'http://localhost',
+    'cdnhost' => 'http://localhost',
     'path' => '/~hmu/travelblog/public/',
     'asset_path' => 'asset/',
 

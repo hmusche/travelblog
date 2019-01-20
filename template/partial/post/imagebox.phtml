@@ -4,8 +4,8 @@
         <?php for ($j = 0; $j < 2; $j++): ?>
             <?php
                 $file = array_shift($files);
-                $thumb = $this->webhost . "asset/post/s/t/id/" . $this->id . "/f/" . $file;
-                $preview = $this->webhost . "asset/post/s/p/id/" . $this->id . "/f/" . $file;
+                $thumb = $this->cdnhost . "asset/post/s/t/id/" . $this->id . "/f/" . $file;
+                $preview = $this->cdnhost . "asset/post/s/p/id/" . $this->id . "/f/" . $file;
              ?>
             <a class="gallery-item"  href="<?php echo $preview; ?>">
                 <div class="image-wrapper  <?php if ($j == 1 && $rowCount == $i && count($files) > 0): ?>image-several<?php endif; ?>">
@@ -20,7 +20,7 @@
     <?php endfor; ?>
     <div class="hidden">
         <?php foreach ($files as $file): ?>
-            <a class="gallery-item"  href="<?php echo $this->webhost; ?>asset/post/s/p/id/<?php echo $this->id; ?>/f/<?php echo $file; ?>"></a>
+            <a class="gallery-item"  href="<?php echo $this->cdnhost; ?>asset/post/s/p/id/<?php echo $this->id; ?>/f/<?php echo $file; ?>"></a>
         <?php endforeach; ?>
     </div>
 </div>
