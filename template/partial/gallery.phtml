@@ -1,13 +1,19 @@
-<div class="solsken-gallery">
-    <div class="gallery-wrapper">
-        <?php foreach ($this->files as $file): ?>
-            <div class="gallery-image-wrapper">
-                <img data-src="<?php echo $this->cdnhost; ?><?php echo $file; ?>">
-            </div>
-        <?php endforeach; ?>
+<?php if (count($this->files) == 1): ?>
+    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
+        <img class="img-fluid" src="<?php echo $this->cdnhost; ?><?php echo $this->files[0]; ?>">
     </div>
-    <div class="gallery-controls">
-        <div class="gallery-left"></div>
-        <div class="gallery-right"></div>
+<?php else: ?>
+    <div class="solsken-gallery">
+        <div class="gallery-wrapper">
+            <?php foreach ($this->files as $file): ?>
+                <div class="gallery-image-wrapper">
+                    <img data-src="<?php echo $this->cdnhost; ?><?php echo $file; ?>">
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="gallery-controls">
+            <div class="gallery-left"></div>
+            <div class="gallery-right"></div>
+        </div>
     </div>
-</div>
+<?php endif; ?>
