@@ -30,18 +30,56 @@
             background-color: #fff;
         }
 
-        .gallery-right, .gallery-left {
-            width: 50%;
-            height: 100%;
-            position: absolute;
-        }
+        &.has-pointer {
+            .gallery-right, .gallery-left {
+                width: 20%;
+                height: 100%;
+                position: absolute;
 
-        .gallery-right {
-            right: 0;
-        }
+                &:not(.active):after , &:after {
+                    font-size: 0;
+                }
 
-        .gallery-left {
-            left: 0;
+                &:hover:after {
+                    font-size: 6em;
+                    color: #fff;
+                    opacity: 0.4;
+                    top: 40%;
+                    position: absolute;
+
+
+                }
+            }
+
+            .gallery-right {
+                right: 0;
+
+                &.active:hover {
+                    background: -moz-linear-gradient(right, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
+                    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 100%);
+                    background: linear-gradient(to-left, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
+                }
+
+                &:after {
+                    content: "〉";
+                    right: 20px;
+                }
+            }
+
+            .gallery-left {
+                left: 0;
+
+                &.active:hover {
+                    background: -moz-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
+                    background: -webkit-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
+                    background: linear-gradient(to-right, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
+                }
+
+                &:after {
+                    content: "〈";
+                    left: 20px;
+                }
+            }
         }
 
     }
