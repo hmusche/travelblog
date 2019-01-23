@@ -15,6 +15,10 @@
             float:left;
             transition: all 350ms;
 
+            img {
+                max-height: 600px;
+            }
+
             &:not(.active) {
                 //opacity: 0.8;
             }
