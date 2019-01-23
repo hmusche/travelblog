@@ -1,13 +1,10 @@
 <div class="post-preview">
     <a href="<?php echo $this->webhost . 'post/' . $this->id . "-" . $this->slug; ?>">
+        <div class="header-stripe" <?php if (isset($this->files[0])): ?>style="height:150px;background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->id; ?>/f/<?php echo $this->files[0]; ?>);"<?php endif; ?>>
+        </div>
         <h2 class="post-title"><?php echo $this->title; ?></h2>
         <h3 class="post-subtitle"><?php echo (!$this->title && !$this->subtitle) ? $this->text : $this->subtitle; ?></h3>
     </a>
-    <?php if ($this->files && count($this->files) > 1): ?>
-        <?php echo $this->render('partial/post/imagebox.phtml'); ?>
-    <?php elseif (isset($this->files[0])): ?>
-        <img class="post-picture" src="<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->id; ?>/f/<?php echo $this->files[0]; ?>">
-    <?php endif; ?>
     <p class="post-meta"><?php echo $this->t('posted.by'); ?>
         <a href="#"><?php echo $this->author; ?></a>
         <?php echo $this->t('on'); ?> <?php echo $this->date($this->posted); ?>

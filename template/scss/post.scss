@@ -1,0 +1,41 @@
+.post,.post-preview {
+    margin: 20px 0;
+    padding: 5px 0;
+    background-color: #fff;
+
+    .header-stripe {
+        margin-top: -5px;
+        background-color: $color1; //$main-color-lighten-4;
+        height: 0px;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .post-title, .post-subtitle, .post-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .post-content {
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+
+    >a {
+        >.post-title, >.post-subtitle {
+            padding-left: 20px;
+            padding-right: 20px;
+
+        }
+
+        &:hover {
+            color: $color1;
+        }
+    }
+
+    .post-meta {
+        text-align: right;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+}

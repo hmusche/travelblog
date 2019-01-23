@@ -96,14 +96,20 @@ var Gallery = new Class({
 
                 if (self.currentIndex == 0 && current < 0) {
                     current = 0;
+                    initial = event.client.x;
                 } else if (self.currentIndex == (self.images.length - 1) && current > 0) {
                     current = 0;
+                    initial = event.client.x;
                 }
 
                 self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
             },
             'touchend': function(event) {
                 self.toggleEasing();
+
+                if (Math.abs(current) < 20) {
+                    return;
+                }
 
                 if (current >= max) {
                     self.showImage(self.currentIndex + 1);

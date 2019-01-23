@@ -26,6 +26,8 @@ class Admin extends Controller {
         if (Util::isLoggedIn()) {
             $this->_view->user = $_SESSION['user'];
         }
+
+        $this->_view->includeMapGl = true;
     }
 
     public function indexAction() {

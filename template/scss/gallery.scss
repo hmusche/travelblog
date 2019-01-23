@@ -2,17 +2,18 @@
     overflow: hidden;
     width: 100%;
     position: relative;
+    background-color: #fff;
 
     .gallery-wrapper {
         position: relative;
 
         &.easing {
-            transition: all 500ms;
+            transition: all 350ms;
         }
 
         .gallery-image-wrapper {
             float:left;
-            transition: all 500ms;
+            transition: all 350ms;
 
             &:not(.active) {
                 opacity: 0.2;

@@ -1,7 +1,10 @@
+body > .container-fluid {
+    background-color: $color1;
+}
 
 #mainNav {
     position: inherit;
-    background-color: #4c9bea;
+    background-color: $main-color;
     opacity: .9;
 
     .navbar-toggler {
@@ -18,13 +21,6 @@
         }
     }
 }
-
-.post-preview {
-    .post-picture {
-        width: 100%;
-    }
-}
-
 
 header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading {
     padding: 80px 0 50px;

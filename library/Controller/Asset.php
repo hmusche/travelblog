@@ -26,7 +26,7 @@ class Asset extends Controller {
         $size   = $this->_request->getParam('s', 'p');
 
         $allowedSizes = [
-            'p' => 800, // preview
+            'p' => 1200, // preview
             't' => 300,  // thumbnail
             'o' => 1920     // original
         ];

@@ -1,0 +1,21 @@
+/* Coolors Exported Palette - coolors.co/303633-4c9bea-cbd4c2-ff715b-dbebc0 */
+
+/* HSL */
+$color1: hsla(150%, 6%, 20%, 1); // Jet (dark grey)
+$color2: hsla(210%, 79%, 61%, 1); // United Nations Blue
+$color3: hsla(90%, 17%, 80%, 1); // Pastel Gray
+//$color4: hsla(8%, 100%, 68%, 1); // Bittersweet (Orange red)
+$color5: hsla(82%, 52%, 84%, 1); // Tea Green
+
+/* RGB */
+$color1: rgba(48, 54, 51, 1);
+$color2: rgba(76, 155, 234, 1);
+$color3: rgba(203, 212, 194, 1);
+$color4: #FFF689;
+$color5: rgba(219, 235, 192, 1);
+
+$main-color: $color2;
+$main-color-1: darken($main-color, 20%);
+$main-color-2: darken($main-color, 10%);
+$main-color-3: lighten($main-color, 10%);
+$main-color-4: lighten($main-color, 20%);
