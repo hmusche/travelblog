@@ -1,0 +1,8 @@
+<p class="post-meta">
+    <?php echo $this->t('posted.by'); ?>
+    <a href="#"><?php echo $this->post['author']; ?></a>
+    <?php echo $this->t('on'); ?> <?php echo $this->i18n('date', $this->post['posted'], 'short'); ?>
+    <?php if (isset($this->post['meta']['country'])): ?>
+        <?php echo $this->t('in'); ?> <?php echo $this->i18n('country', $this->post['meta']['country'][0]); ?>
+    <?php endif; ?>
+</p>

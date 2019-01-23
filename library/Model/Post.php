@@ -6,6 +6,7 @@ use Solsken\Model;
 use Solsken\Util;
 
 use TravelBlog\Model\PostMedia;
+use TravelBlog\Model\PostMeta;
 use TravelBlog\TimeZoneDb;
 
 use Medoo\Medoo;
@@ -31,10 +32,11 @@ class Post extends Model {
         ], ['post.id' => $id]);
 
         $postMediaModel = new PostMedia();
+        $postMetaModel  = new PostMeta();
 
         $post['files'] = $postMediaModel->getMedia($id);
-
-        $post['slug'] = Util::getSlug($post['title']);
+        $post['meta']  = $postMetaModel->getMeta($id);
+        $post['slug']  = Util::getSlug($post['title']);
 
         return $post;
     }
@@ -104,10 +106,21 @@ class Post extends Model {
             unset($data['files']);
         }
 
+        $metaData = [];
+
         if (!isset($where['id'])) {
             $data['user_id'] = $userId;
             $data['created'] = time();
             $data['status'] = 'draft';
+
+            if ($data['latitude']) {
+                $tzData = (new TimeZoneDb())->getTimeZoneData($data['latitude'], $data['longitude'], $posted);
+
+                if ($tzData) {
+                    $data['tz_offset'] = $tzData['offset'];
+                    $metaData['country'] = $tzData['cc'];
+                }
+            }
 
             $this->insert($data);
             $id = $this->id();
@@ -123,7 +136,13 @@ class Post extends Model {
 
             if ($data['latitude']) {
                 if ($data['latitude'] != $previous['latitude'] || $data['longitude'] != $previous['longitude']) {
-                    $data['tz_offset'] = (new TimeZoneDb())->getTimeZoneOffset($data['latitude'], $data['longitude'], $posted);
+                    $tzData = (new TimeZoneDb())->getTimeZoneData($data['latitude'], $data['longitude'], $posted);
+
+                    if ($tzData) {
+                        $data['tz_offset'] = $tzData['offset'];
+                        $metaData['country'] = $tzData['cc'];
+                    }
+
                 }
             }
 
@@ -135,6 +154,14 @@ class Post extends Model {
         if (isset($pics['name'][0]) && $pics['name'][0] !== '') {
             $postMediaModel = new PostMedia();
             $postMediaModel->handleUpload($id, $pics);
+        }
+
+        if ($metaData) {
+            $metaModel = new PostMeta;
+
+            foreach ($metaData as $type => $values) {
+                $metaModel->setPostMetaType($id, $type, $values);
+            }
         }
 
         return $id;

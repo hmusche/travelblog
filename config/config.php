@@ -16,7 +16,10 @@ return [
 
         'supported_locales' => [
             'de_DE',
-            'en_GB'
+            'de',
+            'en',
+            'en_GB',
+            'en_US'
         ]
     ],
 
