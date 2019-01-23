@@ -43,7 +43,7 @@
 
         <script src="<?php echo $this->cdnhost; ?>asset/js/mootools-compat.js"></script>
         <script src="<?php echo $this->cdnhost; ?>asset/js/t/jquery"></script>
-        <script src="<?php echo $this->cdnhost; ?>asset/js/c/<?php echo $this->request->get('controller'); ?>/a/<?php echo $this->request->get('action'); ?>"></script>
+        <script src="<?php echo $this->cdnhost; ?>asset/js/c/<?php echo $this->request->get('controller'); ?>/a/<?php echo $this->request->get('action'); ?>?v=1"></script>
         <?php if ($this->request->get('controller') == 'admin'): ?>
             <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
         <?php endif; ?>
