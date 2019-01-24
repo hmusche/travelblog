@@ -15,11 +15,8 @@ return [
         'source' => 'TravelBlog\\Model\Translation',
 
         'supported_locales' => [
-            'de_DE',
-            'de',
             'en',
-            'en_GB',
-            'en_US'
+            'de'
         ]
     ],
 
