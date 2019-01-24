@@ -10,9 +10,13 @@
     .header-stripe {
         margin-top: -5px;
         background-color: $color1; //$main-color-lighten-4;
-        height: 0px;
+        height: 150px;
         background-position: center;
         background-size: cover;
+
+        @media screen and (min-width: $break-large) {
+            height: 250px;
+        }
     }
 
     .post-title, .post-subtitle, .post-content {

@@ -1,7 +1,10 @@
 <div class="post-preview">
     <a href="<?php echo $this->webhost . 'post/' . $this->post['id'] . "-" . $this->post['slug']; ?>">
-        <div class="header-stripe" <?php if (isset($this->post['files'][0])): ?>style="height:150px;background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/f/<?php echo $this->post['files'][0]; ?>);"<?php endif; ?>>
-        </div>
+        <?php if (isset($this->post['files'][0])): ?>
+            <div class="header-stripe" style="background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/f/<?php echo $this->post['files'][0]; ?>);">
+            </div>
+        <?php endif; ?>
+        
         <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
         <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
     </a>
