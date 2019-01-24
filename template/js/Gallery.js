@@ -32,35 +32,50 @@ var Gallery = new Class({
     setSizes: function() {
         var self = this,
             galleryWidth = 0,
-            minHeight = 10000;
+            minHeight = 10000,
+            maxWidth = self.galleryWrapper.getParent().clientWidth;
 
+        this.toggleEasing(false);
+
+        /**
+         * Set all images width to maximum of gallery wrapper
+         */
         this.images.each(function(image) {
             image.setStyle('height', 'auto');
-            image.setStyle('max-width', self.galleryWrapper.getParent().clientWidth + 'px');
+            image.setStyle('max-width', maxWidth + 'px');
+            image.getParent('div').setStyle('width', maxWidth + 'px');
         });
 
+        /**
+         * Get the minimum height from the image with the lowest height
+         */
         this.images.each(function(image) {
             if (image.clientHeight < minHeight) {
                 minHeight = image.clientHeight;
             }
         });
 
+
+        /**
+         * Set that height to every image, and set gallery width to that
+         */
         this.images.each(function(image) {
             image.setStyle('height', minHeight + 'px');
 
-            galleryWidth = galleryWidth + image.width;
+            galleryWidth = galleryWidth + image.getParent('div').clientWidth;
         });
-
+        galleryWidth = maxWidth * (this.images.length + 1);
         self.galleryWrapper.setStyle('width', galleryWidth + 10 + 'px');
         self.galleryWrapper.getParent().setStyle('height', minHeight + 'px');
 
+        this.toggleEasing(true);
         this.showImage();
     },
 
     initGallery: function() {
         this.setSizes();
         this.initEvents();
-        this.toggleEasing();
+        this.toggleEasing(true);
     },
 
     initEvents: function() {
@@ -71,7 +86,7 @@ var Gallery = new Class({
             'touchstart': function(event) {
                 var elem = this;
 
-                self.toggleEasing();
+                self.toggleEasing(false);
 
                 current = max = min = 0;
 
@@ -105,7 +120,7 @@ var Gallery = new Class({
                 self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
             },
             'touchend': function(event) {
-                self.toggleEasing();
+                self.toggleEasing(true);
 
                 if (Math.abs(current) < 20) {
                     return;
@@ -143,8 +158,13 @@ var Gallery = new Class({
         this.controls.addClass('done');
     },
 
-    toggleEasing: function() {
-        this.galleryWrapper.toggleClass('easing');
+    toggleEasing: function(on) {
+        if (on) {
+            this.galleryWrapper.addClass('easing');
+        } else {
+            this.galleryWrapper.removeClass('easing');
+        }
+
     },
 
     showImage: function(index) {
@@ -156,15 +176,18 @@ var Gallery = new Class({
             return;
         }
 
+        var wrapper = this.images[index].getParent('.gallery-image-wrapper'),
+            maxOffset = this.galleryWrapper.clientWidth - this.galleryWrapper.getParent('.solsken-gallery').clientWidth;
+
+        if (wrapper.offsetLeft >= maxOffset) {
+            this.offset = maxOffset;
+        } else {
+            this.offset = wrapper.offsetLeft;
+        }
+
         this.currentIndex = index;
 
-        var wrapper = this.images[index].getParent('.gallery-image-wrapper'),
-            width = this.images[index].clientWidth,
-            viewportWidth = this.galleryWrapper.getParent('.solsken-gallery').clientWidth;
-
-        this.offset =  wrapper.offsetLeft;
         this.galleryWrapper.setStyle('transform', 'translate(' + (-1 * this.offset) + 'px)');
-
         this.galleryWrapper.getElements('.gallery-image-wrapper').removeClass('active');
         wrapper.addClass('active');
 
@@ -174,8 +197,7 @@ var Gallery = new Class({
             this.controls.getElements('div')[0].removeClass('active');
         }
 
-
-        if (this.currentIndex == (this.images.length - 1)) {
+        if (this.currentIndex == (this.images.length - 1) || wrapper.offsetLeft >= maxOffset) {
             this.controls.getElements('div')[1].removeClass('active');
         }
     }

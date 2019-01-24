@@ -1,4 +1,4 @@
-<p class="post-meta">
+<p class="post-meta <?php echo $this->class; ?>">
     <?php echo $this->t('posted.by'); ?>
     <a href="#"><?php echo $this->post['author']; ?></a>
     <?php echo $this->t('on'); ?> <?php echo $this->i18n('date', $this->post['posted'], 'short'); ?>

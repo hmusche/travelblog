@@ -8,6 +8,7 @@
             <?php foreach ($this->files as $file): ?>
                 <div class="gallery-image-wrapper">
                     <img data-src="<?php echo $this->cdnhost; ?><?php echo $file; ?>">
+                    <div class="background"  style="background-image:url(<?php echo $this->cdnhost; ?><?php echo $file; ?>);"></div>
                 </div>
             <?php endforeach; ?>
         </div>

@@ -1,19 +1,38 @@
-<?php if ($this->post['files']): ?>
-    <div class="row gallery-row">
-            <?php echo $this->partial('partial/gallery.phtml', ['files' => array_column($this->post['files'], 'full_path')]); ?>
-    </div>
-<?php endif; ?>
-    <div class="row">
+<div class="row d-none d-md-block">
     <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
         <div class="post">
-            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
             <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
             <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
-            <div class="post-content">
-                <?php echo $this->post['text']; ?>
+            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
+        </div>
+    </div>
+</div>
+    <?php if ($this->post['files']): ?>
+        <div class="row gallery-row">
+                <?php echo $this->partial('partial/gallery.phtml', ['files' => array_column($this->post['files'], 'full_path')]); ?>
+        </div>
+    <?php endif; ?>
+<div class="row">
+    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-xs-block d-md-none">
+        <div class="post">
+            <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
+            <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
+            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
+            <?php if ($this->post['text']): ?>
+                <div class="post-content">
+                    <?php echo $this->post['text']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php if ($this->post['text']): ?>
+        <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-none d-md-block">
+            <div class="post">
+
+                <div class="post-content">
+                    <?php echo $this->post['text']; ?>
+                </div>
             </div>
         </div>
-
-    </div>
-
+    <?php endif; ?>
 </div>
