@@ -6,6 +6,7 @@ body > .container-fluid {
     position: relative;
     background-color: $main-color;
     z-index: 1;
+    border-bottom: none;
 
     .navbar-toggler {
         color: #fafafa;
@@ -22,14 +23,24 @@ body > .container-fluid {
     }
 }
 
-header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading {
-    padding: 80px 0 50px;
-    color: #fff
+header.masthead {
+    margin-bottom: 0;
+
+    .page-heading,.post-heading,.site-heading {
+        padding: 80px 0 50px;
+        color: #fff;
+    }
 }
 
 @media only screen and (min-width: 768px) {
     header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading {
         padding:80px 0
+    }
+}
+
+.con-page {
+    .post {
+        padding: 30px 20px 50px;
     }
 }
 

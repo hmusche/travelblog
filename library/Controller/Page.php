@@ -13,6 +13,15 @@ class Page extends Controller {
         $this->_view->textBody = 'impressum.text';
     }
 
+    public function dprAction() {
+        $this->_view->header = [
+            'title' => 'data.protection',
+            'image' => $this->_view->webhost . 'asset/img/impressum.jpg'
+        ];
+        $this->_view->textBody = 'data.protection.text';
+    }
+
+
     public function aboutusAction() {
         $this->_view->header = [
             'title' => 'about.us',

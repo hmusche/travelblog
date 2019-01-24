@@ -17,6 +17,7 @@ use TravelBlog\Model\PostMedia;
 
 class Admin extends Controller {
     public function preDispatch() {
+        session_start();
         parent::preDispatch();
 
         if (!Util::isLoggedIn() && $this->_request->get('action') != 'login') {
