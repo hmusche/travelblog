@@ -33,9 +33,11 @@ class Admin extends Controller {
     public function indexAction() {
         $postModel = new Post;
         $posts = $postModel->getPosts([
-            'draft',
-            'active',
-            'archived'
+            'status' => [
+                'draft',
+                'active',
+                'archived'
+            ]
         ], 20, 0, 'updated');
 
         $table = new Table();

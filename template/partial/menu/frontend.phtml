@@ -11,9 +11,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo $this->webhost; ?>page/aboutus"><?php echo $this->t('about.us'); ?></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="countryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <?php echo $this->t('countries'); ?>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="countryDropdown">
+                        <?php foreach ($this->postCountries as $country): ?>
+                            <a class="dropdown-item" href="<?php echo $this->webhost . 'post/by/country/' . $country['country_code']; ?>">
+                                <?php echo $this->i18n('country', $country['country_code']); ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </li>
             </ul>
         </div>

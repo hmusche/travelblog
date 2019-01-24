@@ -10,6 +10,18 @@ use Medoo\Medoo;
 class PostMeta extends Model {
     protected $_name = 'post_meta';
 
+    public function getCountries() {
+        $countries = $this->select([
+            'value(country_code)',
+            'count'   => Medoo::raw('COUNT(*)')
+        ], [
+            'type' => 'country',
+            'GROUP' => 'value'
+        ]);
+
+        return $countries;
+    }
+
     public function getMeta($postId, $type = null) {
         $values = $this->select(['type', 'value'], ['post_id' => $postId]);
         $return = [];
@@ -35,6 +47,7 @@ class PostMeta extends Model {
         }
 
         $values = array_unique($values);
+        $values = array_map('strtolower', $values);
 
         $current = $this->select(['id', 'value'], [
             'post_id' => $postId,

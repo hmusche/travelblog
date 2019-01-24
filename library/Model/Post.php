@@ -41,9 +41,18 @@ class Post extends Model {
         return $post;
     }
 
-    public function getPosts($states = ['active'], $limit = 10, $offset = 0, $orderby = 'posted') {
+    public function getPosts($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
+        if (!isset($where['status'])) {
+            $where['status'] = ['active'];
+        }
+
+        $where['GROUP'] = 'post.id';
+        $where['ORDER'] = [$orderby => 'DESC'];
+        $where['LIMIT'] = [$offset, $limit];
+
         $posts = $this->select([
             '[>]post_media' => ['id' => 'post_id'],
+            '[>]post_meta' => ['id' => 'post_id'],
             '[>]user' => ['user_id' => 'id']
         ], [
             'post.id',
@@ -58,12 +67,7 @@ class Post extends Model {
             'latitude',
             'user.name (author)',
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
-        ], [
-            'status' => $states,
-            'GROUP' => 'post.id',
-            'ORDER' => [$orderby => 'DESC'],
-            'LIMIT' => [$offset, $limit],
-        ]);
+        ], $where);
 
         foreach ($posts as $key => $post) {
             $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);

@@ -3,9 +3,9 @@ body > .container-fluid {
 }
 
 #mainNav {
-    position: inherit;
+    position: relative;
     background-color: $main-color;
-    opacity: .9;
+    z-index: 1;
 
     .navbar-toggler {
         color: #fafafa;
