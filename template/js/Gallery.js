@@ -1,5 +1,6 @@
 var Gallery = new Class({
     initialize: function(gallery) {
+        this.gallery = gallery;
         this.imageContainer = gallery.getElement('.image-wrapper');
         this.galleryWrapper = gallery.getElement('.gallery-wrapper');
         this.controls = gallery.getElement('.gallery-controls');
@@ -10,66 +11,29 @@ var Gallery = new Class({
     setImages: function() {
         var self = this;
 
-        this.images = this.galleryWrapper.getElements('img');
+        this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.currentIndex = 0;
         this.loadedImages = 0;
 
-        this.images.each(function(img) {
-            if (!img.get('src')) {
-                img.addEvent('load', function() {
-                    self.loadedImages++;
+        this.images.each(function(div) {
+            if (!div.retrieve('image-loaded')) {
+                new Element('img', {
+                    'src': div.get('data-src'),
+                    'events': {
+                        'load': function() {
+                            self.loadedImages++;
 
-                    if (self.loadedImages == self.images.length) {
-                        self.initGallery();
+                            div.setStyle('background-image', 'url(' + div.get('data-src') + ')')
+                            this.remove();
+
+                            if (self.loadedImages == self.images.length) {
+                                self.initGallery();
+                            }
+                        }
                     }
                 });
-
-                img.set('src', img.get('data-src'));
             }
         });
-    },
-
-    setSizes: function() {
-        var self = this,
-            galleryWidth = 0,
-            minHeight = 10000,
-            maxWidth = self.galleryWrapper.getParent().clientWidth;
-
-        this.toggleEasing(false);
-
-        /**
-         * Set all images width to maximum of gallery wrapper
-         */
-        this.images.each(function(image) {
-            image.setStyle('height', 'auto');
-            image.setStyle('max-width', maxWidth + 'px');
-            image.getParent('div').setStyle('width', maxWidth + 'px');
-        });
-
-        /**
-         * Get the minimum height from the image with the lowest height
-         */
-        this.images.each(function(image) {
-            if (image.clientHeight < minHeight) {
-                minHeight = image.clientHeight;
-            }
-        });
-
-
-        /**
-         * Set that height to every image, and set gallery width to that
-         */
-        this.images.each(function(image) {
-            image.setStyle('height', minHeight + 'px');
-
-            galleryWidth = galleryWidth + image.getParent('div').clientWidth;
-        });
-        galleryWidth = maxWidth * (this.images.length + 1);
-        self.galleryWrapper.setStyle('width', galleryWidth + 10 + 'px');
-        self.galleryWrapper.getParent().setStyle('height', minHeight + 'px');
-
-        this.toggleEasing(true);
-        this.showImage();
     },
 
     initGallery: function() {
@@ -78,11 +42,37 @@ var Gallery = new Class({
         this.toggleEasing(true);
     },
 
+    setSizes: function() {
+        var self = this,
+            galleryWidth = 0,
+            minHeight = 10000,
+            maxWidth = self.gallery.clientWidth
+            height = self.gallery.clientHeight;
+
+        this.toggleEasing(false);
+
+        /**
+         * Set all images width to maximum of gallery wrapper
+         */
+        this.images.each(function(image) {
+            //image.setStyle('height', 'auto');
+            image.setStyle('height', height + 'px');
+            image.setStyle('width', maxWidth + 'px')
+            //image.getParent('div').setStyle('width', maxWidth + 'px');
+        });
+
+        galleryWidth = maxWidth * (this.images.length + 1);
+        self.galleryWrapper.setStyle('width', galleryWidth + 'px');
+
+        this.toggleEasing(true);
+        this.showImage();
+    },
+
     initEvents: function() {
         var self = this,
             current, initial, max, min;
 
-        this.galleryWrapper.getParent('.solsken-gallery').addEvents({
+        this.gallery.addEvents({
             'touchstart': function(event) {
                 var elem = this;
 
@@ -141,7 +131,11 @@ var Gallery = new Class({
             }
         });
 
-        this.controls.getElements('div').addEvent('click', function(e) {
+        this.controls.getElements('.gallery-fullscreen-button').addEvent('click', function() {
+            self.toggleFullscreen();
+        });
+
+        this.controls.getElements('.gallery-left,.gallery-right').addEvent('click', function(e) {
             var direction = this.hasClass('gallery-left');
 
             if (direction) {
@@ -151,11 +145,32 @@ var Gallery = new Class({
             }
         });
 
+        document.addEvent('keyup', function(event) {
+            switch (event.key) {
+                case 'right':
+                    self.showImage(self.currentIndex + 1);
+                    break;
+
+                case 'left':
+                    self.showImage(self.currentIndex - 1);
+                    break;
+
+                case 'f':
+                    self.toggleFullscreen();
+                    break;
+            }
+        });
+
         window.addEvent('resize', function() {
             self.setSizes();
-        })
-
+        });
+                                                                                                                                                                                                                                                ;
         this.controls.addClass('done');
+    },
+
+    toggleFullscreen: function() {
+        this.gallery.toggleClass('fullscreen');
+        this.setSizes();
     },
 
     toggleEasing: function(on) {
@@ -176,8 +191,8 @@ var Gallery = new Class({
             return;
         }
 
-        var wrapper = this.images[index].getParent('.gallery-image-wrapper'),
-            maxOffset = this.galleryWrapper.clientWidth - this.galleryWrapper.getParent('.solsken-gallery').clientWidth;
+        var wrapper = this.images[index],
+            maxOffset = this.galleryWrapper.clientWidth - this.gallery.clientWidth;
 
         if (wrapper.offsetLeft >= maxOffset) {
             this.offset = maxOffset;
