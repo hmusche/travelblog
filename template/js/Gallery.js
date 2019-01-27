@@ -14,6 +14,7 @@ var Gallery = new Class({
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.currentIndex = 0;
         this.loadedImages = 0;
+        this.maxRatio     = 100;
 
         this.images.each(function(div) {
             if (!div.retrieve('image-loaded')) {
@@ -25,6 +26,10 @@ var Gallery = new Class({
 
                             div.setStyle('background-image', 'url(' + div.get('data-src') + ')')
                             this.remove();
+
+                            if ((this.height / this.width) < self.maxRatio) {
+                                self.maxRatio = (this.height / this.width);
+                            }
 
                             if (self.loadedImages == self.images.length) {
                                 self.initGallery();
@@ -44,28 +49,28 @@ var Gallery = new Class({
 
     setSizes: function() {
         var self = this,
-            galleryWidth = 0,
-            minHeight = 10000,
-            maxWidth = self.gallery.clientWidth
-            height = self.gallery.clientHeight;
+            width = this.gallery.clientWidth,
+            height = width * this.maxRatio;
 
+        if (this.gallery.hasClass('fullscreen')) {
+            height = this.gallery.clientHeight;
+        }
+
+        this.gallery.setStyle('height', height + 'px');
         this.toggleEasing(false);
 
         /**
          * Set all images width to maximum of gallery wrapper
          */
         this.images.each(function(image) {
-            //image.setStyle('height', 'auto');
             image.setStyle('height', height + 'px');
-            image.setStyle('width', maxWidth + 'px')
-            //image.getParent('div').setStyle('width', maxWidth + 'px');
+            image.setStyle('width', width + 'px');
         });
 
-        galleryWidth = maxWidth * (this.images.length + 1);
-        self.galleryWrapper.setStyle('width', galleryWidth + 'px');
+        self.galleryWrapper.setStyle('width', width * (this.images.length + 1) + 'px');
 
-        this.toggleEasing(true);
         this.showImage();
+        this.toggleEasing(true);
     },
 
     initEvents: function() {
@@ -158,6 +163,10 @@ var Gallery = new Class({
                 case 'f':
                     self.toggleFullscreen();
                     break;
+
+                case 'esc':
+                    self.toggleFullscreen(false);
+                    break;
             }
         });
 
@@ -168,8 +177,29 @@ var Gallery = new Class({
         this.controls.addClass('done');
     },
 
-    toggleFullscreen: function() {
-        this.gallery.toggleClass('fullscreen');
+    toggleFullscreen: function(toggle) {
+        this.toggleEasing(false);
+
+        if (typeof toggle == 'undefined') {
+            toggle = !this.gallery.hasClass('fullscreen');
+        }
+
+        if (toggle) {
+            this.gallery.addClass('fullscreen');
+            /*
+            this.controls.getElements('.gallery-fullscreen-button>i')
+                         .removeClass('fa-arrows-alt')
+                         .addClass('fa-compress-arrows-alt');
+                         */
+        } else {
+            this.gallery.removeClass('fullscreen');
+            /*
+            this.controls.getElements('.gallery-fullscreen-button>i')
+                         .removeClass('fa-compress-arrows-alt')
+                         .addClass('fa-arrows-alt');
+                         */
+        }
+
         this.setSizes();
     },
 
