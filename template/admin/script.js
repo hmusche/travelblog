@@ -15,8 +15,6 @@ jQuery(document).ready(function() {
 
         mapWrapper.inject(geoGroup);
 
-        var geo = new Geo(mapWrapper, location);
-
         var setLocation = function() {
             var input;
 
@@ -29,7 +27,9 @@ jQuery(document).ready(function() {
             });
         }
 
+        var geo = new Geo(mapWrapper, location);
         geo.setCallback('markerDragEnd', setLocation);
+        geo.setCallback('load', setLocation);
 
         window.trgeo = geo;
     }

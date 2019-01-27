@@ -118,7 +118,7 @@ class Post extends Model {
             $data['status'] = 'draft';
 
             if ($data['latitude']) {
-                $tzData = (new TimeZoneDb())->getTimeZoneData($data['latitude'], $data['longitude'], $posted);
+                $tzData = (new TimeZoneDb())->getTimeZoneData($data['latitude'], $data['longitude'], time());
 
                 if ($tzData) {
                     $data['tz_offset'] = $tzData['offset'];

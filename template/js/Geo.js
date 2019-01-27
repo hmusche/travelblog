@@ -10,12 +10,14 @@ var Geo = new Class({
         location = this.normalizeLocation(location);
 
         this.map    = this.createMapInstance(wrapper);
-        this.map.addControl(new mapboxgl.NavigationControl());
+        this.map.addControl(new mapboxgl.NavigationControl())
+                .on('load', function() {
+            self.callbacks.load && self.callbacks.load();
+        });
 
         this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
             self.callbacks.markerDragEnd();
         });
-
 
         if (!location) {
             this.getLocationFromClient(function(location) {
@@ -38,7 +40,6 @@ var Geo = new Class({
             style: 'mapbox://styles/mapbox/' + this.style,
             zoom: this.zoom,
             bearingSnap: false,
-            
         });
     },
 
