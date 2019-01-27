@@ -1,8 +1,4 @@
-<?php if (count($this->files) == 1): ?>
-    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
-        <img class="img-fluid" src="<?php echo $this->cdnhost; ?><?php echo $this->files[0]; ?>">
-    </div>
-<?php else: ?>
+
     <div class="solsken-gallery">
         <div class="gallery-wrapper">
             <?php foreach ($this->files as $file): ?>
@@ -16,4 +12,3 @@
             <div class="gallery-fullscreen-button"><i class="fas fa-arrows-alt"></i></div>
         </div>
     </div>
-<?php endif; ?>

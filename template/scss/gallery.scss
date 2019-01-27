@@ -84,8 +84,13 @@
                 height: 100%;
                 position: absolute;
 
-                &:not(.active):after , &:after {
-                    font-size: 0;
+                &:after {
+                     font-size: 0;
+                }
+
+                &:not(.active):after {
+
+                    opacity: 0 !important;
                 }
 
                 &:hover:after {
