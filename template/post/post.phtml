@@ -1,4 +1,4 @@
-<div class="row d-none d-md-block">
+<div class="row d-none d-md-flex">
     <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
         <div class="post">
             <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
@@ -15,7 +15,7 @@
         </div>
     <?php endif; ?>
 <div class="row">
-    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-xs-block d-md-none">
+    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-xs-flex d-md-none">
         <div class="post">
             <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
             <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
