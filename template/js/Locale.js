@@ -1,6 +1,23 @@
 var Locale = new Class({
     initialize: function() {
+        if (!Intl) {
+            return;
+        }
 
+        var cookie = new Cookie(),
+            timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language = navigator.language;
+
+        if (!cookie.get('locale_settings')) {
+            cookie.set('locale_settings', language);
+        }
+
+        if (!cookie.get('timezone') || cookie.get('timezone') != timezone) {
+            cookie.set('timezone', timezone);
+            document.reload();
+        }
+
+        this.currentTimezone = timezone;
     },
 
     formatTs: function(format, ts) {
