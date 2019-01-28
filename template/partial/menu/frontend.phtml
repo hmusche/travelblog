@@ -18,7 +18,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="countryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?php echo $this->t('countries'); ?>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="countryDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="countryDropdown">
                         <?php foreach ($this->postCountries as $country): ?>
                             <a class="dropdown-item" href="<?php echo $this->webhost . 'post/by/country/' . $country['country_code']; ?>">
                                 <?php echo $this->i18n('country', $country['country_code']); ?>
