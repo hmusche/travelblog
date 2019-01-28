@@ -28,6 +28,7 @@ class Post extends Model {
             'status',
             'longitude',
             'latitude',
+            'tz_offset',
             'user.name (author)'
         ], ['post.id' => $id]);
 
@@ -65,6 +66,7 @@ class Post extends Model {
             'status',
             'longitude',
             'latitude',
+            'tz_offset',
             'user.name (author)',
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], $where);

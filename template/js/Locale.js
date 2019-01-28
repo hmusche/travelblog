@@ -14,7 +14,7 @@ var Locale = new Class({
 
         if (!cookie.get('timezone') || cookie.get('timezone') != timezone) {
             cookie.set('timezone', timezone);
-            document.reload();
+            document.location.reload();
         }
 
         this.currentTimezone = timezone;
