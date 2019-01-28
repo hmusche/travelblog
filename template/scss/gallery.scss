@@ -83,9 +83,15 @@
                 width: 20%;
                 height: 100%;
                 position: absolute;
+                opacity: 0;
+                transition: all 350ms;
 
                 &:after {
                      font-size: 0;
+                }
+
+                &.active:hover {
+                    opacity: 1;
                 }
 
                 &:not(.active):after {
@@ -107,10 +113,12 @@
             .gallery-right {
                 right: 0;
 
+                background: -moz-linear-gradient(right, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
+                background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 100%);
+                background: linear-gradient(to-left, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
+
                 &.active:hover {
-                    background: -moz-linear-gradient(right, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
-                    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 100%);
-                    background: linear-gradient(to-left, rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 100%);
+                    opacity: 1;
                 }
 
                 &:after {
@@ -122,11 +130,9 @@
             .gallery-left {
                 left: 0;
 
-                &.active:hover {
-                    background: -moz-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
-                    background: -webkit-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
-                    background: linear-gradient(to-right, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
-                }
+                background: -moz-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
+                background: -webkit-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
+                background: linear-gradient(to-right, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0) 50%);
 
                 &:after {
                     content: "〈";
