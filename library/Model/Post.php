@@ -8,6 +8,7 @@ use Solsken\Util;
 use TravelBlog\Model\PostMedia;
 use TravelBlog\Model\PostMeta;
 use TravelBlog\TimeZoneDb;
+use TravelBlog\Content;
 
 use Medoo\Medoo;
 
@@ -38,6 +39,8 @@ class Post extends Model {
         $post['files'] = $postMediaModel->getMedia($id);
         $post['meta']  = $postMetaModel->getMeta($id);
         $post['slug']  = Util::getSlug($post['title']);
+
+        $post['text'] = Content::parse($post['text']);
 
         return $post;
     }
