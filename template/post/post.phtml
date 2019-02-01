@@ -22,7 +22,7 @@
             <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
             <?php if ($this->post['text']): ?>
                 <div class="post-content">
-                    <?php echo $this->post['text']; ?>
+                    <?php echo $this->post['text_formatted']; ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -32,7 +32,7 @@
             <div class="post">
 
                 <div class="post-content">
-                    <?php echo $this->post['text']; ?>
+                    <?php echo $this->post['text_formatted']; ?>
                 </div>
             </div>
         </div>

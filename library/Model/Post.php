@@ -40,7 +40,7 @@ class Post extends Model {
         $post['meta']  = $postMetaModel->getMeta($id);
         $post['slug']  = Util::getSlug($post['title']);
 
-        $post['text'] = Content::parse($post['text']);
+        $post['text_formatted'] = Content::parse($post['text']);
 
         return $post;
     }
