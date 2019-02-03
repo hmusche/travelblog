@@ -10,25 +10,45 @@ class Post extends Controller {
     public function byAction() {
         $postModel   = new PostModel;
         $allowedKeys = [
+            'author',
             'country',
             'tag'
         ];
 
-        $where = array_intersect_key($this->_request->get('params'), array_flip($allowedKeys));
+        $params = $this->_request->get('params');
+        $where = array_intersect_key($params, array_flip($allowedKeys));
+        $baseUrl = '';
 
         foreach ($where as $key => $value) {
+            $baseUrl .= "$key/$value/";
             $value = strtolower($value);
 
             if (strpos($value, ',') !== false) {
                 $value = explode(',', $value);
             }
 
-            $where['post_meta.type']  = $key;
-            $where['post_meta.value'] = $value;
+            if ($key == 'author') {
+                $where['user.name'] = $value;
+            } else {
+                $where['post_meta.type']  = $key;
+                $where['post_meta.value'] = $value;
+            }
+
             unset($where[$key]);
         }
 
-        $this->_view->posts = $postModel->getPosts($where);
+        $limit  = 10;
+        $page   = $this->_request->getParam('page', 1);
+        $offset = ($page - 1) * $limit;
+
+        $this->_view->posts = $postModel->getPosts($where, $limit, $offset);
+
+        $this->_view->pagination = [
+            'page' => $page,
+            'limit' => $limit,
+            'totalCount' => $postModel->getTotalPostCount($where, $limit, $offset),
+            'baseUrl' => 'post/by/' . $baseUrl
+        ];
 
     }
 

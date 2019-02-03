@@ -52,6 +52,9 @@ class Post extends Model {
         }
 
         $count = $this->get([
+            '[>]post_meta' => ['id' => 'post_id'],
+            '[>]user' => ['user_id' => 'id']
+        ], [
             'count' => Medoo::raw('COUNT(*)')
         ], $where);
 
