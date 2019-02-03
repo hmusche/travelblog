@@ -5,6 +5,7 @@ var Gallery = new Class({
         this.galleryWrapper = gallery.getElement('.gallery-wrapper');
         this.controls = gallery.getElement('.gallery-controls');
         this.offset = 0;
+        this.currentIndex = 0;
         this.setImages();
     },
 
@@ -29,7 +30,6 @@ var Gallery = new Class({
         console.log('setting image size ' + currentSize + '(' + sizes[currentSize] + ')');
 
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
-        this.currentIndex = 0;
         this.loadedImages = 0;
         this.maxRatio     = 100;
 
