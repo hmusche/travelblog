@@ -2,6 +2,7 @@
 
 namespace TravelBlog;
 use Solsken\View;
+use Solsken\Registry;
 
 class Content {
     static public function parse($text) {
@@ -12,8 +13,10 @@ class Content {
 
     static public function getOpenGraph($post) {
         $view = View::getInstance();
+        $config = Registry::get('app.config');
 
         $openGraph = [
+            'sitename' => $config['title'],
             'title' => $post['heading'],
             'type'  => 'article',
             'url'   => $view->webhost . 'post/' . $post['id'] . '-' . $post['slug'],
@@ -21,6 +24,8 @@ class Content {
                      ? $view->webhost . $post['files'][0]['full_path']
                      : ''
         ];
+
+        
 
         return $openGraph;
     }
