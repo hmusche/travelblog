@@ -3,6 +3,7 @@
 namespace TravelBlog\Controller;
 
 use TravelBlog\Controller;
+use TravelBlog\Content;
 use TravelBlog\Model\Post as PostModel;
 
 class Post extends Controller {
@@ -41,6 +42,7 @@ class Post extends Controller {
 
         $this->_view->template = 'post/post.phtml';
         $this->_view->post = $postModel->getPost($postId);
+        $this->_view->og = Content::getOpenGraph($this->_view->post);
 
     }
 }

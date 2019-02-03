@@ -36,9 +36,10 @@ class Post extends Model {
         $postMediaModel = new PostMedia();
         $postMetaModel  = new PostMeta();
 
-        $post['files'] = $postMediaModel->getMedia($id);
-        $post['meta']  = $postMetaModel->getMeta($id);
-        $post['slug']  = Util::getSlug($post['title']);
+        $post['files']   = $postMediaModel->getMedia($id);
+        $post['meta']    = $postMetaModel->getMeta($id);
+        $post['slug']    = Util::getSlug($post['title']);
+        $post['heading'] = $this->_getPostTitle($post);
 
         $post['text_formatted'] = Content::parse($post['text']);
 
@@ -100,7 +101,7 @@ class Post extends Model {
         $data['updated'] = time();
         $pics = [];
 
-        if (isset($data['posted']) && ! $data['posted']) {
+        if (isset($data['posted']) && !$data['posted']) {
             unset($data['posted']);
         }
 

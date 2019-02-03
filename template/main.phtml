@@ -10,6 +10,11 @@
         <?php if ($this->includeMapGl): ?>
             <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
         <?php endif; ?>
+        <?php if ($this->og): ?>
+            <?php foreach ($this->og as $key => $value): ?>
+                <meta property="og:<?php echo $key; ?>" content="<?php echo $value; ?>" />
+            <?php endforeach; ?>
+        <?php endif; ?>
     </head>
     <body class="con-<?php echo $this->request->get('controller'); ?>">
         <?php echo $this->render('partial/menu.phtml'); ?>
