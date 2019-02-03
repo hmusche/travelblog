@@ -5,6 +5,13 @@
     position: relative;
     background-color: #fff;
 
+    .loader {
+        position: relative;
+        height: 100%;
+        text-align: center;
+        font-size: 7em;
+        opacity: 0.3;
+    }
 
     @media screen and (min-width: $break-large) {
         height: 600px;

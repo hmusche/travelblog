@@ -62,6 +62,10 @@ var Gallery = new Class({
         this.setSizes();
         this.initEvents();
         this.toggleEasing(true);
+
+        if (this.gallery.getElement('.loader')) {
+            this.gallery.getElement('.loader').remove();
+        }
     },
 
     setSizes: function() {
