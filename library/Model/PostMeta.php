@@ -10,13 +10,18 @@ use Medoo\Medoo;
 class PostMeta extends Model {
     protected $_name = 'post_meta';
 
-    public function getCountries() {
+    public function getCountries($states = ['active']) {
         $countries = $this->select([
+            '[>]post' => [
+                'post_id' => 'id'
+            ]
+        ], [
             'value(country_code)',
             'count'   => Medoo::raw('COUNT(*)')
         ], [
             'type' => 'country',
-            'GROUP' => 'value'
+            'GROUP' => 'value',
+            'post.status' => $states
         ]);
 
         return $countries;
