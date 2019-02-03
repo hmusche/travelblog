@@ -1,13 +1,31 @@
-<div class="post-preview">
+<?php $uniq = uniqid(); ?>
+<div class="post-preview" id="post<?php echo $uniq; ?>">
     <a href="<?php echo $this->webhost . 'post/' . $this->post['id'] . "-" . $this->post['slug']; ?>">
         <?php if (isset($this->post['files'][0])): ?>
-            <div class="header-stripe" style="background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/f/<?php echo $this->post['files'][0]; ?>);">
+            <div class="header-stripe">
             </div>
         <?php endif; ?>
-        
+
         <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
         <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
     </a>
     <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
 </div>
+<style>
+    #post<?php echo $uniq; ?> .header-stripe {
+        background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/s/sm/f/<?php echo $this->post['files'][0]; ?>)
+    }
+
+    @media (min-width:300px) {
+        #post<?php echo $uniq; ?> .header-stripe {
+            background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/s/md/f/<?php echo $this->post['files'][0]; ?>)
+        }
+    }
+
+    @media (min-width:600px) {
+        #post<?php echo $uniq; ?> .header-stripe {
+            background-image: url(<?php echo $this->cdnhost; ?>asset/post/id/<?php echo $this->post['id']; ?>/s/lg/f/<?php echo $this->post['files'][0]; ?>)
+        }
+    }
+</style>
 <?php //var_dump($this); ?>

@@ -8,8 +8,25 @@ var Gallery = new Class({
         this.setImages();
     },
 
-    setImages: function() {
-        var self = this;
+    setImages: function(currentSize) {
+        var self = this,
+            sizes = {
+                'xl': 1920,
+                'lg': 1200,
+                'md': 900,
+                'sm': 600,
+                'xs': 300,
+            };
+
+        if (!currentSize) {
+            Object.each(sizes, function(pixel, size) {
+                if (self.gallery.clientWidth < pixel) {
+                    currentSize = size;
+                }
+            });
+        }
+
+        console.log('setting image size ' + currentSize + '(' + sizes[currentSize] + ')');
 
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.currentIndex = 0;
@@ -17,27 +34,27 @@ var Gallery = new Class({
         this.maxRatio     = 100;
 
         this.images.each(function(div) {
-            if (!div.retrieve('image-loaded')) {
-                new Element('img', {
-                    'src': div.get('data-src'),
-                    'events': {
-                        'load': function() {
-                            self.loadedImages++;
+            var imgSec = div.get('data-src').replace('{size}', currentSize);
 
-                            div.setStyle('background-image', 'url(' + div.get('data-src') + ')')
-                            this.remove();
+            new Element('img', {
+                'src': imgSec,
+                'events': {
+                    'load': function() {
+                        self.loadedImages++;
 
-                            if ((this.height / this.width) < self.maxRatio) {
-                                self.maxRatio = (this.height / this.width);
-                            }
+                        div.setStyle('background-image', 'url(' + imgSec + ')')
+                        this.remove();
 
-                            if (self.loadedImages == self.images.length) {
-                                self.initGallery();
-                            }
+                        if ((this.height / this.width) < self.maxRatio) {
+                            self.maxRatio = (this.height / this.width);
+                        }
+
+                        if (self.loadedImages == self.images.length) {
+                            self.initGallery();
                         }
                     }
-                });
-            }
+                }
+            });
         });
     },
 
@@ -77,104 +94,108 @@ var Gallery = new Class({
         var self = this,
             current, initial, max, min;
 
-        this.gallery.addEvents({
-            'touchstart': function(event) {
-                var elem = this;
+        if (!this.controls.hasClass('done')) {
+            this.gallery.store('events-added', true);
 
-                self.toggleEasing(false);
+            this.gallery.addEvents({
+                'touchstart': function(event) {
+                    var elem = this;
 
-                current = max = min = 0;
+                    self.toggleEasing(false);
 
-                initial = event.client.x;
+                    current = max = min = 0;
 
-                this.store('was_touched', true);
-
-                timeout = setTimeout(function() {
-                    elem.eliminate('was_touched');
-                }, 400);
-            },
-            'touchmove': function(event) {
-                current = initial - event.client.x;
-
-                if (max < current) {
-                    max = current;
-                }
-
-                if (min > current) {
-                    min = current;
-                }
-
-                if (self.currentIndex == 0 && current < 0) {
-                    current = 0;
                     initial = event.client.x;
-                } else if (self.currentIndex == (self.images.length - 1) && current > 0) {
-                    current = 0;
-                    initial = event.client.x;
+
+                    this.store('was_touched', true);
+
+                    timeout = setTimeout(function() {
+                        elem.eliminate('was_touched');
+                    }, 400);
+                },
+                'touchmove': function(event) {
+                    current = initial - event.client.x;
+
+                    if (max < current) {
+                        max = current;
+                    }
+
+                    if (min > current) {
+                        min = current;
+                    }
+
+                    if (self.currentIndex == 0 && current < 0) {
+                        current = 0;
+                        initial = event.client.x;
+                    } else if (self.currentIndex == (self.images.length - 1) && current > 0) {
+                        current = 0;
+                        initial = event.client.x;
+                    }
+
+                    self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
+                },
+                'touchend': function(event) {
+                    self.toggleEasing(true);
+
+                    if (Math.abs(current) < 20) {
+                        return;
+                    }
+
+                    if (current >= max) {
+                        self.showImage(self.currentIndex + 1);
+                    } else if (current <= min) {
+                        self.showImage(self.currentIndex - 1);
+                    } else {
+                        self.showImage();
+                    }
+                },
+                mouseover: function() {
+                    if (!this.retrieve('was_touched')) {
+                        self.controls.addClass('has-pointer');
+                    }
                 }
+            });
 
-                self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
-            },
-            'touchend': function(event) {
-                self.toggleEasing(true);
+            this.controls.getElements('.gallery-fullscreen-button').addEvent('click', function() {
+                self.toggleFullscreen();
+            });
 
-                if (Math.abs(current) < 20) {
-                    return;
-                }
+            this.controls.getElements('.gallery-left,.gallery-right').addEvent('click', function(e) {
+                var direction = this.hasClass('gallery-left');
 
-                if (current >= max) {
-                    self.showImage(self.currentIndex + 1);
-                } else if (current <= min) {
+                if (direction) {
                     self.showImage(self.currentIndex - 1);
                 } else {
-                    self.showImage();
-                }
-            },
-            mouseover: function() {
-                if (!this.retrieve('was_touched')) {
-                    self.controls.addClass('has-pointer');
-                }
-            }
-        });
-
-        this.controls.getElements('.gallery-fullscreen-button').addEvent('click', function() {
-            self.toggleFullscreen();
-        });
-
-        this.controls.getElements('.gallery-left,.gallery-right').addEvent('click', function(e) {
-            var direction = this.hasClass('gallery-left');
-
-            if (direction) {
-                self.showImage(self.currentIndex - 1);
-            } else {
-                self.showImage(self.currentIndex + 1);
-            }
-        });
-
-        document.addEvent('keyup', function(event) {
-            switch (event.key) {
-                case 'right':
                     self.showImage(self.currentIndex + 1);
-                    break;
+                }
+            });
 
-                case 'left':
-                    self.showImage(self.currentIndex - 1);
-                    break;
+            document.addEvent('keyup', function(event) {
+                switch (event.key) {
+                    case 'right':
+                        self.showImage(self.currentIndex + 1);
+                        break;
 
-                case 'f':
-                    self.toggleFullscreen();
-                    break;
+                    case 'left':
+                        self.showImage(self.currentIndex - 1);
+                        break;
 
-                case 'esc':
-                    self.toggleFullscreen(false);
-                    break;
-            }
-        });
+                    case 'f':
+                        self.toggleFullscreen();
+                        break;
 
-        window.addEvent('resize', function() {
-            self.setSizes();
-        });
-                                                                                                                                                                                                                                                ;
-        this.controls.addClass('done');
+                    case 'esc':
+                        self.toggleFullscreen(false);
+                        break;
+                }
+            });
+
+            window.addEvent('resize', function() {
+                self.setSizes();
+            });
+                                                                                                                                                                                                                                                    ;
+            this.controls.addClass('done');
+        }
     },
 
     toggleFullscreen: function(toggle) {
@@ -186,11 +207,12 @@ var Gallery = new Class({
 
         if (toggle) {
             this.gallery.addClass('fullscreen');
-            /*
-            this.controls.getElements('.gallery-fullscreen-button>i')
-                         .removeClass('fa-arrows-alt')
-                         .addClass('fa-compress-arrows-alt');
-                         */
+
+            if (!this.fullscreenDone) {
+                // set Images to max size for best quality, no matter what the screen size
+                this.setImages('xl');
+                this.fullscreenDone = true;
+            }
         } else {
             this.gallery.removeClass('fullscreen');
             /*

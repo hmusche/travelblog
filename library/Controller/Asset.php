@@ -23,12 +23,15 @@ class Asset extends Controller {
     public function postAction() {
         $postId = $this->_request->getParam('id');
         $file   = $this->_request->getParam('f');
-        $size   = $this->_request->getParam('s', 'p');
+        $size   = $this->_request->getParam('s', 'md');
 
         $allowedSizes = [
-            'p' => 1200, // preview
-            't' => 300,  // thumbnail
-            'o' => 1920     // original
+            'xs' => 300,
+            'sm' => 600,
+            'md' => 900,
+            'lg' => 1200,
+            'xl' => 1920,
+            'o' => 10000     // original
         ];
 
         if (!isset($allowedSizes[$size])) {
