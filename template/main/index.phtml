@@ -5,3 +5,7 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+<?php echo $this->partial('partial/pagination.phtml', $this->pagination); ?>
+
+<?php var_dump($this->totalPosts); ?>

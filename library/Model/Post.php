@@ -46,6 +46,18 @@ class Post extends Model {
         return $post;
     }
 
+    public function getTotalPostCount($where = []) {
+        if (!isset($where['status'])) {
+            $where['status'] = ['active'];
+        }
+
+        $count = $this->get([
+            'count' => Medoo::raw('COUNT(*)')
+        ], $where);
+
+        return $count['count'];
+    }
+
     public function getPosts($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
         if (!isset($where['status'])) {
             $where['status'] = ['active'];

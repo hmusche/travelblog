@@ -1,0 +1,17 @@
+<?php if ($this->totalCount > $this->limit): ?>
+    <div class="row">
+        <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
+            <div class="pagination">
+                <?php echo $this->t('page'); ?> 
+                <?php for ($i = 0; $i < ceil($this->totalCount / $this->limit); $i++): ?>
+                    <span class="link<?php if ($this->page == ($i + 1)): ?> active<?php endif; ?>">
+                        <a href="<?php echo $this->webhost . $this->baseUrl; ?>?page=<?php echo $i + 1; ?>">
+                            <?php echo $i + 1; ?>
+                        </a>
+                    </span>
+                <?php endfor; ?>
+            </div>
+        </div>
+    </div>
+
+<?php endif; ?>

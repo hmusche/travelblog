@@ -1,0 +1,24 @@
+.pagination {
+    background-color: #fff;
+    padding: 10px 0 20px;
+    text-align: center;
+    display: block;
+
+    .link {
+        a:hover {
+            text-decoration: none;
+        }
+
+        &.active a {
+            color: $color2;
+        }
+
+        &:before {
+            content: " | ";
+        }
+
+        &:first-child:before {
+            content:"";
+        }
+    }
+}
