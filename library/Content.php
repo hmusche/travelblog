@@ -16,7 +16,7 @@ class Content {
         $config = Registry::get('app.config');
 
         $openGraph = [
-            'sitename' => $config['title'],
+            'site_name' => $config['title'],
             'title' => $post['heading'],
             'type'  => 'article',
             'url'   => $view->webhost . 'post/' . $post['id'] . '-' . $post['slug'],
@@ -25,7 +25,7 @@ class Content {
                      : ''
         ];
 
-        
+
 
         return $openGraph;
     }
