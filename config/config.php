@@ -8,6 +8,8 @@ return [
 
     'namespace' => 'TravelBlog',
 
+    'title' => 'no-fly-zone.de',
+
     'default_timezone' => 'Europe/Berlin',
 
     'translation' => [
