@@ -21,7 +21,7 @@ class Content {
             'type'  => 'article',
             'url'   => $view->webhost . 'post/' . $post['id'] . '-' . $post['slug'],
             'image' => isset($post['files'][0])
-                     ? $view->webhost . $post['files'][0]['full_path']
+                     ? $view->webhost . str_replace('{size}', 'xl', $post['files'][0]['full_path'])
                      : ''
         ];
 
