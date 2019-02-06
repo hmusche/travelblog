@@ -53,6 +53,11 @@ class Admin extends Controller {
                 'formatters' => [
                     'date'
                 ]
+            ],
+            'status' => [
+                'formatters' => [
+                    'translate'
+                ]
             ]
         ])->addAction('edit', [
             'href' => 'admin/post/id/{id}',
