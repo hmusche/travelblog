@@ -13,7 +13,7 @@ class Util extends U {
 
         $diff = $start->diff($date);
 
-        $days   = $diff->d + 1;
+        $days   = $diff->days + 1;
         $string = $diff->invert
                 ? $i18n->translate($days > 1 ? 'days.til.journey' : 'day.til.journey')
                 : $i18n->translate($days > 1 ? 'days.since.journey' : 'day.since.journey');
