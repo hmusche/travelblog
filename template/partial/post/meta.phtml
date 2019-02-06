@@ -1,13 +1,17 @@
 <p class="post-meta <?php echo $this->class; ?>">
     <?php echo $this->t('posted.by'); ?>
-    <a href="<?php echo $this->webhost; ?>post/by/author/<?php echo $this->post['author']; ?>"><?php echo $this->post['author']; ?></a>
+    <a href="<?php echo $this   ->webhost; ?>post/by/author/<?php echo $this->post['author']; ?>"><?php echo $this->post['author']; ?></a>
     <?php echo $this->t('on'); ?> <?php echo $this->i18n('date', $this->post['posted'], 'short'); ?>
 
     <?php if ($this->post['tz_offset'] != date('Z')): ?>
         (<?php echo $this->i18n('date', $this->post['posted'] + $this->post['tz_offset'] - date('Z'), 'short'); ?> <?php echo $this->t('local.time'); ?>)
     <?php endif; ?>
 
+    (<?php echo \TravelBlog\Util::daysDifference($this->config['journey']['start'], $this->post['posted']); ?>)
+
     <?php if (isset($this->post['meta']['country'])): ?>
         <?php echo $this->t('in'); ?> <?php echo $this->i18n('country', $this->post['meta']['country'][0]); ?>
     <?php endif; ?>
+
+
 </p>

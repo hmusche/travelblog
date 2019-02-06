@@ -12,6 +12,10 @@ return [
 
     'default_timezone' => 'Europe/Berlin',
 
+    'journey' => [
+        'start' => '2019-02-18'
+    ],
+
     'translation' => [
         'type' => 'model',
         'source' => 'TravelBlog\\Model\Translation',
