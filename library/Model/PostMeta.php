@@ -10,6 +10,12 @@ use Medoo\Medoo;
 class PostMeta extends Model {
     protected $_name = 'post_meta';
 
+    static protected $_metaKeys = ['tag'];
+
+    static public function getMetaKeys() {
+        return self::$_metaKeys;
+    }
+
     public function getCountries($states = ['active']) {
         $countries = $this->select([
             '[>]post' => [
@@ -27,6 +33,24 @@ class PostMeta extends Model {
         return $countries;
     }
 
+    public function getTags($states = ['active']) {
+        $tags = $this->select([
+            '[>]post' => [
+                'post_id' => 'id'
+            ]
+        ], [
+            'value',
+            'count'   => Medoo::raw('COUNT(*)')
+        ], [
+            'type' => 'tag',
+            'GROUP' => 'value',
+            'ORDER' => 'value',
+            'post.status' => $states
+        ]);
+
+        return $tags;
+    }
+
     public function getMeta($postId, $type = null) {
         $values = $this->select(['type', 'value'], ['post_id' => $postId]);
         $return = [];
@@ -40,7 +64,7 @@ class PostMeta extends Model {
         }
 
         if ($type !== null) {
-            return isset($return['type']) ? $return['type'] : [];
+            return isset($return[$type]) ? $return[$type] : [];
         }
 
         return $return;
@@ -48,11 +72,12 @@ class PostMeta extends Model {
 
     public function setPostMetaType($postId, $type, $values) {
         if (!is_array($values)) {
-            $values = [$values];
+            $values = explode(',', $values);
         }
 
-        $values = array_unique($values);
+        $values = array_map('trim', $values);
         $values = array_map('strtolower', $values);
+        $values = array_unique($values);
 
         $current = $this->select(['id', 'value'], [
             'post_id' => $postId,

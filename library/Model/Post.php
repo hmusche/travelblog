@@ -17,7 +17,7 @@ class Post extends Model {
 
     public function getPost($id) {
         $post = $this->get([
-            '[><]user' => ['user_id' => 'id']
+            '[><]user' => ['user_id' => 'id'],
         ], [
             'post.id',
             'title',
@@ -38,6 +38,7 @@ class Post extends Model {
 
         $post['files']   = $postMediaModel->getMedia($id);
         $post['meta']    = $postMetaModel->getMeta($id);
+        $post['tag']     = isset($post['meta']['tag']) ? implode(', ', $post['meta']['tag']) : '';
         $post['slug']    = Util::getSlug($post['title']);
         $post['heading'] = $this->_getPostTitle($post);
 
@@ -62,6 +63,8 @@ class Post extends Model {
     }
 
     public function getPosts($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
+        $postMetaModel = new PostMeta;
+
         if (!isset($where['status'])) {
             $where['status'] = ['active'];
         }
@@ -93,6 +96,7 @@ class Post extends Model {
         foreach ($posts as $key => $post) {
             $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);
             $posts[$key]['heading'] = $this->_getPostTitle($post);
+            $posts[$key]['tag']     = implode(', ', $postMetaModel->getMeta($post['id'], 'tag'));
 
             if ($post['files']) {
                 $posts[$key]['files'] = explode(',', $post['files']);
@@ -132,6 +136,13 @@ class Post extends Model {
         }
 
         $metaData = [];
+
+        foreach (PostMeta::getMetaKeys() as $metaKey) {
+            if (array_key_exists($metaKey, $data)) {
+                $metaData[$metaKey] = $data[$metaKey];
+                unset($data[$metaKey]);
+            }
+        }
 
         if (!isset($where['id'])) {
             $data['user_id'] = $userId;

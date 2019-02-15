@@ -12,6 +12,12 @@
     <?php if (isset($this->post['meta']['country'])): ?>
         <?php echo $this->t('in'); ?> <?php echo $this->i18n('country', $this->post['meta']['country'][0]); ?>
     <?php endif; ?>
-
-
 </p>
+
+<?php if ($this->post['tag']): ?>
+    <p class="post-tags">
+        <?php foreach (explode(',', $this->post['tag']) as $tag): ?>
+            <a class="badge badge-secondary" href="<?php echo $this->webhost; ?>post/by/tag/<?php echo trim($tag); ?>"><?php echo trim($tag); ?></a>
+        <?php endforeach; ?>
+    </p>
+<?php endif; ?>

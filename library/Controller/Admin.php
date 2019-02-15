@@ -125,6 +125,14 @@ class Admin extends Controller {
                     ]
                 ]
             ], [
+                'name' => 'tag',
+                'group' => 'data',
+                'options' => [
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
                 'name' => 'posted',
                 'group' => 'data',
                 'type' => 'date',

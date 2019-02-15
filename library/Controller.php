@@ -9,10 +9,10 @@ class Controller extends \Solsken\Controller {
         parent::preDispatch();
 
         $metaModel = new PostMeta();
-        $countries = $metaModel->getCountries();
 
-        $this->_view->blogTitle = 'no fly zone';
-        $this->_view->postCountries = $countries;
+        $this->_view->blogTitle     = 'no fly zone';
+        $this->_view->postCountries = $metaModel->getCountries();
+        $this->_view->postTags      = $metaModel->getTags();
     }
 
 }
