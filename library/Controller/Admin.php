@@ -328,6 +328,9 @@ class Admin extends Controller {
                         'value' => $login
                     ], [
                         'type' => 'password',
+                        'name' => 'old_password'
+                    ], [
+                        'type' => 'password',
                         'name' => 'password'
                     ], [
                         'type' => 'password',
