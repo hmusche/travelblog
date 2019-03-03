@@ -19,7 +19,15 @@
                         <?php echo $this->t('post.media.order'); ?>
                     </div>
                 </div>
-                <input style="width: 30px;" type="number" class="form-control sort-order" value=<?php echo $file['sort']; ?>>
+                <input style="width: 30px;" type="number" class="form-control sort-order meta-data" value="<?php echo $file['sort']; ?>">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <?php echo $this->t('post.media.subtitle'); ?>
+                    </div>
+                </div>
+                <input style="width: 30px;" type="text" class="form-control media-subtitle meta-data" value="<?php echo $file['subtitle']; ?>">
             </div>
         </div>
     <?php endforeach; ?>

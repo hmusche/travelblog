@@ -81,7 +81,7 @@ class Post extends Model {
             'post.id',
             'text',
             'title',
-            'subtitle',
+            'post.subtitle',
             'created',
             'updated',
             'posted',

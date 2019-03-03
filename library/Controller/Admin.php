@@ -214,15 +214,16 @@ class Admin extends Controller {
         exit;
     }
 
-    public function sortPostMediaAction() {
+    public function postMediaMetaAction() {
         $postId = $this->_request->getParam('post_id');
         $file   = $this->_request->getParam('file');
         $sort   = $this->_request->getParam('sort', 0);
+        $subtitle = $this->_request->getParam('subtitle', '');
         $status = 'failed';
 
         if ($postId && $file) {
             $pmModel = new PostMedia();
-            if ($pmModel->update(['sort' => $sort], ['post_id' => $postId, 'filename' => $file])) {
+            if ($pmModel->update(['sort' => $sort, 'subtitle' => $subtitle], ['post_id' => $postId, 'filename' => $file])) {
                 $status = 'success';
             }
 

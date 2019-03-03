@@ -10,7 +10,7 @@
     <?php if ($this->post['files']): ?>
         <div class="row gallery-row">
             <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
-                <?php echo $this->partial('partial/gallery.phtml', ['files' => array_column($this->post['files'], 'full_path')]); ?>
+                <?php echo $this->partial('partial/gallery.phtml', ['files' => $this->post['files']]); ?>
             </div>
         </div>
     <?php endif; ?>

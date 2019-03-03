@@ -44,27 +44,33 @@ jQuery('.table-hover tr').click(function() {
 
 });
 
-jQuery('.file-preview .image-wrapper .sort-order').change(function(event) {
+var changeTimeout;
+
+jQuery('.file-preview .image-wrapper .meta-data').change(function(event) {
     var el = jQuery(this).parents('.image-wrapper'),
         file = el.attr('data-file'),
         postId = el.attr('data-post-id'),
-        sort = jQuery(this).val();
-
-        console.log(el);
+        sort = el.find('.sort-order').val(),
+        subtitle = el.find('.media-subtitle').val();
 
     event.preventDefault();
 
-    jQuery.ajax('<?php echo $this->webhost; ?>admin/sort-post-media/', {
-        'method': 'post',
-        'data': {
-            file: file,
-            post_id: postId,
-            sort: sort
-        },
-        success: function(res) {
+    clearTimeout(changeTimeout);
 
-        }
-    })
+    changeTimeout = setTimeout(function() {
+        jQuery.ajax('<?php echo $this->webhost; ?>admin/post-media-meta/', {
+            'method': 'post',
+            'data': {
+                file: file,
+                post_id: postId,
+                sort: sort,
+                subtitle: subtitle
+            },
+            success: function(res) {
+
+            }
+        });
+    }, 300);
 });
 
 jQuery('.file-preview .image-wrapper .delete-file').click(function(event) {
