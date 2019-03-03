@@ -7,25 +7,12 @@ var Geo = new Class({
     initialize: function(wrapper, location) {
         var self = this;
 
-        location = this.normalizeLocation(location);
-
         this.map    = this.createMapInstance(wrapper);
         this.map.addControl(new mapboxgl.NavigationControl())
                 .on('load', function() {
             self.callbacks.load && self.callbacks.load();
         });
 
-        this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
-            self.callbacks.markerDragEnd();
-        });
-
-        if (!location) {
-            this.getLocationFromClient(function(location) {
-                self.setLocation(location);
-            });
-        } else {
-            self.setLocation(location);
-        }
     },
 
     setCallback: function(type, callback) {
@@ -43,7 +30,16 @@ var Geo = new Class({
         });
     },
 
+    setDragMarker: function() {
+        var self = this;
+
+        this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
+            self.callbacks.markerDragEnd();
+        });
+    },
+
     getLocationFromClient: function(callback) {
+        var self = this;
         navigator.geolocation.getCurrentPosition(function(location) {
             if (location.coords) {
                 callback(location.coords);
@@ -51,11 +47,24 @@ var Geo = new Class({
         });
     },
 
+    setBounds: function(boundaries) {
+        this.map.fitBounds(boundaries, {padding: 30});
+    },
+
+    getBounds: function() {
+        return this.map.getBounds();
+    },
+
     setLocation: function(location) {
-        if (location) {
+        if (location && (typeof location.length == 'undefined' || location.length != 0)) {
             location = this.normalizeLocation(location);
             this.map.setCenter(location);
-            this.marker.setLngLat(location).addTo(this.map);
+
+            if (this.marker) {
+                this.marker.setLngLat(location).addTo(this.map);
+            }
+        } else {
+            this.getLocationFromClient((function(location) {return this.setLocation(location)}).bind(this));
         }
     },
 
