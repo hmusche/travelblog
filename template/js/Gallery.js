@@ -27,14 +27,13 @@ var Gallery = new Class({
             });
         }
 
-        console.log('setting image size ' + currentSize + '(' + sizes[currentSize] + ')');
-
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.loadedImages = 0;
         this.maxRatio     = 100;
 
         this.images.each(function(div) {
-            var imgSec = div.get('data-src').replace('{size}', currentSize);
+            var imgSec = div.get('data-src').replace('{size}', currentSize),
+                subtitle = div.get('data-subtitle');
 
             new Element('img', {
                 'src': imgSec,
@@ -44,6 +43,13 @@ var Gallery = new Class({
 
                         div.setStyle('background-image', 'url(' + imgSec + ')')
                         this.remove();
+
+                        if (subtitle) {
+                            new Element('div', {
+                                'class': 'subtitle',
+                                'text' : subtitle
+                            }).inject(div);
+                        }
 
                         if ((this.height / this.width) < self.maxRatio) {
                             self.maxRatio = (this.height / this.width);
@@ -219,11 +225,6 @@ var Gallery = new Class({
             }
         } else {
             this.gallery.removeClass('fullscreen');
-            /*
-            this.controls.getElements('.gallery-fullscreen-button>i')
-                         .removeClass('fa-compress-arrows-alt')
-                         .addClass('fa-arrows-alt');
-                         */
         }
 
         this.setSizes();
