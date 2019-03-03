@@ -91,8 +91,6 @@ class Asset extends Controller {
             'jquery' => [
                 'vendor/components/jquery/jquery.min.js',
                 'vendor/twbs/bootstrap/dist/js/bootstrap.min.js',
-                'vendor/noelboss/featherlight/src/featherlight.js',
-                'vendor/noelboss/featherlight/src/featherlight.gallery.js',
             ],
             'base' => [
                 'js/main.js'
