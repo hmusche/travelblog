@@ -23,6 +23,7 @@ class PostMedia extends Model {
                 'filename',
                 'name',
                 'post_id',
+                'subtitle',
                 'sort',
                 'full_path' => Medoo::raw("CONCAT('asset/post/s/{size}/id/', <post_id>, '/f/', <filename>)")
             ], [
