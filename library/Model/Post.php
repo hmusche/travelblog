@@ -93,7 +93,7 @@ class Post extends Model {
             'post.id',
             'text',
             'title',
-            'subtitle',
+            'post.subtitle',
             'created',
             'updated',
             'posted',
@@ -112,6 +112,7 @@ class Post extends Model {
 
         foreach ($posts as $key => $post) {
             $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);
+            $posts[$key]['link']    = 'post/' . $post['id'] . "-" . $posts[$key]['slug'];
             $posts[$key]['heading'] = $this->_getPostTitle($post);
             $posts[$key]['tag']     = implode(', ', $postMetaModel->getMeta($post['id'], 'tag'));
 

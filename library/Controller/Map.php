@@ -3,13 +3,15 @@
 namespace TravelBlog\Controller;
 
 use TravelBlog\Controller;
+use Solsken\Registry;
 
 use TravelBlog\Model\Post;
 
 class Map extends Controller {
     public function routeAction() {
         $postModel = new Post;
-        $posts = $postModel->getPostsSimple([], false);
+        $from = strtotime(Registry::get('app.config')['journey']['start']);
+        $posts = $postModel->getPosts(['post.posted[>=]' => $from], false);
 
         $this->_view->posts = $posts;
         $this->_view->includeMapGl = true;

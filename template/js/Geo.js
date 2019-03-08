@@ -3,6 +3,7 @@ var Geo = new Class({
     zoom: 9,
     style: 'outdoors-v10',
     callbacks: {},
+    markers: [],
 
     initialize: function(wrapper, location) {
         var self = this;
@@ -30,6 +31,20 @@ var Geo = new Class({
         });
     },
 
+    setMarker: function(location, content) {
+        var marker = new mapboxgl.Marker().setLngLat(location);
+
+        if (content) {
+            marker.setPopup(new mapboxgl.Popup({offset: 25}).setHTML(content));
+        }
+
+        marker.addTo(this.map);
+
+        this.markers.push(marker);
+
+        return this.markers.length - 1;
+    },
+
     setDragMarker: function() {
         var self = this;
 
@@ -48,7 +63,7 @@ var Geo = new Class({
     },
 
     setBounds: function(boundaries) {
-        this.map.fitBounds(boundaries, {padding: 30});
+        this.map.fitBounds(boundaries, {padding: 50, linear: true});
     },
 
     getBounds: function() {
