@@ -2,7 +2,6 @@ jQuery(document).ready(function() {
 
     var wrapper = document.getElementById('map'),
         boundaries = eval(wrapper.get('data-boundaries')),
-        posts = eval(wrapper.get('data-posts')),
         i, content;
 
     wrapper.setStyle('height', window.innerHeight - 100 + 'px');
@@ -12,15 +11,15 @@ jQuery(document).ready(function() {
 
     window.trgeo = geo;
 
-    for (i = 0; i < posts.length; i++) {
-        if (posts[i]['link']) {
-            content = '<a href="' + '<?php echo $this->webhost; ?>' + posts[i]['link'] + '">'
-                    + posts[i]['heading']
+    for (i = 0; i < markers.length; i++) {
+        if (markers[i]['link']) {
+            content = '<a href="' + '<?php echo $this->webhost; ?>' + markers[i]['link'] + '">'
+                    + markers[i]['heading']
                     + '</a>';
         } else {
-            content = '<h6>' + posts[i]['heading'] + '</h6>';
+            content = '<h6>' + markers[i]['heading'] + '</h6>';
         }
 
-        geo.setMarker([posts[i]['longitude'], posts[i]['latitude']], content);
+        geo.setMarker([markers[i]['longitude'], markers[i]['latitude']], content);
     }
 });

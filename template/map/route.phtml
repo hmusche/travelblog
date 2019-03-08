@@ -4,7 +4,10 @@
         <div class="page-heading">
         </div>
         <div class="post">
-            <div class="geo-map" id="map" data-posts='<?php echo json_encode($this->posts); ?>' data-boundaries='<?php echo json_encode($this->boundaries); ?>'></div>
+            <div class="geo-map" id="map" data-boundaries='<?php echo json_encode($this->boundaries); ?>'></div>
+            <script>
+                var markers = <?php echo json_encode($this->markers); ?>;
+            </script>
         </div>
     </div>
 </div>
