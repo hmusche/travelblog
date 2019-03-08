@@ -111,8 +111,8 @@ class Post extends Model {
         $posts = $this->getPostsSimple($where, $limit, $offset, $orderby);
 
         foreach ($posts as $key => $post) {
-            $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);
-            $posts[$key]['link']    = 'post/' . $post['id'] . "-" . $posts[$key]['slug'];
+            $posts[$key]['slug']    = $post['status'] != 'waypoint' ? Util::getSlug($this->_getPostTitle($post), 50) : '';
+            $posts[$key]['link']    = $post['status'] != 'waypoint' ? 'post/' . $post['id'] . "-" . $posts[$key]['slug'] : '';
             $posts[$key]['heading'] = $this->_getPostTitle($post);
             $posts[$key]['tag']     = implode(', ', $postMetaModel->getMeta($post['id'], 'tag'));
 

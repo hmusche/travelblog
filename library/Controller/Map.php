@@ -11,7 +11,10 @@ class Map extends Controller {
     public function routeAction() {
         $postModel = new Post;
         $from = strtotime(Registry::get('app.config')['journey']['start']);
-        $posts = $postModel->getPosts(['post.posted[>=]' => $from], false);
+        $posts = $postModel->getPosts([
+            'post.posted[>=]' => $from,
+            'status' => ['active', 'waypoint']
+        ], false);
         $markers = [];
 
         $this->_view->includeMapGl = true;
