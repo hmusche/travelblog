@@ -27,7 +27,10 @@ jQuery(document).ready(function() {
             });
         }
 
-        var geo = new Geo(mapWrapper, location);
+        var geo = new Geo(mapWrapper);
+
+        geo.setDragMarker();
+        geo.setLocation(location);
         geo.setCallback('markerDragEnd', setLocation);
         geo.setCallback('load', setLocation);
 

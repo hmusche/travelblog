@@ -62,18 +62,30 @@ class Post extends Model {
         return $count['count'];
     }
 
-    public function getPosts($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
-        $postMetaModel = new PostMeta;
+    public function getPostsByBounds($bounds) {
+        $where = [
+            'longitude[>=]' => $bounds[0][0],
+            'longitude[<=]' => $bounds[1][0],
+            'latitude[>=]' => $bounds[0][1],
+            'latitude[<=]' => $bounds[1][1],
+        ];
 
+        return $this->getPosts($where, 0);
+    }
+
+    public function getPostsSimple($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
         if (!isset($where['status'])) {
             $where['status'] = ['active'];
         }
 
         $where['GROUP'] = 'post.id';
         $where['ORDER'] = [$orderby => 'DESC'];
-        $where['LIMIT'] = [$offset, $limit];
 
-        $posts = $this->select([
+        if ($limit) {
+            $where['LIMIT'] = [$offset, $limit];
+        }
+
+        return $this->select([
             '[>]post_media' => ['id' => 'post_id'],
             '[>]post_meta' => ['id' => 'post_id'],
             '[>]user' => ['user_id' => 'id']
@@ -92,9 +104,15 @@ class Post extends Model {
             'user.name (author)',
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], $where);
+    }
+
+    public function getPosts($where = [], $limit = 10, $offset = 0, $orderby = 'posted') {
+        $postMetaModel = new PostMeta;
+        $posts = $this->getPostsSimple($where, $limit, $offset, $orderby);
 
         foreach ($posts as $key => $post) {
             $posts[$key]['slug']    = Util::getSlug($this->_getPostTitle($post), 50);
+            $posts[$key]['link']    = 'post/' . $post['id'] . "-" . $posts[$key]['slug'];
             $posts[$key]['heading'] = $this->_getPostTitle($post);
             $posts[$key]['tag']     = implode(', ', $postMetaModel->getMeta($post['id'], 'tag'));
 

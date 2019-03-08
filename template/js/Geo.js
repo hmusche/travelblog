@@ -3,11 +3,10 @@ var Geo = new Class({
     zoom: 9,
     style: 'outdoors-v10',
     callbacks: {},
+    markers: [],
 
     initialize: function(wrapper, location) {
         var self = this;
-
-        location = this.normalizeLocation(location);
 
         this.map    = this.createMapInstance(wrapper);
         this.map.addControl(new mapboxgl.NavigationControl())
@@ -15,17 +14,6 @@ var Geo = new Class({
             self.callbacks.load && self.callbacks.load();
         });
 
-        this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
-            self.callbacks.markerDragEnd();
-        });
-
-        if (!location) {
-            this.getLocationFromClient(function(location) {
-                self.setLocation(location);
-            });
-        } else {
-            self.setLocation(location);
-        }
     },
 
     setCallback: function(type, callback) {
@@ -43,7 +31,30 @@ var Geo = new Class({
         });
     },
 
+    setMarker: function(location, content) {
+        var marker = new mapboxgl.Marker().setLngLat(location);
+
+        if (content) {
+            marker.setPopup(new mapboxgl.Popup({offset: 25}).setHTML(content));
+        }
+
+        marker.addTo(this.map);
+
+        this.markers.push(marker);
+
+        return this.markers.length - 1;
+    },
+
+    setDragMarker: function() {
+        var self = this;
+
+        this.marker = new mapboxgl.Marker({'draggable': true}).on('dragend', function() {
+            self.callbacks.markerDragEnd();
+        });
+    },
+
     getLocationFromClient: function(callback) {
+        var self = this;
         navigator.geolocation.getCurrentPosition(function(location) {
             if (location.coords) {
                 callback(location.coords);
@@ -51,11 +62,24 @@ var Geo = new Class({
         });
     },
 
+    setBounds: function(boundaries) {
+        this.map.fitBounds(boundaries, {padding: 50, linear: true});
+    },
+
+    getBounds: function() {
+        return this.map.getBounds();
+    },
+
     setLocation: function(location) {
-        if (location) {
+        if (location && (typeof location.length == 'undefined' || location.length != 0)) {
             location = this.normalizeLocation(location);
             this.map.setCenter(location);
-            this.marker.setLngLat(location).addTo(this.map);
+
+            if (this.marker) {
+                this.marker.setLngLat(location).addTo(this.map);
+            }
+        } else {
+            this.getLocationFromClient((function(location) {return this.setLocation(location)}).bind(this));
         }
     },
 

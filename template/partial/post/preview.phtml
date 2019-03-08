@@ -1,6 +1,6 @@
 <?php $uniq = uniqid(); ?>
 <div class="post-preview" id="post<?php echo $uniq; ?>">
-    <a href="<?php echo $this->webhost . 'post/' . $this->post['id'] . "-" . $this->post['slug']; ?>">
+    <a href="<?php echo $this->webhost . $this->post['link']; ?>">
         <?php if (isset($this->post['files'][0])): ?>
             <div class="header-stripe">
             </div>
