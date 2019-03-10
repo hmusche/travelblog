@@ -3,6 +3,11 @@ var Cookie = new Class({
         this.prefix = 'SLSKN';
     },
 
+    acceptCookie: function(elem) {
+        this.set('accept', 1);
+        elem.getParent('.cookie-notice').addClass('d-none');
+    },
+
     getKey: function(key) {
         return this.prefix + '---' + key;
     },

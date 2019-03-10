@@ -9,6 +9,7 @@ use Solsken\Util;
 use Solsken\Table;
 use Solsken\Registry;
 use Solsken\I18n;
+use Solsken\Cookie;
 
 use TravelBlog\Model\User;
 use TravelBlog\Model\Translation;
@@ -29,6 +30,7 @@ class Admin extends Controller {
         }
 
         $this->_view->includeMapGl = true;
+        $this->_view->acceptCookie = Cookie::get('accept');
     }
 
     public function indexAction() {

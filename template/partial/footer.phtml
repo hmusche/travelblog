@@ -9,14 +9,16 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <ul class="list-inline text-center">
-                    <li class="list-inline-item">
-                        <a href="https://instagram.com/no-fly-zoners" target="_blank">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
+                    <?php if (isset($this->config['instagram']) && $this->config['instagram']): ?>
+                        <li class="list-inline-item">
+                            <a href="https://instagram.com/<?php echo $this->config['instagram']; ?>" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                     <li class="list-inline-item">
                         <a href="https://github.com/hmusche/travelblog" target="_blank">
                             <span class="fa-stack fa-lg">
@@ -36,3 +38,10 @@
         </div>
     </div>
 </footer>
+
+<?php if (!$this->acceptCookie): ?>
+    <div class="cookie-notice">
+        <p><?php echo sprintf($this->t('cookie.notice'), $this->webhost . 'page/dpr', $this->t('data.protection')); ?></p>
+        <button class="btn btn-primary cookie-accept"><?php echo $this->t('cookie.accept') ; ?></button>
+    </div>
+<?php endif; ?>

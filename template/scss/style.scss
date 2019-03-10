@@ -40,6 +40,37 @@ header.masthead {
     }
 }
 
+.cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 100px;
+    background-color: $color1;
+    color: #fff;
+
+    a {
+        color: #fff;
+    }
+
+    p {
+        float:left;
+        width: 70%;
+        margin: 20px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        p {
+            width: 90%;
+        }
+    }
+
+    button {
+        float: right;
+        margin: 20px;
+    }
+}
+
 .con-page {
     .post {
         padding: 30px 20px 50px;

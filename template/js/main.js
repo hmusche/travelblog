@@ -8,6 +8,14 @@ window.Solsken = window.Solsken || {};
 
 window.Solsken.locale = new Locale();
 
+document.getElements('.cookie-accept').each(function(elem) {
+    elem.addEvent('click', function(e) {
+        var cookie = new Cookie;
+
+        cookie.acceptCookie(this);
+    });
+});
+
 document.getElements('.solsken-form').each(function(form) {
     form.store('object', new Form(form));
 });
