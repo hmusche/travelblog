@@ -41,6 +41,18 @@
                         <?php endforeach; ?>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" data-toggle="dropdown">
+                        <?php echo $this->t('language'); ?>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <?php foreach ($this->locales as $locale): ?>
+                            <a class="dropdown-item <?php if ($locale == $this->currentLocale): ?>font-weight-bold<?php endif; ?>" href="<?php echo $this->webhost . $this->request->get('path'); ?>?language=<?php echo $locale; ?>">
+                                <?php echo $this->t(substr($locale, 0, 2)); ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
