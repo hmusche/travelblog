@@ -56,7 +56,7 @@ class Post extends Model {
             '[>]post_meta' => ['id' => 'post_id'],
             '[>]user' => ['user_id' => 'id']
         ], [
-            'count' => Medoo::raw('COUNT(*)')
+            'count' => Medoo::raw('COUNT(DISTINCT <post.id>)')
         ], $where);
 
         return $count['count'];
