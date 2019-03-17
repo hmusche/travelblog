@@ -3,6 +3,7 @@
 namespace TravelBlog;
 use Solsken\View;
 use Solsken\Registry;
+use Google\Cloud\Translate\TranslateClient;
 
 class Content {
     static public function parse($text) {
@@ -28,5 +29,21 @@ class Content {
 
 
         return $openGraph;
+    }
+
+    static public function getLanguage($text) {
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=google.json');
+
+        $translate = new TranslateClient([
+            'projectId' => Registry::get('app.config')['google']['project_id']
+        ]);
+
+        $result = $translate->detectLanguage($text);
+
+        if (isset($result['languageCode'])) {
+            return $result['languageCode'];
+        }
+
+        return false;
     }
 }

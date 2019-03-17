@@ -4,6 +4,7 @@ namespace TravelBlog\Model;
 
 use Solsken\Model;
 use Solsken\Util;
+use Solsken\Registry;
 
 use TravelBlog\Model\PostMedia;
 use TravelBlog\Model\PostMeta;
@@ -11,6 +12,7 @@ use TravelBlog\TimeZoneDb;
 use TravelBlog\Content;
 
 use Medoo\Medoo;
+
 
 class Post extends Model {
     protected $_name = 'post';
@@ -135,6 +137,7 @@ class Post extends Model {
     }
 
     public function updatePost($data, $where = []) {
+        $metaModel = new PostMeta;
         $data['updated'] = time();
         $pics = [];
 
@@ -178,8 +181,10 @@ class Post extends Model {
 
             $this->insert($data);
             $id = $this->id();
+
+            $metaData['language'] = Content::getLanguage($data['text']);
         } else {
-            $previous = $this->get(['status', 'latitude', 'longitude', 'posted'], $where);
+            $previous = $this->get(['status', 'latitude', 'longitude', 'posted', 'text'], $where);
 
             $posted = $previous ? $previous['posted'] : null;
 
@@ -203,6 +208,10 @@ class Post extends Model {
             $this->update($data, $where);
 
             $id = $where['id'];
+
+            if (($previous && $previous['text'] != $data['text']) || !$metaModel->getMeta($id, 'language')) {
+                $metaData['language'] = Content::getLanguage($data['text']);
+            }
         }
 
         if (isset($pics['name'][0]) && $pics['name'][0] !== '') {
@@ -211,13 +220,14 @@ class Post extends Model {
         }
 
         if ($metaData) {
-            $metaModel = new PostMeta;
-
             foreach ($metaData as $type => $values) {
-                $metaModel->setPostMetaType($id, $type, $values);
+                if ($values !== false) {
+                    $metaModel->setPostMetaType($id, $type, $values);
+                }
             }
         }
 
         return $id;
     }
+
 }
