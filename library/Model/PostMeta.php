@@ -27,6 +27,7 @@ class PostMeta extends Model {
         ], [
             'type' => 'country',
             'GROUP' => 'value',
+            'ORDER' => 'post_id',
             'post.status' => $states
         ]);
 
