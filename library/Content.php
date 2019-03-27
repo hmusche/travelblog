@@ -15,11 +15,15 @@ class Content {
         $view = View::getInstance();
         $config = Registry::get('app.config');
 
+        $description = strip_tags($post['text']);
+        $description = substr($description, 0, strpos($description, '.') + 1);
+
         $openGraph = [
             'site_name' => $config['title'],
             'title' => $post['heading'],
             'type'  => 'article',
             'url'   => $view->webhost . 'post/' . $post['id'] . '-' . $post['slug'],
+            'description' => $description,
             'image' => isset($post['files'][0])
                      ? $view->webhost . str_replace('{size}', 'xl', $post['files'][0]['full_path'])
                      : ''

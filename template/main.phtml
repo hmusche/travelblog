@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title><?php echo  $this->config['title'] . ($this->pageTitle ? ' - ' . $this->pageTitle : ''); ?></title>
+        <title><?php echo ($this->pageTitle ?: $this->t('general.page.title')) . ' - ' . $this->config['title']; ?></title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="<?php echo $this->cdnhost; ?>asset/css/main.css?v=<?php echo $this->config['version']; ?>">
