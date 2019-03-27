@@ -60,6 +60,10 @@ class PostMedia extends Model {
 
     public function handleUpload($postId, $uploads) {
         $files = [];
+        $startSort = 0;
+
+        $startSort = $this->max('sort', ['post_id' => $postId]) ?: 0;
+        $startSort++;
 
         if (isset($uploads['name'])) {
             foreach ($uploads['name'] as $index => $name) {
@@ -87,7 +91,7 @@ class PostMedia extends Model {
                         'filename' => $filename,
                         'name' => $name,
                         'type' => mime_content_type($path . $filename),
-                        'sort' => 0
+                        'sort' => $startSort + $index
                     ]);
                 }
             }
