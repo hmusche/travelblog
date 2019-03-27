@@ -71,8 +71,6 @@ class PostMedia extends Model {
                 $filename = Util::getUniqueId() . '.' . $suffix;
                 $path     = $this->_savePath . $postId . DIRECTORY_SEPARATOR;
 
-
-
                 if (isset($uploads['error'][$index]) && $uploads['error'][$index]) {
                     throw new \Exception('Error ' . $uploads['error'][$index] . ' while uploading');
                 }
