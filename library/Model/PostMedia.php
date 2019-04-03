@@ -60,14 +60,16 @@ class PostMedia extends Model {
 
     public function handleUpload($postId, $uploads) {
         $files = [];
+        $startSort = 0;
+
+        $startSort = $this->max('sort', ['post_id' => $postId]) ?: 0;
+        $startSort++;
 
         if (isset($uploads['name'])) {
             foreach ($uploads['name'] as $index => $name) {
                 $suffix   = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 $filename = Util::getUniqueId() . '.' . $suffix;
                 $path     = $this->_savePath . $postId . DIRECTORY_SEPARATOR;
-
-
 
                 if (isset($uploads['error'][$index]) && $uploads['error'][$index]) {
                     throw new \Exception('Error ' . $uploads['error'][$index] . ' while uploading');
@@ -87,7 +89,7 @@ class PostMedia extends Model {
                         'filename' => $filename,
                         'name' => $name,
                         'type' => mime_content_type($path . $filename),
-                        'sort' => 0
+                        'sort' => $startSort + $index
                     ]);
                 }
             }

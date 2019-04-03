@@ -62,7 +62,7 @@ class Post extends Controller {
 
         $this->_view->template = 'post/post.phtml';
         $this->_view->post = $postModel->getPost($postId);
-        $this->_view->pageTitle = $this->_view->post['heading'];
+        $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
         $this->_view->og = Content::getOpenGraph($this->_view->post);
 
     }

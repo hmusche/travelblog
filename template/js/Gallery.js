@@ -7,6 +7,7 @@ var Gallery = new Class({
         this.offset = 0;
         this.currentIndex = 0;
         this.setImages();
+        this.cookie = new Cookie();
     },
 
     setImages: function(currentSize) {
@@ -65,12 +66,27 @@ var Gallery = new Class({
     },
 
     initGallery: function() {
+        var self = this,
+            swipeHintCount = this.cookie.get('swipehint', 0);
+
         this.setSizes();
         this.initEvents();
         this.toggleEasing(true);
 
         if (this.gallery.getElement('.loader')) {
             this.gallery.getElement('.loader').remove();
+        }
+
+        if (swipeHintCount < 5 && this.images.length > 1) {
+            setTimeout(function() {
+                self.galleryWrapper.setStyle('margin-left', '-50px');
+
+                setTimeout(function() {
+                    self.galleryWrapper.setStyle('margin-left', '0');
+                }, 300);
+
+                self.cookie.set('swipehint', ++swipeHintCount);
+            }, 500);
         }
     },
 

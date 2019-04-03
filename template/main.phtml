@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title><?php echo  $this->config['title'] . ($this->pageTitle ? ' - ' . $this->pageTitle : ''); ?></title>
+        <title><?php echo ($this->pageTitle ?: $this->t('general.page.title')) . ' - ' . $this->config['title']; ?></title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="<?php echo $this->cdnhost; ?>asset/css/main.css?v=<?php echo $this->config['version']; ?>">
@@ -15,6 +15,13 @@
                 <meta property="og:<?php echo $key; ?>" content="<?php echo $value; ?>" />
             <?php endforeach; ?>
         <?php endif; ?>
+        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $this->webhost; ?>asset/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $this->webhost; ?>asset/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $this->webhost; ?>asset/favicon/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo $this->webhost; ?>asset/favicon/site.webmanifest">
+        <link rel="mask-icon" href="<?php echo $this->webhost; ?>asset/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
     </head>
     <body class="con-<?php echo $this->request->get('controller'); ?>">
         <?php echo $this->render('partial/menu.phtml'); ?>

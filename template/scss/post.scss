@@ -28,13 +28,16 @@
     .post-content {
         padding-top: 30px;
         padding-bottom: 50px;
+
+        a {
+            text-decoration: underline;
+        }
     }
 
     >a {
         >.post-title, >.post-subtitle {
             padding-left: 20px;
             padding-right: 20px;
-
         }
 
         &:hover {
