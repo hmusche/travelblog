@@ -16,6 +16,16 @@ document.getElements('.cookie-accept').each(function(elem) {
     });
 });
 
+document.getElements('#translate_content').each(function(checkbox) {
+    checkbox.addEvent('change', function(event) {
+        var cookie = new Cookie;
+
+        cookie.set('post_translate', this.get('checked'));
+
+        document.location.reload();
+    });
+});
+
 document.getElements('.solsken-form').each(function(form) {
     form.store('object', new Form(form));
 });

@@ -5,6 +5,7 @@ namespace TravelBlog\Controller;
 use TravelBlog\Controller;
 use TravelBlog\Content;
 use TravelBlog\Model\Post as PostModel;
+use Solsken\Cookie;
 
 class Post extends Controller {
     public function byAction() {
@@ -61,7 +62,7 @@ class Post extends Controller {
         $postId = explode('-', $this->_request->get('action'))[0];
 
         $this->_view->template = 'post/post.phtml';
-        $this->_view->post = $postModel->getPost($postId);
+        $this->_view->post = $postModel->getPost($postId, (bool)Cookie::get('post_translate', false));
         $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
         $this->_view->og = Content::getOpenGraph($this->_view->post);
 

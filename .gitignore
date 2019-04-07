@@ -1,5 +1,6 @@
 config/credentials.php
 config/config.php
+config/google.json
 vendor/
 composer.lock
 

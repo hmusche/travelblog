@@ -36,7 +36,7 @@ class Content {
     }
 
     static public function getLanguage($text) {
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=google.json');
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=config/google.json');
 
         $translate = new TranslateClient([
             'projectId' => Registry::get('app.config')['google']['project_id']
@@ -46,6 +46,24 @@ class Content {
 
         if (isset($result['languageCode'])) {
             return $result['languageCode'];
+        }
+
+        return false;
+    }
+
+    static public function getTranslation($text, $language) {
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=config/google.json');
+
+        $translate = new TranslateClient([
+            'projectId' => Registry::get('app.config')['google']['project_id']
+        ]);
+
+        $result = $translate->translate($text, [
+            'target' => $language
+        ]);
+
+        if (isset($result['text'])) {
+            return $result['text'];
         }
 
         return false;

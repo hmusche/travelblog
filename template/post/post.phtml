@@ -3,7 +3,7 @@
         <div class="post">
             <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
             <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
-            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post]); ?>
+            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post, 'currentLocale' => $this->currentLocale]); ?>
         </div>
     </div>
 </div>

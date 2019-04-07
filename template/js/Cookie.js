@@ -20,6 +20,10 @@ var Cookie = new Class({
      * @param  {string} maxAge maxAge in days
      */
     set: function(key, value, path, maxAge) {
+        if (typeof value == 'boolean') {
+            value = value ? 1 : 0;
+        }
+
         var cookieParts = [
             this.getKey(key) + "=" + value
         ];

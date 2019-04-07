@@ -45,10 +45,12 @@
         }
     }
 
-    .post-meta, .post-tags {
+    .post-meta, .post-tags, .translate-content {
         text-align: right;
         padding-right: 20px;
         padding-left: 20px;
+
+        margin: 5px 0;
 
         a {
             text-decoration: none;

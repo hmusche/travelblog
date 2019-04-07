@@ -5,9 +5,11 @@ namespace TravelBlog\Model;
 use Solsken\Model;
 use Solsken\Util;
 use Solsken\Registry;
+use Solsken\I18n;
 
 use TravelBlog\Model\PostMedia;
 use TravelBlog\Model\PostMeta;
+use TravelBlog\Model\PostText;
 use TravelBlog\TimeZoneDb;
 use TravelBlog\Content;
 
@@ -17,7 +19,7 @@ use Medoo\Medoo;
 class Post extends Model {
     protected $_name = 'post';
 
-    public function getPost($id) {
+    public function getPost($id, $forceLocale = false) {
         $post = $this->get([
             '[><]user' => ['user_id' => 'id'],
         ], [
@@ -43,6 +45,19 @@ class Post extends Model {
         $post['tag']     = isset($post['meta']['tag']) ? implode(', ', $post['meta']['tag']) : '';
         $post['slug']    = Util::getSlug($post['title']);
         $post['heading'] = $this->_getPostTitle($post);
+
+
+        if (!isset($post['meta']['locale'])) {
+            $post['meta']['locale'] = Content::getLanguage($post['text']);
+            $postMetaModel->setPostMetaType($id, 'locale', $post['meta']['locale']);
+        }
+
+        $locale = I18n::getInstance()->getLocale(false);
+
+        if ($forceLocale && $post['meta']['locale'] !== $locale) {
+            $postTextModel = new PostText;
+            $post['text'] = $postTextModel->getText($id, $locale);
+        }
 
         $post['text_formatted'] = Content::parse($post['text']);
 
@@ -138,6 +153,7 @@ class Post extends Model {
 
     public function updatePost($data, $where = []) {
         $metaModel = new PostMeta;
+        $textModel = new PostText;
         $data['updated'] = time();
         $pics = [];
 
@@ -182,7 +198,7 @@ class Post extends Model {
             $this->insert($data);
             $id = $this->id();
 
-            $metaData['language'] = Content::getLanguage($data['text']);
+            $metaData['locale'] = Content::getLanguage($data['text']);
         } else {
             $previous = $this->get(['status', 'latitude', 'longitude', 'posted', 'text'], $where);
 
@@ -209,8 +225,9 @@ class Post extends Model {
 
             $id = $where['id'];
 
-            if (($previous && $previous['text'] != $data['text']) || !$metaModel->getMeta($id, 'language')) {
-                $metaData['language'] = Content::getLanguage($data['text']);
+            if (($previous && $previous['text'] != $data['text']) || !$metaModel->getMeta($id, 'locale')) {
+                $metaData['locale'] = Content::getLanguage($data['text']);
+                $textModel->delete(['post_id' => $id]);
             }
         }
 
