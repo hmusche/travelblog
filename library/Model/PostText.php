@@ -37,7 +37,7 @@ class PostText extends Model {
             return '';
         }
 
-        $translation = Content::getTranslation($post['text'], $locale);
+        $translation = Content::getTranslation(Content::parse($post['text']), $locale);
 
         if ($translation) {
             $res = $this->insert([
