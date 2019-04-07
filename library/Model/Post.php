@@ -48,7 +48,7 @@ class Post extends Model {
 
 
         if (!isset($post['meta']['locale'])) {
-            $post['meta']['locale'] = Content::getLanguage($post['text']);
+            $post['meta']['locale'] = [Content::getLanguage($post['text'])];
             $postMetaModel->setPostMetaType($id, 'locale', $post['meta']['locale']);
         }
 
