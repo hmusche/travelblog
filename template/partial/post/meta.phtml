@@ -4,8 +4,8 @@
     <a href="<?php echo $this->webhost; ?>post/by/author/<?php echo $this->post['author']; ?>"><?php echo $this->post['author']; ?></a>
     <?php echo $this->t('on'); ?> <?php echo $this->i18n('date', $this->post['posted'], 'short'); ?>
 
-    <?php if ($this->post['tz_offset'] != date('Z')): ?>
-        (<?php echo $this->i18n('date', $this->post['posted'] + $this->post['tz_offset'] - date('Z'), 'short'); ?> <?php echo $this->t('local.time'); ?>)
+    <?php if ($this->post['tz_offset'] != date('Z', $this->post['posted'])): ?>
+        (<?php echo $this->i18n('date', $this->post['posted'] + $this->post['tz_offset'] - date('Z', $this->post['posted']), 'short'); ?> <?php echo $this->t('local.time'); ?>)
     <?php endif; ?>
 
     (<?php echo \TravelBlog\Util::daysDifference($this->config['journey']['start'], $this->post['posted']); ?>)
