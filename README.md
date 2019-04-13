@@ -1,6 +1,10 @@
 # travelblog
-Simple Blog for our upcoming world journey
+Blog software for our current world journey
 
+## Example
+To see this in action, see https://no-fly-zone.de
+
+## Usage (ToDo)
 Currently a dump of the SQL database is needed if you'd want
 to spin up an installation of this. A DB installer and updater
 is on the timeline.
