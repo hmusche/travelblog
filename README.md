@@ -1,5 +1,5 @@
 # travelblog
-Blog software for our current world journey
+Blog software for our current world journey, using [TimeZoneDB](https://timezonedb.com/) for correct timezoning info, [MapBox](https://www.mapbox.com/) for Post Location, and Google Translate API to translate articles in the background to users locale.
 
 ## Example
 To see this in action, see https://no-fly-zone.de
