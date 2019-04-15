@@ -62,12 +62,20 @@ class Asset extends Controller {
             }
 
             if (file_exists($path . $file)) {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                header('Content-Type: ' . finfo_file($finfo, $path . $file));
-                header('Content-Length: ' . filesize($path . $file));
-                header('Last-modified: ' . gmdate('D, d M Y H:i:s ', filemtime($path . $file)) . 'GMT');
+                $finfo     = finfo_open(FILEINFO_MIME_TYPE);
+                $filemtime = filemtime($path . $file);
+                $headers   = $this->_request->get('headers');
 
-                readfile($path . $file);
+                if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) >= $filemtime) {
+                    http_response_code(304);
+                } else {
+                    header('Content-Type: ' . finfo_file($finfo, $path . $file));
+                    header('Content-Length: ' . filesize($path . $file));
+                    header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $filemtime) . 'GMT');
+
+                    readfile($path . $file);
+                }
+                
                 exit;
             }
         }
