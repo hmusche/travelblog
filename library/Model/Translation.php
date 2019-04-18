@@ -27,10 +27,15 @@ class Translation extends Model {
         return $data;
     }
 
-    public function updateTranslations($data, $where) {
+    public function updateTranslations($data, $where = []) {
         foreach ($data as $key => $value) {
             if (strpos($key, 'translation_') === 0) {
                 $locale = explode('_', $key)[1];
+
+                /**
+                 * insert into DB if not existant
+                 */
+                $this->translate($data['key'], $locale);
 
                 $this->update([
                     'key'         => $data['key'],

@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md ">
+        <div class="card">
+            <div class="card-header">
+                <?php echo $this->t('stats.overview'); ?>
+                <a class="btn btn-sm btn-primary float-right" href="<?php echo $this->webhost; ?>admin/stat">
+                    <?php echo $this->t('add.stat'); ?>
+                </a>
+            </div>
+            <div class="card-body">
+                <?php echo $this->render('partial/table.phtml'); ?>
+            </div>
+        </div>
+    </div>
+</div>
