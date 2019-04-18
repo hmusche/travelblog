@@ -14,8 +14,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo $this->webhost; ?>map/route"><?php echo $this->t('route'); ?></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $this->webhost; ?>page/aboutus"><?php echo $this->t('about.us'); ?></a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" data-toggle="dropdown">
+                        <?php echo $this->t('about'); ?>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
+                        <a class="dropdown-item" href="<?php echo $this->webhost; ?>page/aboutus"><?php echo $this->t('us'); ?></a>
+                        <a class="dropdown-item" href="<?php echo $this->webhost; ?>page/about-the-site"><?php echo $this->t('the.site'); ?></a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="tagDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

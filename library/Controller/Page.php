@@ -21,6 +21,13 @@ class Page extends Controller {
         $this->_view->textBody = 'data.protection.text';
     }
 
+    public function aboutTheSiteAction() {
+        $this->_view->header = [
+            'title' => 'about.the.site',
+        ];
+
+        $this->_view->textBody = 'about.the.site.text';
+    }
 
     public function aboutusAction() {
         $this->_view->header = [
