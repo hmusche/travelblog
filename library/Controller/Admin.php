@@ -240,15 +240,14 @@ class Admin extends Controller {
     public function statListAction() {
         $statModel = new Stat();
 
-
         $table = new Table();
         $table->addColumns([
-            'id' => [],
             'key' => [
                 'formatters' => [
                     'translate'
                 ]
             ],
+            'head' => [],
             'value' => []
         ])->addAction('edit', [
             'href' => 'admin/stat/id/{id}',
@@ -287,8 +286,8 @@ class Admin extends Controller {
         if ($way == 'up' && $stat['sort'] > 1) {
             $statModel->update(['sort[+]' => 1], ['sort' => $stat['sort'] - 1]);
             $statModel->update(['sort[-]' => 1], ['id' => $id]);
-        } else if ($way == 'down' && ($stat['sort'] + 1) < $maxSort){
-            $statModel->update(['sort[1]' => 1], ['sort' => $stat['sort'] + 1]);
+        } else if ($way == 'down' && ($stat['sort'] < $maxSort)) {
+            $statModel->update(['sort[-]' => 1], ['sort' => $stat['sort'] + 1]);
             $statModel->update(['sort[+]' => 1], ['id' => $id]);
         }
 
@@ -321,9 +320,15 @@ class Admin extends Controller {
             ]);
         }
 
-        $form->addElement([
-            'name' => 'value',
-            'group' => 'value'
+        $form->addElements([
+            [
+                'name' => 'head',
+                'type' => 'checkbox',
+                'group' => 'value'
+            ], [
+                'name' => 'value',
+                'group' => 'value'
+            ]
         ]);
 
         $form->handle();
