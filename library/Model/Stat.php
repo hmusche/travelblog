@@ -18,9 +18,8 @@ class Stat extends Model {
 
         $data = $this->get([
             'id',
-            'value',
-            'sort',
-            'head'
+            'type',
+            'sort'
         ], [
             'id' => $id
         ]);
@@ -55,13 +54,6 @@ class Stat extends Model {
 
         $tModel->updateTranslations($data);
 
-        $this->update([
-            'value' => $data['value'],
-            'head' => $data['head']
-        ], [
-            'id' => $id
-        ]);
-
         return $id;
     }
 
@@ -69,9 +61,8 @@ class Stat extends Model {
         $stats = $this->select([
             'id',
             'key' => Medoo::raw('CONCAT(\'stat.\', <id>)'),
-            'value',
-            'sort',
-            'head'
+            'type',
+            'sort'
         ], [
             'ORDER' => [
                 'sort' => 'ASC'

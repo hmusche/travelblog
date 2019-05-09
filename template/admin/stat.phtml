@@ -1,1 +1,29 @@
-<?php echo $this->form; ?>
+
+<div class="row">
+    <div class="col-md ">
+        <div class="card">
+            <div class="card-header">
+                <?php echo $this->t('stats.overview'); ?>
+            </div>
+            <div class="card-body">
+                <?php echo $this->form; ?>
+
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card">
+                            <div class="card-header">
+                                <?php echo $this->t('stat.values.overview'); ?>
+                                <a class="btn btn-sm btn-primary float-right" href="<?php echo $this->webhost; ?>admin/stat-value/stat-id/<?php echo $this->statId; ?>">
+                                    <?php echo $this->t('add.stat.value'); ?>
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <?php echo $this->render('partial/table.phtml'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

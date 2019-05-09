@@ -15,6 +15,7 @@ use TravelBlog\Model\User;
 use TravelBlog\Model\Translation;
 use TravelBlog\Model\Post;
 use TravelBlog\Model\Stat;
+use TravelBlog\Model\StatValue;
 use TravelBlog\Model\PostMedia;
 
 class Admin extends Controller {
@@ -234,8 +235,10 @@ class Admin extends Controller {
 
         echo json_encode(['status' => $status]);
         exit;
-
     }
+
+
+    /**   STATS   **/
 
     public function statListAction() {
         $statModel = new Stat();
@@ -247,14 +250,10 @@ class Admin extends Controller {
                     'translate'
                 ]
             ],
-            'head' => [],
-            'value' => []
+            'type' => []
         ])->addAction('edit', [
             'href' => 'admin/stat/id/{id}',
             'icon' => 'edit'
-        ])->addAction('add', [
-            'href' => 'admin/stat-up/id/{id}',
-            'icon' => 'plus-square'
         ])->addAction('sortup', [
             'href' => 'admin/stat-sort/id/{id}/way/up',
             'icon' => 'arrow-alt-circle-up'
@@ -266,41 +265,66 @@ class Admin extends Controller {
         $this->_view->table = $table;
     }
 
-    public function statUpAction() {
-        $statModel = new Stat();
-        $id        = $this->_request->getParam('id');
-
-        $statModel->update(['value[+]' => 1], ['id' => $id]);
-
-        Http::redirect('admin/stat-list');
-    }
-
-    public function statSortAction() {
-        $statModel = new Stat();
-        $id        = $this->_request->getParam('id');
-        $way       = $this->_request->getParam('way');
-        $maxSort   = $statModel->max('sort') ?: 0;
-
-        $stat = $statModel->getStat($id);
-
-        if ($way == 'up' && $stat['sort'] > 1) {
-            $statModel->update(['sort[+]' => 1], ['sort' => $stat['sort'] - 1]);
-            $statModel->update(['sort[-]' => 1], ['id' => $id]);
-        } else if ($way == 'down' && ($stat['sort'] < $maxSort)) {
-            $statModel->update(['sort[-]' => 1], ['sort' => $stat['sort'] + 1]);
-            $statModel->update(['sort[+]' => 1], ['id' => $id]);
-        }
-
-        Http::redirect('admin/stat-list');
-    }
 
     public function statAction() {
-        $statModel = new Stat();
-        $i18n      = I18n::getInstance();
-        $id        = $this->_request->getParam('id');
+        $statId         = $this->_request->getParam('id');
+        $statModel      = new Stat();
+        $statValueModel = new StatValue();
+        $i18n           = I18n::getInstance();
 
         $form = new Form('stat', [$statModel, 'updateStat']);
-        $form->addLoadCallback($id, [$statModel, 'getStat']);
+        $form->setRedirect('admin/stat/id/' . $statId);
+        $form->addLoadCallback($statId, [$statModel, 'getStat']);
+        $form->addGroup([
+            'name' => 'title',
+            'class' => 'col-xs-12 col-md-4'
+        ]);
+
+        foreach ($i18n->getSupportedLocales() as $locale) {
+            $locale = substr($locale, 0, 2);
+            $form->addElement([
+                'name' => 'translation_' . $locale,
+                'label' => 'stat.' . $locale,
+                'group' => 'title',
+            ]);
+        }
+        
+        $form->handle();
+
+        $this->_view->form = $form;
+
+        $table = new Table();
+        $table->addColumns([
+            'key' => [
+                'formatters' => [
+                    'translate'
+                ]
+            ],
+            'value' => []
+        ])->addAction('edit', [
+            'href' => 'admin/stat-value/id/{id}/stat-id/' . $statId,
+            'icon' => 'edit'
+        ])->addAction('sortup', [
+            'href' => 'admin/stat-value-sort/id/{id}/way/up/stat-id/' . $statId,
+            'icon' => 'arrow-alt-circle-up'
+        ])->addAction('sortdown', [
+            'href' => 'admin/stat-value-sort/id/{id}/way/down/stat-id/' . $statId,
+            'icon' => 'arrow-alt-circle-down'
+        ])->setData($statValueModel->getValues($statId));
+
+        $this->_view->table  = $table;
+        $this->_view->statId = $statId;
+    }
+
+    public function statValueAction() {
+        $statModel = new StatValue();
+        $i18n      = I18n::getInstance();
+        $id        = $this->_request->getParam('id');
+        $statId    = $this->_request->getParam('stat-id');
+
+        $form = new Form('stat', [$statModel, 'updateValue']);
+        $form->setRedirect('admin/stat/id/' . $statId);
+        $form->addLoadCallback($id, [$statModel, 'getValue']);
         $form->addGroup([
             'name' => 'title',
             'class' => 'col-xs-12 col-md-4'
@@ -322,10 +346,6 @@ class Admin extends Controller {
 
         $form->addElements([
             [
-                'name' => 'head',
-                'type' => 'checkbox',
-                'group' => 'value'
-            ], [
                 'name' => 'value',
                 'group' => 'value'
             ]
@@ -335,6 +355,49 @@ class Admin extends Controller {
 
         $this->_view->form = $form;
     }
+
+    public function statSortAction() {
+        $statModel = new Stat();
+        $id        = $this->_request->getParam('id');
+        $way       = $this->_request->getParam('way');
+        $maxSort   = $statModel->max('sort') ?: 0;
+
+        $stat = $statModel->getStat($id);
+
+        if ($way == 'up' && $stat['sort'] > 1) {
+            $statModel->update(['sort[+]' => 1], ['sort' => $stat['sort'] - 1]);
+            $statModel->update(['sort[-]' => 1], ['id' => $id]);
+        } else if ($way == 'down' && ($stat['sort'] < $maxSort)) {
+            $statModel->update(['sort[-]' => 1], ['sort' => $stat['sort'] + 1]);
+            $statModel->update(['sort[+]' => 1], ['id' => $id]);
+        }
+
+        Http::redirect('admin/stat-list');
+    }
+
+    public function statValueSortAction() {
+        $statModel = new StatValue();
+        $id        = $this->_request->getParam('id');
+        $statId    = $this->_request->getParam('stat-id');
+        $way       = $this->_request->getParam('way');
+        $maxSort   = $statModel->max('sort', ['stat_id' => $statId]) ?: 0;
+
+        $stat = $statModel->getValue($id);
+
+        if ($way == 'up' && $stat['sort'] > 1) {
+            $statModel->update(['sort[+]' => 1], ['sort' => $stat['sort'] - 1, 'stat_id' => $statId]);
+            $statModel->update(['sort[-]' => 1], ['id' => $id, 'stat_id' => $statId]);
+        } else if ($way == 'down' && ($stat['sort'] < $maxSort)) {
+            $statModel->update(['sort[-]' => 1], ['sort' => $stat['sort'] + 1, 'stat_id' => $statId]);
+            $statModel->update(['sort[+]' => 1], ['id' => $id, 'stat_id' => $statId]);
+        }
+
+        Http::redirect('admin/stat/id/' . $statId);
+    }
+
+
+
+    /**   TRANSLATION   **/
 
     public function translationAction() {
         $tModel           = new Translation();
