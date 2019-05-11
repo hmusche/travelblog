@@ -19,3 +19,10 @@ $main-color-1: darken($main-color, 20%);
 $main-color-2: darken($main-color, 10%);
 $main-color-3: lighten($main-color, 10%);
 $main-color-4: lighten($main-color, 20%);
+
+$main-colors: (
+    1: $main-color-1,
+    2: $main-color-2,
+    3: $main-color-3,
+    4: $main-color-4
+);

@@ -3,6 +3,7 @@
 namespace TravelBlog\Model;
 
 use TravelBlog\Model\Translation;
+use TravelBlog\Model\StatValue;
 
 use Solsken\Model;
 use Solsken\I18n;
@@ -68,6 +69,34 @@ class Stat extends Model {
                 'sort' => 'ASC'
             ]
         ]);
+
+        return $stats;
+    }
+
+    public function getFormattedStats() {
+        $statValueModel = new StatValue;
+
+        $stats = $this->getStats();
+
+        foreach ($stats as $key => $stat) {
+            $values = $statValueModel->getValues($stat['id']);
+
+            switch ($stat['type']) {
+                case 'pie':
+                    $sum = array_sum(array_column($values, 'value'));
+                    $stats[$key]['values'] = $values;
+
+                    foreach ($values as $k => $value) {
+                        $stats[$key]['values'][$k]['perc'] = round((int)$value['value'] / $sum * 100);
+                    }
+
+                    break;
+
+                default:
+                    $stats[$key]['values'] = $values;
+                    break;
+            }
+        }
 
         return $stats;
     }

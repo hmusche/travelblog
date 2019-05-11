@@ -1,0 +1,9 @@
+
+    <svg viewBox="0 0 320 320" class="pie">
+        <?php $offset = 500; foreach (array_reverse($this->values, true) as $key => $value): ?>
+            <circle class="value value-<?php echo $key+1; ?>" r="79" cx="160" cy="160"
+                style="stroke-dasharray: <?php echo $offset; ?> 500"
+            />
+            <text dx="100" dy="-<?php echo $value['perc']; ?>">\uf207;</text>
+        <?php $offset -= ($value['perc'] * 5); endforeach; ?>
+    </svg>

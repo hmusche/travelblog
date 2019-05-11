@@ -1,0 +1,22 @@
+svg.pie {
+    transform: rotate(-90deg);
+
+    text {
+        font-family: "Font Awesome 5 Free";
+        color: #000;
+        transform: rotate(90deg);
+    }
+
+    circle {
+        &.value {
+            fill: transparent;
+            stroke-width: 159px;
+        }
+
+        @each $i, $color in $main-colors {
+            &.value-#{$i} {
+                stroke: $color;
+            }
+        }
+    }
+}
