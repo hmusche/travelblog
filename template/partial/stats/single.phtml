@@ -1,0 +1,9 @@
+<div class="row single-stat">
+    <div class="col-md-12">
+        <?php foreach ($this->values as $value): ?>
+            <?php for ($i = 0; $i < $value['value']; $i++): ?>
+                <i class="<?php echo $this->t($value['key']); ?>"></i>
+            <?php endfor; ?>
+        <?php endforeach; ?>
+    </div>
+</div>

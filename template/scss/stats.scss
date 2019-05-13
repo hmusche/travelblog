@@ -1,22 +1,83 @@
-svg.pie {
-    transform: rotate(-90deg);
+.stat {
 
-    text {
-        font-family: "Font Awesome 5 Free";
-        color: #000;
-        transform: rotate(90deg);
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+    .stat-header {
+        background-color: $main-color;
+        color: #fff;
+        padding: 10px 20px;
+        margin: 10px -15px;
+        text-transform: uppercase;
+        font-weight: bold;
     }
 
-    circle {
-        &.value {
-            fill: transparent;
-            stroke-width: 159px;
+    .stat-body {
+        padding: 15px 0;
+    }
+
+    .pie-stat {
+        svg.pie {
+            transform: rotate(-90deg);
+
+            text {
+                font-family: "Font Awesome 5 Free";
+                color: #000;
+                transform: rotate(90deg);
+            }
+
+            circle {
+                &.value {
+                    fill: transparent;
+                    stroke-width: 159px;
+                }
+
+                @each $i, $color in $main-colors {
+                    &.value-#{$i} {
+                        stroke: $color;
+                    }
+                }
+            }
         }
 
-        @each $i, $color in $main-colors {
-            &.value-#{$i} {
-                stroke: $color;
+        .entry {
+            font-size: 2.5em;
+            color: #fff;
+            margin: 0;
+            padding: 5px 15px;
+            font-weight: bold;
+
+            .value {
+                float: right;
             }
+
+            @each $i, $color in $main-colors {
+                &.entry-#{$i} {
+                    background-color: $color;
+                }
+            }
+        }
+    }
+
+    .list-stat {
+        .value {
+            font-size: 0.8em;
+            background-color: $main-color-4;
+            color: #fff;
+            padding: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .value:nth-child(2) {
+            background-color: $main-color-3;
+        }
+    }
+
+    .single-stat {
+        i {
+            font-size: 2em;
+            color: $main-color;
+            padding: 5px;
         }
     }
 }

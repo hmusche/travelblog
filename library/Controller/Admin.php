@@ -288,7 +288,7 @@ class Admin extends Controller {
                 'group' => 'title',
             ]);
         }
-        
+
         $form->handle();
 
         $this->_view->form = $form;
@@ -347,7 +347,12 @@ class Admin extends Controller {
         $form->addElements([
             [
                 'name' => 'value',
-                'group' => 'value'
+                'group' => 'value',
+                'options' => [
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
             ]
         ]);
 
