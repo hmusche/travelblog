@@ -1,3 +1,4 @@
+
 .stat {
 
     font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -68,7 +69,7 @@
             font-weight: bold;
         }
 
-        .value:nth-child(2) {
+        .value:nth-child(even) {
             background-color: $main-color-3;
         }
     }
