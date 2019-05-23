@@ -1,40 +1,34 @@
 <div class="row d-none d-md-flex">
     <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
         <div class="post">
-            <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
+            <h1 class="post-title"><?php echo $this->post['title']; ?></h1>
             <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
             <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post, 'currentLocale' => $this->currentLocale]); ?>
         </div>
     </div>
 </div>
-    <?php if ($this->post['files']): ?>
-        <div class="row gallery-row">
-            <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
-                <?php echo $this->partial('partial/gallery.phtml', ['files' => $this->post['files']]); ?>
-            </div>
+<?php if ($this->post['files']): ?>
+    <div class="row gallery-row">
+        <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
+            <?php echo $this->partial('partial/gallery.phtml', ['files' => $this->post['files']]); ?>
         </div>
-    <?php endif; ?>
+    </div>
+<?php endif; ?>
 <div class="row">
-    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-xs-flex d-md-none">
+    <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
         <div class="post">
-            <h2 class="post-title"><?php echo $this->post['title']; ?></h2>
-            <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
-            <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post, 'currentLocale' => $this->currentLocale]); ?>
+            <div class="d-xs-flex d-md-none">
+                <h1 class="post-title"><?php echo $this->post['title']; ?></h1>
+                <h3 class="post-subtitle"><?php echo (!$this->post['title'] && !$this->post['subtitle']) ? $this->post['text'] : $this->post['subtitle']; ?></h3>
+                <?php echo $this->partial('partial/post/meta.phtml', ['post' => $this->post, 'currentLocale' => $this->currentLocale]); ?>
+            </div>
+
             <?php if ($this->post['text']): ?>
                 <div class="post-content">
                     <?php echo $this->post['text_formatted']; ?>
                 </div>
             <?php endif; ?>
+
         </div>
     </div>
-    <?php if ($this->post['text']): ?>
-        <div class="col-xl-8 col-lg-10 col-md-12 mx-auto d-none d-md-block">
-            <div class="post">
-
-                <div class="post-content">
-                    <?php echo $this->post['text_formatted']; ?>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
 </div>

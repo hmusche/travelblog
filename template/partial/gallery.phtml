@@ -5,7 +5,7 @@
         </div>
         <div class="gallery-wrapper">
             <?php foreach ($this->files as $file): ?>
-                <div class="gallery-image-wrapper" data-src="<?php echo $this->cdnhost; ?><?php echo $file['full_path']; ?>" data-subtitle="<?php echo $file['subtitle']; ?>">
+                <div class="gallery-image-wrapper" data-src="<?php echo $this->cdnhost; ?><?php echo $file['full_path']; ?>" data-subtitle="<?php echo htmlspecialchars($file['subtitle']); ?>">
                 </div>
             <?php endforeach; ?>
         </div>

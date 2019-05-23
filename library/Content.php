@@ -18,6 +18,7 @@ class Content {
 
         $description = strip_tags($post['text']);
         $description = substr($description, 0, strpos($description, '.') + 1);
+        $description = htmlspecialchars($description);
 
         $openGraph = [
             'site_name' => $config['title'],
