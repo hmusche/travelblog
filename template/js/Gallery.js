@@ -4,6 +4,7 @@ var Gallery = new Class({
         this.imageContainer = gallery.getElement('.image-wrapper');
         this.galleryWrapper = gallery.getElement('.gallery-wrapper');
         this.controls = gallery.getElement('.gallery-controls');
+        this.playvideo = this.controls.getElement('.gallery-playvideo-button');
         this.offset = 0;
         this.currentIndex = 0;
         this.setImages();
@@ -33,35 +34,51 @@ var Gallery = new Class({
         this.maxRatio     = 100;
 
         this.images.each(function(div) {
-            var imgSec = div.get('data-src').replace('{size}', currentSize),
-                subtitle = div.get('data-subtitle');
+            var imgSrc = div.get('data-src').replace('{size}', currentSize),
+                subtitle = div.get('data-subtitle'),
+                filetype = div.get('data-filetype');
 
-            new Element('img', {
-                'src': imgSec,
-                'events': {
-                    'load': function() {
-                        self.loadedImages++;
+            if (filetype.indexOf('image') === 0) {
+                new Element('img', {
+                    'src': imgSrc,
+                    'events': {
+                        'load': function() {
+                            self.loadedImages++;
 
-                        div.setStyle('background-image', 'url(' + imgSec + ')')
-                        this.remove();
+                            div.setStyle('background-image', 'url(' + imgSrc + ')')
+                            this.remove();
 
-                        if (subtitle) {
-                            new Element('div', {
-                                'class': 'subtitle',
-                                'text' : subtitle
-                            }).inject(div);
-                        }
+                            if (subtitle) {
+                                new Element('div', {
+                                    'class': 'subtitle',
+                                    'text' : subtitle
+                                }).inject(div);
+                            }
 
-                        if ((this.height / this.width) < self.maxRatio) {
-                            self.maxRatio = (this.height / this.width);
-                        }
+                            if ((this.height / this.width) < self.maxRatio) {
+                                self.maxRatio = (this.height / this.width);
+                            }
 
-                        if (self.loadedImages == self.images.length) {
-                            self.initGallery();
+                            if (self.loadedImages == self.images.length) {
+                                self.initGallery();
+                            }
                         }
                     }
-                }
-            });
+                });
+            } else if (filetype.indexOf('video') === 0) {
+                var vid = new Element('video', {
+                    'src': imgSrc,
+                    'controls': false
+                });
+
+                vid.inject(div);
+
+                vid.addEventListener && vid.addEventListener('ended', function() {
+                    self.toggleVideo(true);
+                });
+
+                self.loadedImages++;
+            }
         });
     },
 
@@ -168,8 +185,10 @@ var Gallery = new Class({
                     }
 
                     if (current >= max) {
+                        self.toggleVideo(true);
                         self.showImage(self.currentIndex + 1);
                     } else if (current <= min) {
+                        self.toggleVideo(true);
                         self.showImage(self.currentIndex - 1);
                     } else {
                         self.showImage();
@@ -186,8 +205,17 @@ var Gallery = new Class({
                 self.toggleFullscreen();
             });
 
+            this.controls.addEvent('click', function(e) {
+                if (e.target == this || e.target == self.playvideo || e.target.getParent() == self.playvideo) {
+                    // center area clicked, check if video and pause/play
+                    self.toggleVideo();
+                }
+            });
+
             this.controls.getElements('.gallery-left,.gallery-right').addEvent('click', function(e) {
                 var direction = this.hasClass('gallery-left');
+
+                self.toggleVideo(true);
 
                 if (direction) {
                     self.showImage(self.currentIndex - 1);
@@ -199,10 +227,12 @@ var Gallery = new Class({
             document.addEvent('keyup', function(event) {
                 switch (event.key) {
                     case 'right':
+                        self.toggleVideo(true);
                         self.showImage(self.currentIndex + 1);
                         break;
 
                     case 'left':
+                        self.toggleVideo(true);
                         self.showImage(self.currentIndex - 1);
                         break;
 
@@ -277,6 +307,12 @@ var Gallery = new Class({
 
         this.galleryWrapper.setStyle('transform', 'translate(' + (-1 * this.offset) + 'px)');
         this.galleryWrapper.getElements('.gallery-image-wrapper').removeClass('active');
+        this.playvideo.addClass('d-none');
+
+        if (wrapper.getElement('video')) {
+            this.playvideo.removeClass('d-none');
+        }
+
         wrapper.addClass('active');
 
         this.controls.getElements('div').addClass('active');
@@ -287,6 +323,23 @@ var Gallery = new Class({
 
         if (this.currentIndex == (this.images.length - 1) || wrapper.offsetLeft >= maxOffset) {
             this.controls.getElements('div')[1].removeClass('active');
+        }
+    },
+
+    toggleVideo: function(forceStop) {
+        var vidEl = this.images[this.currentIndex].getElement('video'),
+            forceStop = forceStop || false;
+
+        if (vidEl) {
+            if (vidEl.retrieve('playing') || forceStop) {
+                this.playvideo.removeClass('d-none');
+                vidEl.store('playing', false);
+                vidEl.pause();
+            } else {
+                this.playvideo.addClass('d-none');
+                vidEl.store('playing', true);
+                vidEl.play();
+            }
         }
     }
 });

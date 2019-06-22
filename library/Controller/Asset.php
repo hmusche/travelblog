@@ -4,6 +4,8 @@ namespace TravelBlog\Controller;
 
 use TravelBlog\Model\PostMedia;
 
+use TravelBlog\Video;
+
 use Solsken\Http;
 use Solsken\Request;
 use Solsken\Controller;
@@ -45,6 +47,8 @@ class Asset extends Controller {
 
             $subPath = $path;
             $subPath .= $size . DIRECTORY_SEPARATOR;
+            $finfo   = finfo_open(FILEINFO_MIME_TYPE);
+            $resized = false;
 
             if (!file_exists($subPath . $file)) {
                 if (!file_exists($path . $file)) {
@@ -52,7 +56,13 @@ class Asset extends Controller {
                     return;
                 }
 
-                $resized = Image::resize($path . $file, $subPath . $file, $allowedSizes[$size]);
+                $filetype = finfo_file($finfo, $path . $file);
+
+                if (strpos($filetype, 'video') === 0) {
+
+                } else {
+                    $resized = Image::resize($path . $file, $subPath . $file, $allowedSizes[$size]);
+                }
             } else {
                 $resized = true;
             }
@@ -62,20 +72,25 @@ class Asset extends Controller {
             }
 
             if (file_exists($path . $file)) {
-                $finfo     = finfo_open(FILEINFO_MIME_TYPE);
                 $filemtime = filemtime($path . $file);
                 $headers   = $this->_request->get('headers');
+                $filetype  = finfo_file($finfo, $path . $file);
 
-                if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) >= $filemtime) {
+                if (strpos($filetype, 'video') === 0) {
+
+                    $video = new Video;
+                    $video->stream($path . $file);
+                    var_dump($filetype);exit;
+                } else if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) >= $filemtime) {
                     http_response_code(304);
                 } else {
-                    header('Content-Type: ' . finfo_file($finfo, $path . $file));
+                    header('Content-Type: ' . $filetype);
                     header('Content-Length: ' . filesize($path . $file));
                     header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $filemtime) . 'GMT');
 
                     readfile($path . $file);
                 }
-                
+
                 exit;
             }
         }

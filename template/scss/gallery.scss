@@ -67,6 +67,10 @@
                 background-size: cover;
                 background-position: center;
             }
+
+            video {
+                width: 100%;
+            }
         }
     }
 
@@ -80,19 +84,33 @@
             background-color: #fff;
         }
 
-        .gallery-fullscreen-button {
-            font-size: 1em;
+        .gallery-fullscreen-button, .gallery-playvideo-button {
             opacity: 0.6;
             color: #fff;
             position: absolute;
+            text-shadow: 0px 0px 10px #999;
+        }
+
+        .gallery-playvideo-button {
+            font-size: 2em;
+            margin: auto;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            height: 20px;
+            width: 40px;
+        }
+
+        .gallery-fullscreen-button {
+            font-size: 1em;
             right: 10px;
             bottom: 10px;
-            text-shadow: 0px 0px 10px #999;
-
 
             @media screen and (min-width: $break-large) {
                 font-size: 2em;
             }
+
         }
 
         &.has-pointer {

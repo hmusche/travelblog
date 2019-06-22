@@ -4,7 +4,11 @@
             <button class="btn btn-danger rounded-circle btn-sm delete-file">
                 <i class="fas fa-trash"></i>
             </button>
-            <img class="img-responsive" src="<?php echo $this->webhost; ?>asset/post/s/xs/id/<?php echo $file['post_id']; ?>/f/<?php echo $file['filename']; ?>">
+            <?php if (strpos($file['type'], 'video') !== 0): ?>
+                <img class="img-responsive" src="<?php echo $this->webhost; ?>asset/post/s/xs/id/<?php echo $file['post_id']; ?>/f/<?php echo $file['filename']; ?>">
+            <?php else: ?>
+                <video controls preload="auto" src="<?php echo $this->webhost; ?>asset/post/id/<?php echo $file['post_id']; ?>/f/<?php echo $file['filename']; ?>" width="100%"></video> 
+            <?php endif; ?>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
