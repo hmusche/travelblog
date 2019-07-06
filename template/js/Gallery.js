@@ -7,6 +7,8 @@ var Gallery = new Class({
         this.playvideo = this.controls.getElement('.gallery-playvideo-button');
         this.offset = 0;
         this.currentIndex = 0;
+        this.maxRatio     = 3;
+        this.getFullscreenPrefixes();
         this.setImages();
         this.cookie = new Cookie();
     },
@@ -31,7 +33,6 @@ var Gallery = new Class({
 
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.loadedImages = 0;
-        this.maxRatio     = 100;
 
         self.setSizes();
 
@@ -48,7 +49,7 @@ var Gallery = new Class({
                             self.loadedImages++;
 
                             div.setStyle('background-image', 'url(' + imgSrc + ')')
-                            div.getElement('.loader').remove();
+                            div.getElement('.loader') && div.getElement('.loader').remove();
                             this.remove();
 
                             if (subtitle) {
@@ -76,7 +77,7 @@ var Gallery = new Class({
                     'controls': false
                 });
 
-                div.getElement('.loader').remove();
+                div.getElement('.loader') && div.getElement('.loader').remove();
 
                 vid.inject(div);
 
@@ -252,13 +253,68 @@ var Gallery = new Class({
             window.addEvent('resize', function() {
                 self.setSizes();
             });
+
+            if (self.fullscreenAPI) {
+                document.addEventListener && document.addEventListener(self.fullscreenAPI.event, function() {
+                    if (self.gallery.hasClass('fullscreen') && !document[self.fullscreenAPI.fullscreenElement]) {
+                        self.toggleFullscreen();
+                    }
+                })
+            }
                                                                                                                                                                                                                                                     ;
             this.controls.addClass('done');
         }
     },
 
+    getFullscreenPrefixes: function() {
+        var i, self = this,
+            fullscreenMethodNames = [
+                'webkitRequestFullscreen',
+                'mozRequestFullScreen',
+                'msRequestFullscreen',
+                'requestFullscreen'
+            ],
+            exitMethodNames = [
+                'webkitExitFullscreen',
+                'mozCancelFullScreen',
+                'msExitFullscreen',
+                'exitFullscreen'
+            ],
+            eventNames = [
+                'webkitfullscreenchange',
+                'mozfullscreenchange',
+                'MSFullscreenChange',
+                'fullscreenchange'
+            ],
+            fullscreenElements = [
+                'webkitFullscreenElement',
+                'mozFullScreenElement',
+                'msFullscreenElement',
+                'fullscreenElement'
+            ];
+
+        for (i = 0;  i < fullscreenMethodNames.length; i++) {
+            var check = fullscreenMethodNames[i];
+
+            if (self.gallery[check]) {
+                self.fullscreenAPI = {
+                    'requestFullscreen': check,
+                    'exitFullscreen': exitMethodNames[i],
+                    'event': eventNames[i],
+                    'fullscreenElement': fullscreenElements[i]
+                };
+
+                return true;
+            }
+        }
+
+        return false;
+    },
+
     toggleFullscreen: function(toggle) {
         this.toggleEasing(false);
+
+        var self = this;
 
         if (typeof toggle == 'undefined') {
             toggle = !this.gallery.hasClass('fullscreen');
@@ -267,13 +323,21 @@ var Gallery = new Class({
         if (toggle) {
             this.gallery.addClass('fullscreen');
 
+            if (self.fullscreenAPI) {
+                this.gallery[self.fullscreenAPI.requestFullscreen]();
+            }
+
             if (!this.fullscreenDone) {
                 // set Images to max size for best quality, no matter what the screen size
                 this.setImages('xl');
                 this.fullscreenDone = true;
             }
-        } else {
+        } else if (this.gallery.hasClass('fullscreen')) {
             this.gallery.removeClass('fullscreen');
+
+            if (self.fullscreenAPI && document[self.fullscreenAPI.fullscreenElement]) {
+                document[self.fullscreenAPI.exitFullscreen]();
+            }
         }
 
         this.setSizes();
