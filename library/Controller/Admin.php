@@ -201,6 +201,34 @@ class Admin extends Controller {
         $this->_view->form = $form;
     }
 
+    public function sortPostMediaAction() {
+        $postId  = $this->_request->getParam('post_id');
+        $file    = $this->_request->getParam('file');
+        $current = $this->_request->getParam('current');
+        $new     = $this->_request->getParam('new');
+        $status  = 'failed';
+
+        if ($postId && $file) {
+            $pmModel = new PostMedia();
+
+            $pmModel->update(
+                ['sort' => $current],
+                ['post_id' => $postId, 'sort' => $new]
+            );
+
+            $pmModel->update(
+                ['sort' => $new],
+                ['post_id' => $postId, 'filename' => $file]
+            );
+
+            $status = 'success';
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode(['status' => $status]);
+        exit;
+    }
+
     public function deletePostMediaAction() {
         $postId = $this->_request->getParam('post_id');
         $file   = $this->_request->getParam('file');

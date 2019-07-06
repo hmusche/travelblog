@@ -91,11 +91,13 @@ header.masthead {
             width: 100%;
         }
 
-        .btn {
+        .image-actions {
             position: absolute;
             right: 7px;
             top: 9px;
-            width: 40px;
+            width: 100%;
+            text-align: right;
+            z-index: 5;
         }
     }
 }

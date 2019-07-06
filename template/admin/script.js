@@ -76,6 +76,44 @@ jQuery('.file-preview .image-wrapper .meta-data').change(function(event) {
     }, 300);
 });
 
+document.getElements('.btn.sort').addEvent('click', function(e) {
+    e.preventDefault();
+
+    var wrapper = this.getParent('.image-wrapper'),
+        previous = wrapper.getPrevious(),
+        next = wrapper.getNext(),
+        replacement, where,
+        data = {
+            post_id: wrapper.get('data-post-id'),
+            file: wrapper.get('data-file'),
+            current: wrapper.get('data-sort')
+        };
+
+    if (this.hasClass('sort-up') && previous) {
+        data.new = previous.get('data-sort');
+        replacement = previous;
+        where = 'after';
+    } else if (this.hasClass('sort-down') && next) {
+        data.new = next.get('data-sort');
+        replacement = next;
+        where = 'before';
+    } else {
+        return;
+    }
+
+    jQuery.ajax('<?php echo $this->webhost; ?>admin/sort-post-media/', {
+        'method': 'post',
+        'data': data,
+        'success': function(response) {
+            console.log(response);
+            if (response.status == 'success') {
+                console.log(wrapper, replacement, where);
+                wrapper.grab(replacement, where);
+            }
+        }
+    })
+});
+
 jQuery('.file-preview .image-wrapper .delete-file').click(function(event) {
     event.preventDefault();
     var el = jQuery(this).parent('.image-wrapper'),
