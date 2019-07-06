@@ -33,6 +33,8 @@ var Gallery = new Class({
         this.loadedImages = 0;
         this.maxRatio     = 100;
 
+        self.setSizes();
+
         this.images.each(function(div) {
             var imgSrc = div.get('data-src').replace('{size}', currentSize),
                 subtitle = div.get('data-subtitle'),
@@ -46,6 +48,7 @@ var Gallery = new Class({
                             self.loadedImages++;
 
                             div.setStyle('background-image', 'url(' + imgSrc + ')')
+                            div.getElement('.loader').remove();
                             this.remove();
 
                             if (subtitle) {
@@ -62,6 +65,8 @@ var Gallery = new Class({
                             if (self.loadedImages == self.images.length) {
                                 self.initGallery();
                             }
+
+                            self.setSizes();
                         }
                     }
                 });
@@ -71,6 +76,8 @@ var Gallery = new Class({
                     'controls': false
                 });
 
+                div.getElement('.loader').remove();
+
                 vid.inject(div);
 
                 vid.addEventListener && vid.addEventListener('ended', function() {
@@ -79,20 +86,16 @@ var Gallery = new Class({
 
                 self.loadedImages++;
             }
+
         });
+
+        this.initEvents();
+        this.toggleEasing(true);
     },
 
     initGallery: function() {
         var self = this,
             swipeHintCount = this.cookie.get('swipehint', 0);
-
-        this.setSizes();
-        this.initEvents();
-        this.toggleEasing(true);
-
-        if (this.gallery.getElement('.loader')) {
-            this.gallery.getElement('.loader').remove();
-        }
 
         if (swipeHintCount < 5 && this.images.length > 1) {
             setTimeout(function() {

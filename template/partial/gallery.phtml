@@ -1,11 +1,11 @@
 
     <div class="solsken-gallery">
-        <div class="loader">
-            <i class="fas fa-circle-notch fa-spin"></i>
-        </div>
         <div class="gallery-wrapper">
             <?php foreach ($this->files as $file): ?>
                 <div class="gallery-image-wrapper" data-src="<?php echo $this->cdnhost; ?><?php echo $file['full_path']; ?>" data-subtitle="<?php echo htmlspecialchars($file['subtitle']); ?>" data-filetype="<?php echo $file['type']; ?>">
+                    <div class="loader">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>

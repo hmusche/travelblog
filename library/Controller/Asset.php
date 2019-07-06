@@ -77,10 +77,8 @@ class Asset extends Controller {
                 $filetype  = finfo_file($finfo, $path . $file);
 
                 if (strpos($filetype, 'video') === 0) {
-
                     $video = new Video;
                     $video->stream($path . $file);
-                    var_dump($filetype);exit;
                 } else if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) >= $filemtime) {
                     http_response_code(304);
                 } else {
