@@ -31,6 +31,10 @@ var Geo = new Class({
         });
     },
 
+    addLayer: function(layer) {
+        this.map.addLayer(layer);
+    },
+
     setMarker: function(location, content) {
         var marker = new mapboxgl.Marker().setLngLat(location);
 
