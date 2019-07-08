@@ -123,6 +123,13 @@ var Gallery = new Class({
                 self.loadedImages++;
                 progressWrapper.inject(div);
                 vid.inject(div);
+                
+                if (subtitle) {
+                    new Element('div', {
+                        'class': 'subtitle',
+                        'text' : subtitle
+                    }).inject(div);
+                }
             }
 
         });
