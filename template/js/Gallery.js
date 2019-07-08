@@ -71,7 +71,7 @@ var Gallery = new Class({
                         }
                     }
                 });
-            } else if (filetype.indexOf('video') === 0) {
+            } else if (filetype.indexOf('video') === 0 && !div.hasClass('video-done')) {
                 var vid = new Element('video', {
                     'src': imgSrc,
                     'controls': false
@@ -123,13 +123,15 @@ var Gallery = new Class({
                 self.loadedImages++;
                 progressWrapper.inject(div);
                 vid.inject(div);
-                
+
                 if (subtitle) {
                     new Element('div', {
                         'class': 'subtitle',
                         'text' : subtitle
                     }).inject(div);
                 }
+
+                div.addClass('video-done');
             }
 
         });
