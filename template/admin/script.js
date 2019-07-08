@@ -116,9 +116,9 @@ document.getElements('.btn.sort').addEvent('click', function(e) {
 
 jQuery('.file-preview .image-wrapper .delete-file').click(function(event) {
     event.preventDefault();
-    var el = jQuery(this).parent('.image-wrapper'),
-        file = el.attr('data-file'),
-        postId = el.attr('data-post-id');
+    var el = this.getParent('.image-wrapper'),
+        file = el.get('data-file'),
+        postId = el.get('data-post-id');
 
     if (confirm('<?php echo $this->t('really.delete'); ?>')) {
         jQuery.ajax('<?php echo $this->webhost; ?>admin/delete-post-media/', {

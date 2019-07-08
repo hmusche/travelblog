@@ -223,7 +223,7 @@ class Admin extends Controller {
 
             $status = 'success';
         }
-        
+
         header('Content-Type: application/json');
         echo json_encode(['status' => $status]);
         exit;
@@ -242,6 +242,7 @@ class Admin extends Controller {
 
         }
 
+        header('Content-Type: application/json');
         echo json_encode(['status' => $status]);
         exit;
     }
