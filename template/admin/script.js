@@ -105,10 +105,12 @@ document.getElements('.btn.sort').addEvent('click', function(e) {
         'method': 'post',
         'data': data,
         'success': function(response) {
-            console.log(response);
+
             if (response.status == 'success') {
-                console.log(wrapper, replacement, where);
                 wrapper.grab(replacement, where);
+
+                wrapper.set('data-sort', data.new);
+                replacement.set('data-sort', data.current);
             }
         }
     })
