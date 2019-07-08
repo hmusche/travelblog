@@ -77,15 +77,52 @@ var Gallery = new Class({
                     'controls': false
                 });
 
-                div.getElement('.loader') && div.getElement('.loader').remove();
-
-                vid.inject(div);
-
-                vid.addEventListener && vid.addEventListener('ended', function() {
-                    self.toggleVideo(true);
+                var progressWrapper = new Element('div', {
+                    'class': 'progress-wrapper'
                 });
 
+                var progress = new Element('div', {
+                    'class': 'progress'
+                });
+
+                progress.inject(progressWrapper);
+
+                if (vid.addEventListener) {
+                    vid.addEventListener('canplay', function() {
+                        div.getElement('.loader') && div.getElement('.loader').addClass('d-none');
+
+                        if (!vid.retrieve('playing')) {
+                            self.playvideo.removeClass('d-none');
+                        }
+                    });
+
+                    vid.addEventListener('waiting', function() {
+                        div.getElement('.loader') && div.getElement('.loader').removeClass('d-none');
+
+                    });
+
+                    vid.addEventListener('playing', function() {
+                        div.getElement('.loader') && div.getElement('.loader').addClass('d-none');
+                    });
+
+                    vid.addEventListener('ended', function() {
+                        self.toggleVideo(true);
+                    });
+
+                    vid.addEventListener('timeupdate', function(event) {
+                        if (this.duration && this.currentTime) {
+                            var ratio = this.currentTime / this.duration * 100,
+                                progress = this.getPrevious().getElement('.progress');
+
+                            progress.setStyle('width', ratio + '%');
+                        }
+
+                    });
+                }
+
                 self.loadedImages++;
+                progressWrapper.inject(div);
+                vid.inject(div);
             }
 
         });
@@ -374,10 +411,10 @@ var Gallery = new Class({
 
         this.galleryWrapper.setStyle('transform', 'translate(' + (-1 * this.offset) + 'px)');
         this.galleryWrapper.getElements('.gallery-image-wrapper').removeClass('active');
-        this.playvideo.addClass('d-none');
+        this.playvideo.removeClass('is-video');
 
         if (wrapper.getElement('video')) {
-            this.playvideo.removeClass('d-none');
+            this.playvideo.addClass('is-video');
         }
 
         wrapper.addClass('active');

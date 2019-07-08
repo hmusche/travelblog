@@ -11,6 +11,7 @@
         text-align: center;
         font-size: 7em;
         opacity: 0.3;
+        z-index: 10;
     }
 
     @media screen and (min-width: $break-large) {
@@ -77,6 +78,21 @@
                 margin: auto;
                 position: absolute;
             }
+
+            .progress-wrapper {
+                position: absolute;
+                bottom: 0;
+                height: 5px;
+                background-color: #555;
+                width: 100%;
+                z-index: 2;
+
+                .progress {
+                    background-color: red;
+                    height: 100%;
+                    width: 0;
+                }
+            }
         }
     }
 
@@ -95,6 +111,7 @@
             color: #fff;
             position: absolute;
             text-shadow: 0px 0px 10px #999;
+
         }
 
         .gallery-playvideo-button {
@@ -106,6 +123,11 @@
             bottom: 0;
             height: 20px;
             width: 40px;
+            opacity: 0;
+
+            &.is-video {
+                opacity: 0.8;
+            }
         }
 
         .gallery-fullscreen-button {
