@@ -53,7 +53,6 @@ jQuery('.file-preview .image-wrapper .meta-data').change(function(event) {
     var el = jQuery(this).parents('.image-wrapper'),
         file = el.attr('data-file'),
         postId = el.attr('data-post-id'),
-        sort = el.find('.sort-order').val(),
         subtitle = el.find('.media-subtitle').val();
 
     event.preventDefault();
@@ -66,7 +65,6 @@ jQuery('.file-preview .image-wrapper .meta-data').change(function(event) {
             'data': {
                 file: file,
                 post_id: postId,
-                sort: sort,
                 subtitle: subtitle
             },
             success: function(res) {
