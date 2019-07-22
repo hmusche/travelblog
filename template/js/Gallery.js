@@ -34,7 +34,7 @@ var Gallery = new Class({
         this.images = this.galleryWrapper.getElements('.gallery-image-wrapper');
         this.loadedImages = 0;
 
-        self.setSizes();
+        self.setSizes(true);
 
         this.images.each(function(div) {
             var imgSrc = div.get('data-src').replace('{size}', currentSize),
@@ -42,6 +42,8 @@ var Gallery = new Class({
                 filetype = div.get('data-filetype');
 
             if (filetype.indexOf('image') === 0) {
+                div.getElement('.loader') && div.getElement('.loader').removeClass('d-none');
+
                 new Element('img', {
                     'src': imgSrc,
                     'events': {
@@ -157,10 +159,15 @@ var Gallery = new Class({
         }
     },
 
-    setSizes: function() {
+    setSizes: function(initial) {
         var self = this,
             width = this.gallery.clientWidth,
             height = width * this.maxRatio;
+
+        if (initial) {
+            // On initial run, set ratio to 2:1
+            height = width * 0.5;
+        }
 
         if (this.gallery.hasClass('fullscreen')) {
             height = this.gallery.clientHeight;
@@ -185,7 +192,8 @@ var Gallery = new Class({
 
     initEvents: function() {
         var self = this,
-            current, initial, max, min;
+            current, initial, max, min,
+            touchCount = 0;
 
         if (!this.controls.hasClass('done')) {
             this.gallery.store('events-added', true);
@@ -194,12 +202,23 @@ var Gallery = new Class({
                 'touchstart': function(event) {
                     var elem = this;
 
+                    touchCount++;
+
+                    /**
+                     * If more than one touch occurred, the user apparently tries to zoom
+                     */
+                    if (touchCount > 1) {
+                        return;
+                    }
+
                     self.toggleEasing(false);
 
                     current = max = min = 0;
-
                     initial = event.client.x;
 
+                    /**
+                     * Set a touch flag for 400ms, because mouseover event is fired as well in some occasions
+                     */
                     this.store('was_touched', true);
 
                     timeout = setTimeout(function() {
@@ -207,6 +226,16 @@ var Gallery = new Class({
                     }, 400);
                 },
                 'touchmove': function(event) {
+                    event && event.preventDefault();
+
+                    /**
+                     * If more than one touch occurred, the user apparently tries to zoom
+                     */
+                    if (touchCount > 1) {
+                        self.showImage();
+                        return;
+                    }
+
                     current = initial - event.client.x;
 
                     if (max < current) {
@@ -230,6 +259,12 @@ var Gallery = new Class({
                 'touchend': function(event) {
                     self.toggleEasing(true);
 
+                    touchCount--;
+
+                    if (touchCount > 0) {
+                        return;
+                    }
+
                     if (Math.abs(current) < 20) {
                         return;
                     }
@@ -243,6 +278,10 @@ var Gallery = new Class({
                     } else {
                         self.showImage();
                     }
+                },
+                'contextmenu': function() {
+                    // in case user taps to long
+                    return false;
                 },
                 mouseover: function() {
                     if (!this.retrieve('was_touched')) {
