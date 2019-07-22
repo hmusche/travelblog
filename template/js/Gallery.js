@@ -14,7 +14,8 @@ var Gallery = new Class({
     },
 
     setImages: function(currentSize) {
-        var self = this,
+        var i = 0,
+            self = this,
             sizes = {
                 'xl': 1920,
                 'lg': 1200,
@@ -41,6 +42,15 @@ var Gallery = new Class({
                 subtitle = div.get('data-subtitle'),
                 filetype = div.get('data-filetype');
 
+            if (!self.controls.hasClass('done')) {
+                new Element('div', {
+                    'class': 'gallery-bullet',
+                    'data-index': i
+                }).inject(self.controls.getElement('.gallery-bullets'));
+
+                i++;
+            }
+
             if (filetype.indexOf('image') === 0) {
                 div.getElement('.loader') && div.getElement('.loader').removeClass('d-none');
 
@@ -63,10 +73,6 @@ var Gallery = new Class({
 
                             if ((this.height / this.width) < self.maxRatio) {
                                 self.maxRatio = (this.height / this.width);
-                            }
-
-                            if (self.loadedImages == self.images.length) {
-                                self.initGallery();
                             }
 
                             self.setSizes();
@@ -140,23 +146,6 @@ var Gallery = new Class({
 
         this.initEvents();
         this.toggleEasing(true);
-    },
-
-    initGallery: function() {
-        var self = this,
-            swipeHintCount = this.cookie.get('swipehint', 0);
-
-        if (swipeHintCount < 5 && this.images.length > 1) {
-            setTimeout(function() {
-                self.galleryWrapper.setStyle('margin-left', '-50px');
-
-                setTimeout(function() {
-                    self.galleryWrapper.setStyle('margin-left', '0');
-                }, 300);
-
-                self.cookie.set('swipehint', ++swipeHintCount);
-            }, 500);
-        }
     },
 
     setSizes: function(initial) {
@@ -281,6 +270,10 @@ var Gallery = new Class({
                 },
                 'contextmenu': function() {
                     // in case user taps to long
+                    if (touchCount > 0) {
+                        self.controls.removeClass('has-pointer');
+                    }
+
                     return false;
                 },
                 mouseover: function() {
@@ -292,6 +285,12 @@ var Gallery = new Class({
 
             this.controls.getElements('.gallery-fullscreen-button').addEvent('click', function() {
                 self.toggleFullscreen();
+            });
+
+            this.controls.getElements('.gallery-bullet').addEvent('click', function(event) {
+                var index = Number.toInt(this.get('data-index'));
+
+                self.showImage(index);
             });
 
             this.controls.addEvent('click', function(e) {
@@ -438,6 +437,8 @@ var Gallery = new Class({
     },
 
     showImage: function(index) {
+        var bullets = this.controls.getElements('.gallery-bullet');
+
         if (typeof index == 'undefined') {
             index = this.currentIndex;
         }
@@ -467,14 +468,19 @@ var Gallery = new Class({
 
         wrapper.addClass('active');
 
-        this.controls.getElements('div').addClass('active');
+        if (bullets.length) {
+            bullets.removeClass('active');
+            bullets[index].addClass('active');
+        }
+
+        this.controls.getChildren('div').addClass('active');
 
         if (this.currentIndex === 0) {
-            this.controls.getElements('div')[0].removeClass('active');
+            this.controls.getElement('.gallery-left').removeClass('active');
         }
 
         if (this.currentIndex == (this.images.length - 1) || wrapper.offsetLeft >= maxOffset) {
-            this.controls.getElements('div')[1].removeClass('active');
+            this.controls.getElement('.gallery-right').removeClass('active');
         }
     },
 
