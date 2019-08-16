@@ -181,10 +181,11 @@ var Gallery = new Class({
 
     initEvents: function() {
         var self = this,
-            current, initial, max, min,
-            touchCount = 0;
+            current, initial, max, min;
 
         if (!this.controls.hasClass('done')) {
+            var touchCount = 0;
+
             this.gallery.store('events-added', true);
 
             this.gallery.addEvents({
@@ -215,8 +216,6 @@ var Gallery = new Class({
                     }, 400);
                 },
                 'touchmove': function(event) {
-                    event && event.preventDefault();
-
                     /**
                      * If more than one touch occurred, the user apparently tries to zoom
                      */
@@ -224,6 +223,8 @@ var Gallery = new Class({
                         self.showImage();
                         return;
                     }
+
+                    event && event.preventDefault();
 
                     current = initial - event.client.x;
 
