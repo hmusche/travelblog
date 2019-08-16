@@ -184,7 +184,8 @@ var Gallery = new Class({
             current, initial, max, min;
 
         if (!this.controls.hasClass('done')) {
-            var touchCount = 0;
+            var touchCount = 0,
+                isPinch = false;
 
             this.gallery.store('events-added', true);
 
@@ -193,6 +194,8 @@ var Gallery = new Class({
                     var elem = this;
 
                     touchCount++;
+
+                    isPinch = (touchCount !== 1);
 
                     /**
                      * If more than one touch occurred, the user apparently tries to zoom
@@ -224,27 +227,29 @@ var Gallery = new Class({
                         return;
                     }
 
-                    event && event.preventDefault();
+                    if (!isPinch) {
+                        event && event.preventDefault();
 
-                    current = initial - event.client.x;
+                        current = initial - event.client.x;
 
-                    if (max < current) {
-                        max = current;
+                        if (max < current) {
+                            max = current;
+                        }
+
+                        if (min > current) {
+                            min = current;
+                        }
+
+                        if (self.currentIndex == 0 && current < 0) {
+                            current = 0;
+                            initial = event.client.x;
+                        } else if (self.currentIndex == (self.images.length - 1) && current > 0) {
+                            current = 0;
+                            initial = event.client.x;
+                        }
+
+                        self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
                     }
-
-                    if (min > current) {
-                        min = current;
-                    }
-
-                    if (self.currentIndex == 0 && current < 0) {
-                        current = 0;
-                        initial = event.client.x;
-                    } else if (self.currentIndex == (self.images.length - 1) && current > 0) {
-                        current = 0;
-                        initial = event.client.x;
-                    }
-
-                    self.galleryWrapper.setStyle('transform', 'translate(' + (-1 * (self.offset + current)) + 'px)');
                 },
                 'touchend': function(event) {
                     self.toggleEasing(true);
@@ -256,18 +261,23 @@ var Gallery = new Class({
                     }
 
                     if (Math.abs(current) < 20) {
+                        self.showImage();
                         return;
                     }
 
-                    if (current >= max) {
-                        self.toggleVideo(true);
-                        self.showImage(self.currentIndex + 1);
-                    } else if (current <= min) {
-                        self.toggleVideo(true);
-                        self.showImage(self.currentIndex - 1);
-                    } else {
-                        self.showImage();
+                    if (!isPinch) {
+                        if (current >= max) {
+                            self.toggleVideo(true);
+                            self.showImage(self.currentIndex + 1);
+                        } else if (current <= min) {
+                            self.toggleVideo(true);
+                            self.showImage(self.currentIndex - 1);
+                        } else {
+                            self.showImage();
+                        }
                     }
+
+                    isPinch = (touchCount === 0);
                 },
                 'contextmenu': function() {
                     // in case user taps to long
