@@ -36,13 +36,13 @@ class Feed extends Controller {
             ];
 
             if ($post['files']) {
-                $files = $postMediaModel->getMedia($post['id'], 'md');
+                $files = $postMediaModel->getMedia($post['id'], 'sm');
 
 
                 $item['enclosure'] = [
                     'url' => $config['host'] . $config['path'] . $files[0]['full_path'],
                     'type' => $files[0]['type'],
-                    'length' => filesize("asset/{$post['id']}/md/{$files[0]['filename']}")
+                    'length' => filesize("asset/{$post['id']}/sm/{$files[0]['filename']}")
                 ];
 
             }
