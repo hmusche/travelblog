@@ -29,7 +29,8 @@ class Feed extends Controller {
                 'title' => $post['title'],
                 'link' => $config['host'] . $config['path'] . $post['link'],
                 'description' => $post['text'],
-                'guid' => $config['host'] . $config['path'] . $post['id']
+                'guid' => $config['host'] . $config['path'] . 'post/' . $post['id'],
+                'pubDate' => $post['posted']
             ];
 
             $feed->addItem($item);
