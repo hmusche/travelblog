@@ -18,7 +18,7 @@ class PostMedia extends Model {
         $this->_savePath = Registry::get('app.config')['asset_path'];
     }
 
-    public function getMedia($postId) {
+    public function getMedia($postId, $size = '{size}') {
         return $this->select([
                 'filename',
                 'name',
@@ -26,7 +26,7 @@ class PostMedia extends Model {
                 'subtitle',
                 'sort',
                 'type',
-                'full_path' => Medoo::raw("CONCAT('asset/post/s/{size}/id/', <post_id>, '/f/', <filename>)")
+                'full_path' => Medoo::raw("CONCAT('asset/post/s/{$size}/id/', <post_id>, '/f/', <filename>)")
             ], [
             'post_id' => $postId,
             'ORDER' => [
