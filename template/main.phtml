@@ -25,6 +25,9 @@
         <link rel="mask-icon" href="<?php echo $this->webhost; ?>asset/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+        <?php if (isset($this->config['tracking_code'])): ?>
+            <?php echo $this->config['tracking_code']; ?>
+        <?php endif; ?>
     </head>
     <body class="con-<?php echo $this->request->get('controller'); ?>">
         <?php echo $this->render('partial/menu.phtml'); ?>
