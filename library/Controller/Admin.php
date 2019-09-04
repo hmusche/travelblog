@@ -275,7 +275,7 @@ class Admin extends Controller {
             'type' => [
                 'formatters' => [
                     'translate' => [
-                        'prefix' => 'meta.'
+                        'prefix' => 'meta.type.'
                     ]
                 ]
             ],
@@ -287,9 +287,11 @@ class Admin extends Controller {
                     'translate'
                 ]
             ],
-            'created' => [
+            'status' => [
                 'formatters' => [
-                    'date'
+                    'translate' => [
+                        'prefix' => 'meta.status.'
+                    ]
                 ]
             ],
             'updated' => [
