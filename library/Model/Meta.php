@@ -88,7 +88,10 @@ class Meta extends Model {
 
     public function updateMeta($data, $where = []) {
         $data['updated'] = time();
-        $data['locale']  = Content::getLanguage($data['text']);
+
+        if (!isset($data['locale']) || !$data['locale']) {
+            $data['locale']  = Content::getLanguage($data['text']);
+        }
 
         if ($where === []) {
             $data['created'] = time();
