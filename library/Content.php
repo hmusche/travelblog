@@ -4,6 +4,7 @@ namespace TravelBlog;
 use Solsken\View;
 use Solsken\Registry;
 use Google\Cloud\Translate\TranslateClient;
+use Solsken\Image;
 
 class Content {
     static public function parse($text) {
@@ -35,9 +36,23 @@ class Content {
             $view->webhost . 'post/' . $post['id'] . '-' . $post['slug']
         );
 
-        $openGraph['image'] = isset($post['files'][0])
-                     ? $view->webhost . str_replace('{size}', 'xl', $post['files'][0]['full_path'])
-                     : '';
+        if (isset($post['files'][0])) {
+            $filePath = 'asset/' . $post['id'] . '/lg/' . $post['files'][0]['filename'];
+
+            if (!file_exists($filePath)) {
+                Image::resize(
+                    str_replace('/lg/', '/', $filePath),
+                    $filePath,
+                    1200
+                );
+            }
+
+            $size = getimagesize($filePath);
+
+            $openGraph['image']        = $view->webhost . str_replace('{size}', 'lg', $post['files'][0]['full_path']);
+            $openGraph['image:width']  = $size[0];
+            $openGraph['image:height'] = $size[1];
+        }
 
         return $openGraph;
     }
