@@ -18,18 +18,16 @@ class Meta extends Model {
         $meta   = $this->getMeta([
             'type'   => $type,
             'value'  => $value,
-            'status' => $status,
             'locale' => $locale
         ]);
 
         if (!$meta) {
             $meta = $this->getMeta([
                 'type'   => $type,
-                'value'  => $value,
-                'status' => $status
+                'value'  => $value
             ]);
 
-            if ($meta) {
+            if ($meta && $meta['status'] == $status) {
                 unset($meta['id']);
 
                 $meta['locale']         = $locale;
@@ -41,7 +39,11 @@ class Meta extends Model {
             }
         }
 
-        return $this->_format($meta);
+        if (isset($meta['status']) && $meta['status'] == $status) {
+            return $this->_format($meta);
+        }
+
+        return [];
     }
 
     public function getMeta($where) {
