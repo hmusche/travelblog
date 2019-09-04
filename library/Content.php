@@ -37,19 +37,20 @@ class Content {
         );
 
         if (isset($post['files'][0])) {
-            $filePath = 'asset/' . $post['id'] . '/lg/' . $post['files'][0]['filename'];
+            $filePath = 'asset/' . $post['id'] . '/share/' . $post['files'][0]['filename'];
 
             if (!file_exists($filePath)) {
                 Image::resize(
-                    str_replace('/lg/', '/', $filePath),
+                    str_replace('/share/', '/', $filePath),
                     $filePath,
-                    1200
+                    400,
+                    400
                 );
             }
 
             $size = getimagesize($filePath);
 
-            $openGraph['image']        = $view->webhost . str_replace('{size}', 'lg', $post['files'][0]['full_path']);
+            $openGraph['image']        = $view->webhost . str_replace('{size}', 'share', $post['files'][0]['full_path']);
             $openGraph['image:width']  = $size[0];
             $openGraph['image:height'] = $size[1];
         }

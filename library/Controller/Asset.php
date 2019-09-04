@@ -28,6 +28,7 @@ class Asset extends Controller {
         $size   = $this->_request->getParam('s', 'md');
 
         $allowedSizes = [
+            'share' => 400,
             'xs' => 300,
             'sm' => 600,
             'md' => 900,
