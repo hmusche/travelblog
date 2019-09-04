@@ -53,7 +53,7 @@ class Post extends Model {
 
         $locale = I18n::getInstance()->getLocale(false);
 
-        if ($forceLocale && $post['meta']['locale'] !== $locale) {
+        if ($forceLocale && !in_array($locale, $post['meta']['locale'])) {
             $postTextModel = new PostText;
             $post['text'] = $postTextModel->getText($id, $locale);
         }
