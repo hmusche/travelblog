@@ -10,7 +10,7 @@ var Gallery = new Class({
         this.maxRatio     = 3;
         this.getFullscreenPrefixes();
         this.setImages();
-        this.cookie = new Cookie();
+        this.cookie = new Solsken.Cookie();
     },
 
     setImages: function(currentSize) {
