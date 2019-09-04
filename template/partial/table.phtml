@@ -1,30 +1,23 @@
-<table class="table table-bordered table-responsive-sm<?php if ($this->table->hasRowAction()): ?> table-hover<?php endif; ?>">
-    <thead>
-        <tr>
-            <?php if ($this->table->hasActions()): ?>
-                <th></th>
-            <?php endif ?>
-            <?php foreach ($this->table->getColumns() as $column): ?>
-                <th><?php echo $this->t($column->getLabel()); ?></th>
-            <?php endforeach; ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($this->table->getRows() as $key => $row): ?>
-            <tr<?php if ($row['rowAction']): ?> data-href="<?php echo $this->webhost . $row['rowAction']['href']; ?>"<?php endif; ?>>
-                <?php if($row['actions']): ?>
-                    <td>
-                        <span>
-                        <?php foreach ($row['actions'] as $key => $action): ?>
-                            <?php echo $this->partial('partial/table/action.phtml', $action); ?>
-                        <?php endforeach; ?>
-                    </span>
-                </td>
-                <?php endif; ?>
-                <?php foreach ($row['columns'] as $key => $value): ?>
-                    <td><?php echo $value; ?></td>
+<?php $config = $this->table->getTableConfig(); ?>
+<div class="solsken-table" data-identifier="<?php echo $this->table->getIdentifier(); ?>">
+    <table class="table table-bordered table-responsive-sm<?php if ($this->table->hasRowAction()): ?> table-hover<?php endif; ?>">
+        <thead>
+            <tr>
+                <?php if ($this->table->hasActions()): ?>
+                    <th></th>
+                <?php endif ?>
+                <?php foreach ($this->table->getColumns() as $column): ?>
+                    <?php echo $this->partial('partial/table/column.phtml', ['col' => $column, 'config' => $config]); ?>
                 <?php endforeach; ?>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach ($this->table->getRows() as $key => $row): ?>
+                <?php echo $this->partial('partial/table/row.phtml', ['row' => $row]); ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php if ($config): ?>
+        <?php echo $this->partial('partial/table/pagination.phtml', $config['pagination']); ?>
+    <?php endif; ?>
+</div>

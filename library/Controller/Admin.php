@@ -17,6 +17,7 @@ use TravelBlog\Model\Post;
 use TravelBlog\Model\Stat;
 use TravelBlog\Model\StatValue;
 use TravelBlog\Model\PostMedia;
+use TravelBlog\Model\Meta;
 
 class Admin extends Controller {
     public function preDispatch() {
@@ -265,6 +266,111 @@ class Admin extends Controller {
         exit;
     }
 
+    /**   META   **/
+    public function metaListAction() {
+        $metaModel = new Meta();
+
+        $table = new Table('meta-overview');
+        $table->addColumns([
+            'type' => [
+                'formatters' => [
+                    'translate' => [
+                        'prefix' => 'meta.'
+                    ]
+                ]
+            ],
+            'value' => [
+                'filter' => 'text'
+            ],
+            'locale' => [
+                'formatters' => [
+                    'translate'
+                ]
+            ],
+            'created' => [
+                'formatters' => [
+                    'date'
+                ]
+            ],
+            'updated' => [
+                'order' => 'DESC',
+                'formatters' => [
+                    'date'
+                ]
+            ]
+        ])->addAction('edit', [
+            'href' => 'admin/meta/id/{id}',
+            'icon' => 'edit'
+        ])->setData($metaModel);
+
+        $this->_view->table = $table->handle();
+    }
+
+    public function metaAction() {
+        $metaModel = new Meta();
+
+        $form = new Form('meta', [$metaModel, 'updateMeta']);
+        $form->addGroups([
+            [
+                'name'  => 'data',
+                'class' => 'col-xs-12 col-md-4'
+            ], [
+                'name'  => 'text',
+                'class' => 'col-xs-12 col-md-8'
+            ]
+        ]);
+        $form->addElements([
+            [
+                'name'    => 'type',
+                'group'   => 'data',
+                'type'    => 'select',
+                'options' => [
+                    'values' => [$metaModel, 'getEnumSelect']
+                ]
+            ], [
+                'name'    => 'value',
+                'group'   => 'data',
+            ],[
+                'name' => 'locale',
+                'group' => 'data',
+                'options' => [
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ],[
+                'name'    => 'status',
+                'group'   => 'data',
+                'type'    => 'select',
+                'options' => [
+                    'values'     => [$metaModel, 'getEnumSelect'],
+                    'validators' => [
+                        'required' => false
+                    ]
+                ]
+            ], [
+                'name'    => 'text',
+                'group'   => 'text',
+                'type'    => 'textarea',
+                'options' => [
+                    'attributes' => [
+                        'rows' => 10
+                    ]
+                ]
+            ]
+        ]);
+
+        if ($id = $this->_request->getParam('id')) {
+
+            $form->addLoadCallback($id, [$metaModel, 'getMetaById']);
+        }
+
+        $form->setRedirect('admin/meta-list/');
+        $form->handle();
+
+        $this->_view->form = $form;
+    }
+
 
     /**   STATS   **/
 
@@ -480,6 +586,11 @@ class Admin extends Controller {
         $this->_view->table = $table;
 
     }
+
+
+    /*************
+    **** AUTH ****
+    *************/
 
     public function loginAction() {
         if (Util::isLoggedIn()) {

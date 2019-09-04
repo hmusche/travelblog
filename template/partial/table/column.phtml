@@ -1,0 +1,26 @@
+<th>
+    <?php echo $this->t($this->col->getLabel()); ?>
+    <?php if ($this->config): ?>
+        <?php if ($this->col->getFilter()): ?>
+            <?php echo $this->partial(
+                'partial/table/filter/' . $this->col->getFilter() . '.phtml',
+                [
+                    'value' => isset($this->config['filter'][$this->col->getKey()]) ? $this->config['filter'][$this->col->getKey()] : '',
+                    'key' => $this->col->getKey()
+                ]
+            ); ?>
+        <?php endif; ?>
+
+        <a href="#" class="column-order" data-order="<?php echo $this->col->getKey(); ?>">
+            <?php if (isset($this->config['order'][$this->col->getKey()])): ?>
+                <?php if ($this->config['order'][$this->col->getKey()] == 'ASC'): ?>
+                    <i class="fas fa-sort-down"></i>
+                <?php else: ?>
+                    <i class="fas fa-sort-up"></i>
+                <?php endif; ?>
+            <?php else: ?>
+                <i class="fas fa-sort"></i>
+            <?php endif; ?>
+        </a>
+    <?php endif; ?>
+</th>

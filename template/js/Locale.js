@@ -6,7 +6,7 @@ var Locale = new Class({
             timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || timezone;
         }
 
-        var cookie = new Cookie(),
+        var cookie = new Solsken.Cookie(),
             language = navigator.language;
 
         if (!cookie.get('locale_settings')) {

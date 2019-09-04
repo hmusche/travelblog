@@ -4,7 +4,6 @@ namespace TravelBlog\Model;
 
 use Solsken\Model;
 use Solsken\Util;
-use Solsken\Registry;
 use Solsken\I18n;
 
 use TravelBlog\Model\PostMedia;

@@ -1,3 +1,16 @@
+<?php if ($this->meta): ?>
+    <div class="row">
+        <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
+            <div class="post-preview meta-post">
+                <h1 class="post-title">
+                    <?php echo $this->t('posts.about'); ?>
+                    <?php echo $this->meta['value_formatted']; ?>
+                </h1>
+                <p class="meta-content"><?php echo $this->meta['text_formatted']; ?></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="row">
     <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
         <?php foreach ($this->posts as $post): ?>

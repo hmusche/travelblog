@@ -38,6 +38,17 @@
         }
     }
 
+    &.meta-post {
+        h1 {
+            padding-top: 20px;
+        }
+
+        .meta-content {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+
     >a {
         >.post-title, >.post-subtitle {
             padding-left: 20px;

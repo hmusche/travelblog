@@ -1,4 +1,16 @@
+<?php require "vendor/hmusche/solsken/js/DOM.js"; ?>
+<?php require "vendor/hmusche/solsken/js/Request.js"; ?>
+<?php require "vendor/hmusche/solsken/js/Table.js"; ?>
+
 jQuery(document).ready(function() {
+    var i, tables = document.getElements('.solsken-table');
+
+    if (tables) {
+        tables.forEach(function(table) {
+            new Solsken.Table(table);
+        });
+    }
+
     var geoGroup = document.getElement('.group-geo');
 
     if (geoGroup) {

@@ -1,4 +1,4 @@
-<?php require 'Cookie.js'; ?>
+<?php require 'vendor/hmusche/solsken/js/Cookie.js'; ?>
 <?php require 'Geo.js'; ?>
 <?php require 'Locale.js'; ?>
 <?php require 'Form.js'; ?>
@@ -10,7 +10,7 @@ window.Solsken.locale = new Locale();
 
 document.getElements('.cookie-accept').each(function(elem) {
     elem.addEvent('click', function(e) {
-        var cookie = new Cookie;
+        var cookie = new Solsken.Cookie;
 
         cookie.acceptCookie(this);
     });
@@ -18,7 +18,7 @@ document.getElements('.cookie-accept').each(function(elem) {
 
 document.getElements('#translate_content').each(function(checkbox) {
     checkbox.addEvent('change', function(event) {
-        var cookie = new Cookie;
+        var cookie = new Solsken.Cookie;
 
         cookie.set('post_translate', this.get('checked'));
 

@@ -1,0 +1,14 @@
+<tr<?php if ($this->row['rowAction']): ?> data-href="<?php echo $this->webhost . $this->row['rowAction']['href']; ?>"<?php endif; ?>>
+    <?php if($this->row['actions']): ?>
+        <td>
+            <span>
+            <?php foreach ($this->row['actions'] as $key => $action): ?>
+                <?php echo $this->partial('partial/table/action.phtml', $action); ?>
+            <?php endforeach; ?>
+        </span>
+    </td>
+    <?php endif; ?>
+    <?php foreach ($this->row['columns'] as $key => $value): ?>
+        <td><?php echo $value; ?></td>
+    <?php endforeach; ?>
+</tr>

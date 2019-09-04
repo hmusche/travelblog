@@ -5,20 +5,23 @@ namespace TravelBlog\Controller;
 use TravelBlog\Controller;
 use TravelBlog\Content;
 use TravelBlog\Model\Post as PostModel;
+use TravelBlog\Model\Meta as MetaModel;
 use Solsken\Cookie;
 
 class Post extends Controller {
     public function byAction() {
         $postModel   = new PostModel;
+        $metaModel   = new MetaModel;
         $allowedKeys = [
             'author',
             'country',
             'tag'
         ];
 
-        $params = $this->_request->get('params');
-        $where = array_intersect_key($params, array_flip($allowedKeys));
+        $params  = $this->_request->get('params');
+        $where   = array_intersect_key($params, array_flip($allowedKeys));
         $baseUrl = '';
+        $meta    = '';
 
         foreach ($where as $key => $value) {
             $baseUrl .= "$key/$value/";
@@ -33,6 +36,7 @@ class Post extends Controller {
             } else {
                 $where['post_meta.type']  = $key;
                 $where['post_meta.value'] = $value;
+                $meta = $metaModel->getMetaByTypeAndValue($key, $value);
             }
 
             unset($where[$key]);
@@ -43,6 +47,7 @@ class Post extends Controller {
         $offset = ($page - 1) * $limit;
 
         $this->_view->posts = $postModel->getPosts($where, $limit, $offset);
+        $this->_view->meta  = $meta;
 
         $this->_view->pagination = [
             'page' => $page,
