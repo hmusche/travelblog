@@ -13,18 +13,20 @@ class Meta extends Model {
         return $this->_format($this->getMeta(['id' => $id]));
     }
 
-    public function getMetaByTypeAndValue($type, $value) {
+    public function getMetaByTypeAndValue($type, $value, $status = 'active') {
         $locale = I18n::getInstance()->getLocale(false);
         $meta   = $this->getMeta([
-            'type' => $type,
-            'value' => $value,
+            'type'   => $type,
+            'value'  => $value,
+            'status' => $status,
             'locale' => $locale
         ]);
 
         if (!$meta) {
             $meta = $this->getMeta([
-                'type' => $type,
-                'value' => $value
+                'type'   => $type,
+                'value'  => $value,
+                'status' => $status
             ]);
 
             if ($meta) {
