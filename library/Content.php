@@ -12,26 +12,47 @@ class Content {
         return $text;
     }
 
+    static public function getMetaOpenGraph($meta) {
+        return self::_getBaseOpenGraph(
+            'article',
+            $meta['value_formatted'],
+            strip_tags($meta['text_formatted']),
+            View::getInstance()->webhost . 'post/by/' . $meta['type'] . '/' . $meta['value']
+        );
+    }
+
     static public function getOpenGraph($post) {
         $view = View::getInstance();
-        $config = Registry::get('app.config');
 
         $description = strip_tags($post['text']);
         $description = substr($description, 0, strpos($description, '.') + 1);
         $description = htmlspecialchars($description);
 
-        $openGraph = [
-            'site_name' => $config['title'],
-            'title' => $post['heading'],
-            'type'  => 'article',
-            'url'   => $view->webhost . 'post/' . $post['id'] . '-' . $post['slug'],
-            'description' => $description,
-            'image' => isset($post['files'][0])
+        $openGraph = self::_getBaseOpenGraph(
+            'article',
+            $post['heading'],
+            $description,
+            $view->webhost . 'post/' . $post['id'] . '-' . $post['slug']
+        );
+
+        $openGraph['image'] = isset($post['files'][0])
                      ? $view->webhost . str_replace('{size}', 'xl', $post['files'][0]['full_path'])
-                     : ''
+                     : '';
+
+        return $openGraph;
+    }
+
+    static protected function _getBaseOpenGraph($type, $title, $description, $url) {
+        $config = Registry::get('app.config');
+
+        $openGraph = [
+            'site_name'   => $config['title'],
+            'title'       => $title,
+            'type'        => $type,
+            'url'         => $url,
+            'description' => $description,
+            'image'       => ''
         ];
-
-
 
         return $openGraph;
     }

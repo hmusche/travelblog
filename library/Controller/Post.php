@@ -46,8 +46,18 @@ class Post extends Controller {
         $page   = $this->_request->getParam('page', 1);
         $offset = ($page - 1) * $limit;
 
-        $this->_view->posts = $postModel->getPosts($where, $limit, $offset);
-        $this->_view->meta  = $meta;
+        $pathParts = array_intersect_key($params, array_flip($allowedKeys));
+        $pathParts = array_map(function($key) use ($pathParts) {
+            return $key . '/' . $pathParts[$key];
+        }, array_flip($pathParts));
+
+        $this->_view->posts     = $postModel->getPosts($where, $limit, $offset);
+        $this->_view->meta      = $meta;
+        $this->_view->canonical = $this->_view->webhost . 'post/by/' . implode('/', $pathParts);
+
+        if ($meta) {
+            $this->_view->og = Content::getMetaOpenGraph($meta);
+        }
 
         $this->_view->pagination = [
             'page' => $page,
@@ -66,10 +76,11 @@ class Post extends Controller {
         $postModel = new PostModel;
         $postId = explode('-', $this->_request->get('action'))[0];
 
-        $this->_view->template = 'post/post.phtml';
-        $this->_view->post = $postModel->getPost($postId, (bool)Cookie::get('post_translate', false));
+        $this->_view->template  = 'post/post.phtml';
+        $this->_view->post      = $postModel->getPost($postId, (bool)Cookie::get('post_translate', false));
         $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
-        $this->_view->og = Content::getOpenGraph($this->_view->post);
+        $this->_view->og        = Content::getOpenGraph($this->_view->post);
+        $this->_view->canonical = $this->_view->og['url'];
 
     }
 }
