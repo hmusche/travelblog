@@ -118,6 +118,7 @@ class Post extends Model {
             'latitude',
             'tz_offset',
             'user.name (author)',
+            'language' => Medoo::raw('GROUP_CONCAT(DISTINCT IF(<post_meta.type> = :locale, post_meta.value, NULL))', [':locale' => 'locale']),
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], $where);
     }
