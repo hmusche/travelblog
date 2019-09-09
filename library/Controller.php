@@ -25,11 +25,22 @@ class Controller extends \Solsken\Controller {
     }
 
     protected function _languageCheck() {
-        $language = $this->_request->getParam('language');
+        $language = $this->_request->getParam('lang');
 
         if ($language) {
-            Cookie::set('locale_settings', $language);
-            Http::redirect($this->_request->get('path'));
+            $path = $this->_request->get('path');
+            $get  = $this->_request->get('get');
+
+            if (strpos($path, 'lang') !== false && !isset($get['lang'])) {
+                I18n::getInstance()->setLocale($language);
+            } else {
+                if (strpos($path, 'lang') !== false) {
+                    $path = preg_replace('#/lang/.+/?#', '/lang/' . $get['lang'], $path);
+                }
+
+                Cookie::set('locale_settings', $language);
+                Http::redirect($path);
+            }
         }
     }
 

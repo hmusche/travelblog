@@ -24,7 +24,7 @@
     </p>
 <?php endif; ?>
 
-<?php if (isset($this->post['meta']['locale'][0]) && !in_array($this->post['meta']['locale'][0], [substr($this->currentLocale, 0, 2), 'und'])): ?>
+<?php if (!\Solsken\Request::getInstance()->getParam('trans') && isset($this->post['meta']['locale'][0]) && !in_array($this->post['meta']['locale'][0], [substr($this->currentLocale, 0, 2), 'und'])): ?>
     <p class="translate-content toggle-switch">
         <input class="" type="checkbox" value="" <?php if (\Solsken\Cookie::get('post_translate')): ?>checked<?php endif; ?> id="translate_content">
         <label class="" for="translate_content">

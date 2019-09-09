@@ -73,11 +73,12 @@ class Post extends Controller {
             throw new \Exception('Method not found');
         }
 
-        $postModel = new PostModel;
-        $postId = explode('-', $this->_request->get('action'))[0];
+        $postModel      = new PostModel;
+        $postId         = explode('-', $this->_request->get('action'))[0];
+        $forceTranslate = (bool)$this->_request->getParam('trans', Cookie::get('post_translate', false));
 
         $this->_view->template  = 'post/post.phtml';
-        $this->_view->post      = $postModel->getPost($postId, (bool)Cookie::get('post_translate', false));
+        $this->_view->post      = $postModel->getPost($postId, $forceTranslate);
         $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
         $this->_view->og        = Content::getOpenGraph($this->_view->post);
         $this->_view->canonical = $this->_view->og['url'];
