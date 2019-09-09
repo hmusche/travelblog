@@ -58,7 +58,7 @@ class Feed extends Controller {
             foreach ($languages as $language) {
                 $language = substr($language, 0, 2);
 
-                if ($post['language'] && $language != $post['language']) {
+                if ($post['language'] && $post['language'] != 'und' && $language != $post['language']) {
                     $urls[$language] = $webhost . $post['link'] . '/tr/1/lang/' . $language . '/';
                 }
             }
