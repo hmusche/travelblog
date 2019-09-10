@@ -23,7 +23,8 @@ class PostMeta extends Model {
             ]
         ], [
             'value(country_code)',
-            'count'   => Medoo::raw('COUNT(*)')
+            'count'   => Medoo::raw('COUNT(*)'),
+            'updated' => Medoo::raw('MAX(<post.updated>)')
         ], [
             'type' => 'country',
             'GROUP' => 'value',
@@ -41,7 +42,8 @@ class PostMeta extends Model {
             ]
         ], [
             'value',
-            'count'   => Medoo::raw('COUNT(*)')
+            'count'   => Medoo::raw('COUNT(*)'),
+            'updated' => Medoo::raw('MAX(<post.updated>)')
         ], [
             'type' => 'tag',
             'GROUP' => 'value',

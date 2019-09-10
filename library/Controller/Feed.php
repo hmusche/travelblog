@@ -15,6 +15,7 @@ use Solsken\Registry;
 class Feed extends Controller {
     public function sitemapAction() {
         header("Content-Type: application/xml; charset=utf-8");
+        
         $postModel = new Post();
         $sitemap   = new Sitemap();
         $posts     = $postModel->getPosts([], 0);
@@ -23,33 +24,30 @@ class Feed extends Controller {
         $webhost   = $config['host'] . $config['path'];
 
         $pages = [
-            'monthly' => [
-                'map/route' => 0.4,
-                'page/aboutus' => 0.8,
-                'page/about-the-site' => 0.4,
-                'stats/overview' => 0.4,
-                'page/impressum' => 0.3,
-                'page/dpr' => 0.3
-            ]
-
+            'map/route' => 0.4,
+            'page/aboutus' => 0.8,
+            'page/about-the-site' => 0.4,
+            'stats/overview' => 0.4,
+            'page/impressum' => 0.3,
+            'page/dpr' => 0.3
         ];
 
-        foreach ($pages as $freq => $urls) {
-            foreach ($urls as $url => $prio) {
-                $sitemap->addUrl($webhost . $url, time(), $freq, $prio);
-            }
+        $sitemap->addUrl($webhost, $posts[0]['updated'], 'daily', 0.8);
+
+        foreach ($pages as $url => $prio) {
+            $sitemap->addUrl($webhost . $url, mktime(0, 0, 0, date('m'), 1, date('Y')), 'monthly', $prio);
         }
 
         foreach ($this->_view->postTags as $tag) {
             if ($tag['value'] && $tag['count']) {
                 $url = $webhost . 'post/by/tag/' . $tag['value'];
-                $sitemap->addUrl($url, time(), 'daily', 0.6);
+                $sitemap->addUrl($url, $tag['updated'], 'daily', 0.6);
             }
         }
 
         foreach ($this->_view->postCountries as $country) {
             $url = $webhost . 'post/by/country/' . $country['country_code'];
-            $sitemap->addUrl($url, time(), 'daily', 0.6);
+            $sitemap->addUrl($url, $tag['updated'], 'daily', 0.6);
         }
 
         foreach ($posts as $post) {
