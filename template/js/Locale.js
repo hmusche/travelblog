@@ -15,12 +15,7 @@ var Locale = new Class({
 
         if (timezone) {
             if (!cookie.get('timezone') || cookie.get('timezone') != timezone) {
-                if (document.location.search.indexOf('tz_set') == -1) {
-                    cookie.set('timezone', timezone);
-                    document.location = (document.location.href.indexOf('?') == -1)
-                                      ? document.location.href + '?tz_set=1'
-                                      : document.location.href + '&tz_set=1';
-                }
+                cookie.set('timezone', timezone);
             }
 
             this.currentTimezone = timezone;
