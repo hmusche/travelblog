@@ -6,6 +6,7 @@ use TravelBlog\Controller;
 use TravelBlog\Content;
 use TravelBlog\Model\Post as PostModel;
 use TravelBlog\Model\Meta as MetaModel;
+use Solsken\Util;
 use Solsken\Cookie;
 
 class Post extends Controller {
@@ -77,11 +78,29 @@ class Post extends Controller {
         $postId         = explode('-', $this->_request->get('action'))[0];
         $forceTranslate = (bool)$this->_request->getParam('trans', Cookie::get('post_translate', false));
 
+        $post = $postModel->getPost($postId, $forceTranslate);
+
+        if (!$post) {
+            throw new \Exception('Post not found', 404);
+        }
+
+        if ($post['status'] != 'active') {
+            session_start();
+
+            if (!Util::isLoggedIn()) {
+                throw new \Exception('Not allowed', 404);
+            }
+        }
+
         $this->_view->template  = 'post/post.phtml';
-        $this->_view->post      = $postModel->getPost($postId, $forceTranslate);
         $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
         $this->_view->og        = Content::getOpenGraph($this->_view->post);
         $this->_view->canonical = $this->_view->og['url'];
 
+        if (!$post['posted']) {
+            $post['posted'] = time();
+        }
+
+        $this->_view->post = $post;
     }
 }

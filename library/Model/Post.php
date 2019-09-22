@@ -35,9 +35,14 @@ class Post extends Model {
             'tz_offset',
             'user.name (author)'
         ], ['post.id' => $id]);
+        
+        if (!$post) {
+            return false;
+        }
 
         $postMediaModel = new PostMedia();
         $postMetaModel  = new PostMeta();
+
 
         $post['files']   = $postMediaModel->getMedia($id);
         $post['meta']    = $postMetaModel->getMeta($id);

@@ -4,6 +4,11 @@
             <?php echo $this->t($this->label); ?>
 
             <?php echo $this->submit; ?>
+            <?php if (isset($this->options['actions'])): ?>
+                <?php foreach ($this->options['actions'] as $action): ?>
+                    <?php echo $this->partial('partial/form/action.phtml', $action); ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
         <div class="card-body">
             <?php if ($this->errors): ?>

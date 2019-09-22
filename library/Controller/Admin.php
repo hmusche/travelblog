@@ -78,6 +78,7 @@ class Admin extends Controller {
     public function postAction() {
         $id        = $this->_request->getParam('id');
         $postModel = new Post;
+        $form      = new Form('post', [$postModel, 'updatePost']);
 
         if ($id) {
             $post = $postModel->getPost($id);
@@ -85,9 +86,17 @@ class Admin extends Controller {
             if (!$post) {
                 Http::redirect('admin/post/');
             }
-        }
 
-        $form = new Form('post', [$postModel, 'updatePost']);
+
+            $form->setOptions(['actions' => [
+                [
+                    'action' => $this->_view->webhost . 'post/' . $post['id'] . "-" . $post['slug'],
+                    'target' => '_blank',
+                    'label' => $post['status'] == 'active' ? 'to.post' : 'preview.post'
+                ]
+            ]]);
+
+        }
         $form->addLoadCallback($id, [$postModel, 'getPost'])->addGroups([
             [
                 'name' => 'data',
