@@ -1,5 +1,6 @@
 <?php require 'vendor/hmusche/solsken/js/Cookie.js'; ?>
 <?php require 'vendor/hmusche/solsken/js/DOM.js'; ?>
+<?php require 'vendor/hmusche/solsken/js/Request.js'; ?>
 <?php require 'Geo.js'; ?>
 <?php require 'Locale.js'; ?>
 <?php require 'Form.js'; ?>

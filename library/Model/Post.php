@@ -35,7 +35,7 @@ class Post extends Model {
             'tz_offset',
             'user.name (author)'
         ], ['post.id' => $id]);
-        
+
         if (!$post) {
             return false;
         }
@@ -209,12 +209,15 @@ class Post extends Model {
 
             $posted = $previous ? $previous['posted'] : null;
 
-            if ($data['status'] == 'active' && $previous['status'] != 'active' && !$posted) {
+            if (isset($data['status'])
+                && $data['status'] == 'active'
+                && $previous['status'] != 'active'
+                && !$posted) {
                 $data['posted'] = time();
                 $posted = time();
             }
 
-            if ($data['latitude']) {
+            if (isset($data['latitude']) && $data['latitude']) {
                 if ($data['latitude'] != $previous['latitude'] || $data['longitude'] != $previous['longitude']) {
                     $tzData = (new TimeZoneDb())->getTimeZoneData($data['latitude'], $data['longitude'], $posted);
 
