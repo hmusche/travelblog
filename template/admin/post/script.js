@@ -44,7 +44,7 @@
                 });
 
                 req.send(data);
-            }, 800);
+            }, 3000);
         };
 
         if (status == 'draft' && hasId) {
