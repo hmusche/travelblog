@@ -1,14 +1,18 @@
 <div class="card solsken-form">
     <form action="<?php echo $this->webhost . $this->path; ?>" method="post" enctype="multipart/form-data" id="<?php echo $this->formId; ?>">
-        <div class="card-header">
-            <?php echo $this->t($this->label); ?>
+        <div class="card-header clearfix">
+            <div class="label float-left">
+                <?php echo $this->t($this->label); ?>
+            </div>
 
-            <?php echo $this->submit; ?>
-            <?php if (isset($this->options['actions'])): ?>
-                <?php foreach ($this->options['actions'] as $action): ?>
-                    <?php echo $this->partial('partial/form/action.phtml', $action); ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <div class="tools float-right">
+                <?php echo $this->submit; ?>
+                <?php if (isset($this->options['actions'])): ?>
+                    <?php foreach ($this->options['actions'] as $action): ?>
+                        <?php echo $this->partial('partial/form/action.phtml', $action); ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
         </div>
         <div class="card-body">
             <?php if ($this->errors): ?>
