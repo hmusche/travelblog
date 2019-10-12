@@ -210,8 +210,8 @@ class Post extends Model {
             $posted = $previous ? $previous['posted'] : null;
 
             if (isset($data['status'])
-                && $data['status'] == 'active'
-                && $previous['status'] != 'active'
+                && in_array($data['status'], ['active', 'waypoint'])
+                && $previous['status'] != $data['status']
                 && !$posted) {
                 $data['posted'] = time();
                 $posted = time();
