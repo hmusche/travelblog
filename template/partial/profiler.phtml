@@ -1,0 +1,6 @@
+<div class="profiler">
+    runtime: <?php echo $this->runtime; ?>
+    <?php if ($this->breakpoints): ?>
+        (<?php echo str_replace('=', ': ', http_build_query($this->breakpoints, null, ' | ')); ?>)
+    <?php endif; ?>
+</div>

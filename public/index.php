@@ -35,5 +35,7 @@ $config      = array_replace_recursive($config, $credentials);
 
 $config['version'] = $version;
 
+Solsken\Profiler::start();
+
 $app = new Solsken\Application($config);
 $app->run();

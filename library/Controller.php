@@ -7,9 +7,12 @@ use Solsken\Cookie;
 use Solsken\Registry;
 use Solsken\Http;
 use Solsken\I18n;
+use Solsken\Profiler;
+use Solsken\Util;
 
 class Controller extends \Solsken\Controller {
     public function preDispatch() {
+        Profiler::addBreakpoint('pre-dispatch-start');
         parent::preDispatch();
 
         $this->_languageCheck();
@@ -22,6 +25,20 @@ class Controller extends \Solsken\Controller {
         $this->_view->locales       = Registry::get('app.config')['translation']['supported_locales'];
         $this->_view->currentLocale = I18n::getInstance()->getLocale();
         $this->_view->acceptCookie  = Cookie::get('accept');
+        Profiler::addBreakpoint('pre-dispatch-end');
+    }
+
+    public function postDispatch() {
+        Profiler::addBreakpoint('post-dispatch-start');
+        parent::postDispatch();
+        Profiler::addBreakpoint('post-dispatch-end');
+
+        if (Cookie::get('profiling')) {
+            echo $this->_view->partial('partial/profiler.phtml', [
+                'breakpoints' => Profiler::getBreakpoints(),
+                'runtime' => Profiler::getRuntime()
+            ]);
+        }
     }
 
     protected function _languageCheck() {

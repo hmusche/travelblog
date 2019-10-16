@@ -3,11 +3,13 @@
 namespace TravelBlog\Controller;
 
 use TravelBlog\Controller;
-
 use TravelBlog\Model\Post;
+
+use Solsken\Profiler;
 
 class Main extends Controller {
     public function indexAction() {
+        Profiler::addBreakpoint('index-start');
         $postModel = new Post;
 
         $limit  = 10;
@@ -21,7 +23,11 @@ class Main extends Controller {
             'baseUrl' => ''
         ];
 
+        Profiler::addBreakpoint('index-got-pagination');
+
         $this->_view->posts = $postModel->getPosts([], $limit, $offset);
         $this->_view->pagination = $pagination;
+
+        Profiler::addBreakpoint('index-got-posts');
     }
 }

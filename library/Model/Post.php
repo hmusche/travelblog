@@ -123,6 +123,7 @@ class Post extends Model {
             'latitude',
             'tz_offset',
             'user.name (author)',
+            'tag' => Medoo::raw('GROUP_CONCAT(DISTINCT IF(<post_meta.type> = :tag, <post_meta.value>, NULL))', [':tag' => 'tag']),
             'language' => Medoo::raw('GROUP_CONCAT(DISTINCT IF(<post_meta.type> = :locale, post_meta.value, NULL))', [':locale' => 'locale']),
             'files' => Medoo::raw('GROUP_CONCAT(<post_media.filename> ORDER BY <post_media.sort> ASC)')
         ], $where);
@@ -136,7 +137,6 @@ class Post extends Model {
             $posts[$key]['slug']    = $post['status'] != 'waypoint' ? Util::getSlug($this->_getPostTitle($post), 50) : '';
             $posts[$key]['link']    = $post['status'] != 'waypoint' ? 'post/' . $post['id'] . "-" . $posts[$key]['slug'] : '';
             $posts[$key]['heading'] = $this->_getPostTitle($post);
-            $posts[$key]['tag']     = implode(', ', $postMetaModel->getMeta($post['id'], 'tag'));
 
             if ($post['files']) {
                 $posts[$key]['files'] = explode(',', $post['files']);

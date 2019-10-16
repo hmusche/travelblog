@@ -150,3 +150,12 @@ header.masthead {
 .image-box:after {
     clear: both;
 }
+
+.profiler {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 10px;
+    background-color: #ddd;
+    padding: 5px;
+}
