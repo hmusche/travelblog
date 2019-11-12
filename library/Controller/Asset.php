@@ -10,7 +10,7 @@ use Solsken\Http;
 use Solsken\Request;
 use Solsken\Controller;
 use Solsken\Registry;
-use Solsken\Image;
+use TravelBlog\Image;
 
 use Leafo\ScssPhp\Compiler;
 
@@ -27,72 +27,48 @@ class Asset extends Controller {
         $file   = $this->_request->getParam('f');
         $size   = $this->_request->getParam('s', 'md');
 
-        $allowedSizes = [
-            'share' => 400,
-            'xs' => 300,
-            'sm' => 600,
-            'md' => 900,
-            'lg' => 1200,
-            'xl' => 1920,
-            'o' => 10000     // original
-        ];
-
-        if (!isset($allowedSizes[$size])) {
-            http_response_code(404);
-            exit;
-        }
-
         if ($postId && $file) {
             $path = Registry::get('app.config')['asset_path'] . DIRECTORY_SEPARATOR
                   . $postId . DIRECTORY_SEPARATOR;
 
-            $subPath = $path;
-            $subPath .= $size . DIRECTORY_SEPARATOR;
-            $finfo   = finfo_open(FILEINFO_MIME_TYPE);
-            $resized = false;
+            $subPath  = $path;
+            $subPath  .= $size . DIRECTORY_SEPARATOR;
+            $finfo    = finfo_open(FILEINFO_MIME_TYPE);
+            $filetype = finfo_file($finfo, $path . $file);
 
-            if (!file_exists($subPath . $file)) {
-                if (!file_exists($path . $file)) {
-                    http_response_code(404);
-                    return;
-                }
-
-                $filetype = finfo_file($finfo, $path . $file);
-
-                if (strpos($filetype, 'video') === 0) {
-
-                } else {
-                    $resized = Image::resize($path . $file, $subPath . $file, $allowedSizes[$size]);
-                }
+            if (strpos($filetype, 'video') === 0) {
+                $video = new Video;
+                $video->stream($path . $file);
             } else {
-                $resized = true;
-            }
+                $resized = Image::resize($path . $file, $subPath . $file, $size);
 
-            if ($resized) {
-                $path = $subPath;
-            }
-
-            if (file_exists($path . $file)) {
-                $filemtime = filemtime($path . $file);
-                $headers   = $this->_request->get('headers');
-                $filetype  = finfo_file($finfo, $path . $file);
-
-                if (strpos($filetype, 'video') === 0) {
-                    $video = new Video;
-                    $video->stream($path . $file);
-                } else if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) >= $filemtime) {
-                    http_response_code(304);
+                if ($resized) {
+                    $path = $subPath;
                 } else {
-                    header('Content-Type: ' . $filetype);
-                    header('Content-Length: ' . filesize($path . $file));
-                    header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $filemtime) . 'GMT');
-
-                    readfile($path . $file);
+                    http_response_code(404);
+                    exit;
                 }
 
-                exit;
+                if (file_exists($path . $file)) {
+                    $filemtime = filemtime($path . $file);
+                    $headers   = $this->_request->get('headers');
+                    $filetype  = finfo_file($finfo, $path . $file);
+
+                    if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) > $filemtime) {
+                        http_response_code(304);
+                    } else {
+                        header('Content-Type: ' . $filetype);
+                        header('Content-Length: ' . filesize($path . $file));
+                        header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $filemtime) . 'GMT');
+
+                        readfile($path . $file);
+                    }
+
+                }
             }
         }
+
+        exit;
 
         //http_response_code(404);
     }
