@@ -74,6 +74,10 @@ class Content {
     }
 
     static public function getLanguage($text) {
+        if (trim($text) === "") {
+            return false;
+        }
+        
         putenv('GOOGLE_APPLICATION_CREDENTIALS=config/google.json');
 
         $translate = new TranslateClient([

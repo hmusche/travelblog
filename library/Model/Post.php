@@ -233,9 +233,19 @@ class Post extends Model {
 
             $id = $where['id'];
 
-            if (($previous && $previous['text'] != $data['text']) || !$metaModel->getMeta($id, 'locale')) {
-                $metaData['locale'] = Content::getLanguage($data['text']);
+            // Delete translated text if text was changed
+            if (($previous && $previous['text'] != $data['text'])) {
                 $textModel->delete(['post_id' => $id]);
+            }
+
+            // Set Locale of post if not already set
+            $supportedLocales = I18n::getInstance()->getSupportedLocales();
+            $supportedLocales = array_map(function($value) {
+                return substr($value, 0, 2);
+            }, $supportedLocales);
+            
+            if (array_intersect($metaModel->getMeta($id, 'locale'), $supportedLocales) === []) {
+                $metaData['locale'] = Content::getLanguage($data['text']);
             }
         }
 
