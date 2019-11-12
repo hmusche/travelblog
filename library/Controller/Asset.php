@@ -31,8 +31,6 @@ class Asset extends Controller {
             $path = Registry::get('app.config')['asset_path'] . DIRECTORY_SEPARATOR
                   . $postId . DIRECTORY_SEPARATOR;
 
-            $subPath  = $path;
-            $subPath  .= $size . DIRECTORY_SEPARATOR;
             $finfo    = finfo_open(FILEINFO_MIME_TYPE);
             $filetype = finfo_file($finfo, $path . $file);
 
@@ -40,28 +38,21 @@ class Asset extends Controller {
                 $video = new Video;
                 $video->stream($path . $file);
             } else {
-                $resized = Image::resize($path . $file, $subPath . $file, $size);
+                $file = Image::generateImage($postId, $file, $size);
 
-                if ($resized) {
-                    $path = $subPath;
-                } else {
-                    http_response_code(404);
-                    exit;
-                }
-
-                if (file_exists($path . $file)) {
-                    $filemtime = filemtime($path . $file);
+                if (file_exists($file)) {
+                    $filemtime = filemtime($file);
                     $headers   = $this->_request->get('headers');
-                    $filetype  = finfo_file($finfo, $path . $file);
+                    $filetype  = finfo_file($finfo, $file);
 
                     if (isset($headers['HTTP_IF_MODIFIED_SINCE']) && strtotime($headers['HTTP_IF_MODIFIED_SINCE']) > $filemtime) {
                         http_response_code(304);
                     } else {
                         header('Content-Type: ' . $filetype);
-                        header('Content-Length: ' . filesize($path . $file));
+                        header('Content-Length: ' . filesize($file));
                         header('Last-modified: ' . gmdate('D, d M Y H:i:s ', $filemtime) . 'GMT');
 
-                        readfile($path . $file);
+                        readfile($file);
                     }
 
                 }

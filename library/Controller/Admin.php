@@ -11,6 +11,8 @@ use Solsken\Registry;
 use Solsken\I18n;
 use Solsken\Cookie;
 
+use TravelBlog\Image;
+
 use TravelBlog\Model\User;
 use TravelBlog\Model\Translation;
 use TravelBlog\Model\Post;
@@ -209,6 +211,29 @@ class Admin extends Controller {
         $form->handle();
 
         $this->_view->form = $form;
+    }
+
+    public function resizeImagesAction() {
+        $postMedia = new PostMedia();
+        $return    = ['status' => 'success'];
+        $postId    = $this->_request->getParam('post_id');
+        $size      = $this->_request->getParam('size');
+        $file      = $this->_request->getParam('file');
+
+        if ($size && $file) {
+            Image::generateImage($postId, $file, $size);
+
+            $return['resized'] = true;
+        } else {
+            $files     = $postMedia->getMedia($postId);
+            $files     = array_column($files, 'filename');
+            $toResize  = Image::getFilesToResize($postId, $files);
+            $return['files'] = $toResize;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($return);
+        exit;
     }
 
     public function sortPostMediaAction() {

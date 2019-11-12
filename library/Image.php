@@ -3,6 +3,7 @@
 namespace TravelBlog;
 
 use Solsken\Image as I;
+use Solsken\Registry;
 
 class Image {
     const ALLOWED_WIDTHS = [
@@ -12,12 +13,56 @@ class Image {
         'md' => 900,
         'lg' => 1200,
         'xl' => 1920,
-        'o' => 10000     // original
+        'o' => null     // original
     ];
 
     const ALLOWED_HEIGHTS = [
         'share' => 400
     ];
+
+    static public function getFilesToResize($postId, $files) {
+        $toResize = [];
+
+        foreach ($files as $file) {
+            foreach (self::ALLOWED_WIDTHS as $size => $width) {
+                if ($width) {
+                    $path = Registry::get('app.config')['asset_path']
+                          . $postId . DIRECTORY_SEPARATOR
+                          . $size . DIRECTORY_SEPARATOR
+                          . $file;
+
+                    if (!file_exists($path)) {
+                        if (!isset($toResize[$file])) {
+                            $toResize[$file] = [];
+                        }
+
+                        $toResize[$file][] = $size;
+                    }
+                }
+            }
+        }
+
+        return $toResize;
+    }
+
+    static public function generateImage($postId, $file, $size) {
+        $path = Registry::get('app.config')['asset_path']
+              . $postId . DIRECTORY_SEPARATOR;
+
+        $subPath  = $path;
+
+        if (self::ALLOWED_WIDTHS[$size]) {
+            $subPath  .= $size . DIRECTORY_SEPARATOR;
+        }
+
+        if (!file_exists($subPath . $file)) {
+            if (self::resize($path . $file, $subPath . $file, $size) === false) {
+                throw new \Exception('Image could not be resized', 500);
+            }
+        }
+
+        return $subPath . $file;
+    }
 
     static public function resize($oldFile, $newFile, $size) {
         if (!isset(self::ALLOWED_WIDTHS[$size])) {
@@ -34,7 +79,10 @@ class Image {
 
             $filetype = finfo_file($finfo, $oldFile);
 
-            if (strpos($filetype, 'video') !== 0) {
+            if (strpos($filetype, 'video') === 0) {
+                //This should be checked before handing the file to this class
+                return null;
+            } else {
                 $tmpFile = '/tmp/solsken_resizer_' . uniqid();
                 $resized = I::resize(
                     $oldFile,

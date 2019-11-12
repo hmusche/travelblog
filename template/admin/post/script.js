@@ -4,6 +4,56 @@
         form = dom.getParent('form', textInput),
         statusSelect = dom.getElement('#element-status', form);
 
+    if (dom.getElement('.image-wrapper')) {
+        var postId = dom.getElement('.image-wrapper').getAttribute('data-post-id'),
+            url = '<?php echo $this->webhost; ?>admin/resize-images/';
+
+        new Solsken.Request({
+            'url': url,
+            'success': function(response) {
+                if (response && response.files) {
+                    var i, params = [],
+                        progress = dom.getElement('.image-preloader'),
+                        progressBar = dom.getElement('.progress-bar', progress);
+
+                    for (let [file, sizes] of Object.entries(response.files)) {
+                        for (i = 0; i < sizes.length; i++) {
+                            params.push({post_id: postId, file: file, size: sizes[i]});
+                        }
+                    }
+
+                    if (params.length) {
+                        dom.removeClass(progress, 'd-none');
+                        progress.style.opacity = 1;
+                        var done = 0;
+
+                        var resizeImage = function(index) {
+                            if (index == params.length) {
+                                setTimeout(function() {
+                                    progress.style.opacity = 0;
+                                }, 2000);
+                            } else {
+                                new Solsken.Request({
+                                    'url': url,
+                                    success: function() {
+                                        done++;
+                                        progressBar.style.width = ((index + 1) / params.length) * 100 + '%';
+                                        resizeImage(index + 1);
+                                    }
+                                }).send(params[index]);
+                            }
+                        }
+
+                        resizeImage(0);
+
+                    }
+                }
+            }
+        }).send({
+            'post_id': postId
+        });
+    }
+
     if (textInput && statusSelect) {
         var status = dom.getElements('option', statusSelect)[statusSelect.selectedIndex].value,
             labelElement = dom.getElement('[for=element-text]'),
@@ -24,7 +74,7 @@
                 labelElement.innerHTML = label +
                     ' <i class="fas fa-spin fa-sync text-muted"></i>';
 
-                req = new Solsken.Request({
+                var req = new Solsken.Request({
                     success: function(res) {
                         if (res.status && res.status == 'success') {
                             labelElement.innerHTML = label +
