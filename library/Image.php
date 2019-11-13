@@ -25,7 +25,7 @@ class Image {
 
         foreach ($files as $file) {
             foreach (self::ALLOWED_WIDTHS as $size => $width) {
-                if ($width) {
+                if ($width && $size != 'share') {
                     $path = Registry::get('app.config')['asset_path']
                           . $postId . DIRECTORY_SEPARATOR
                           . $size . DIRECTORY_SEPARATOR
