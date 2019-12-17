@@ -8,6 +8,13 @@
                 />
             <?php $offset -= ($value['perc'] * 5); endforeach; ?>
         </svg>
+
+        <div class="entry">
+            <?php echo $this->t('total'); ?>
+            <span class="value">
+                <?php echo array_sum(array_column($this->values, 'value')); ?>
+            </span>
+        </div>
     </div>
     <div class="col-md-12 col-lg-6">
         <?php foreach ($this->values as $key => $value): ?>

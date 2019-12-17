@@ -46,6 +46,8 @@
             margin: 0;
             padding: 5px 15px;
             font-weight: bold;
+            overflow: auto;
+            background-color: $main-color;
 
             .value {
                 float: right;
