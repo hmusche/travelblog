@@ -6,10 +6,12 @@ use TravelBlog\Controller;
 use Solsken\Registry;
 
 use TravelBlog\Model\Post;
+use TravelBlog\Model\Stat;
 
 class Map extends Controller {
     public function routeAction() {
         $postModel = new Post;
+        $statModel = new Stat;
         $from = strtotime(Registry::get('app.config')['journey']['start']);
         $posts = $postModel->getPosts([
             'post.posted[>=]' => $from,
@@ -44,6 +46,8 @@ class Map extends Controller {
 
         $this->_view->markers = $markers;
         $this->_view->boundaries = [$minimum, $maximum];
+
+        $this->_view->stats = $statModel->getFormattedStats('pie');
     }
 
     public function postsAction() {

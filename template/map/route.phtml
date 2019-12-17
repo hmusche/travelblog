@@ -11,3 +11,22 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <?php foreach ($this->stats as $stat): ?>
+                        <div class="stat">
+                            <div class="stat-header"><?php echo $this->t($stat['key']); ?></div>
+                            <div class="stat-body">
+                                <?php echo $this->partial('partial/stats/' . $stat['type'] . '.phtml', $stat); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

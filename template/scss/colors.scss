@@ -15,14 +15,18 @@ $color4: #FFF689;
 $color5: rgba(219, 235, 192, 1);
 
 $main-color: $color2;
-$main-color-1: darken($main-color, 20%);
-$main-color-2: darken($main-color, 10%);
-$main-color-3: lighten($main-color, 10%);
-$main-color-4: lighten($main-color, 20%);
+$main-color-1: darken($main-color, 25%);
+$main-color-2: darken($main-color, 15%);
+$main-color-3: darken($main-color, 5%);
+$main-color-4: lighten($main-color, 5%);
+$main-color-5: lighten($main-color, 15%);
+$main-color-6: lighten($main-color, 25%);
 
 $main-colors: (
     1: $main-color-1,
     2: $main-color-2,
     3: $main-color-3,
-    4: $main-color-4
+    4: $main-color-4,
+    5: $main-color-5,
+    6: $main-color-6
 );

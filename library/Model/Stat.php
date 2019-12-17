@@ -58,25 +58,31 @@ class Stat extends Model {
         return $id;
     }
 
-    public function getStats() {
+    public function getStats($type = null) {
+        $where = [
+            'ORDER' => [
+                'sort' => 'ASC'
+            ]
+        ];
+
+        if ($type !== null) {
+            $where['type'] = $type;
+        }
+
         $stats = $this->select([
             'id',
             'key' => Medoo::raw('CONCAT(\'stat.\', <id>)'),
             'type',
             'sort'
-        ], [
-            'ORDER' => [
-                'sort' => 'ASC'
-            ]
-        ]);
+        ], $where);
 
         return $stats;
     }
 
-    public function getFormattedStats() {
+    public function getFormattedStats($type = null) {
         $statValueModel = new StatValue;
 
-        $stats = $this->getStats();
+        $stats = $this->getStats($type);
 
         foreach ($stats as $key => $stat) {
             $values = $statValueModel->getValues($stat['id']);
