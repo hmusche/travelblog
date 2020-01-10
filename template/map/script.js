@@ -55,7 +55,7 @@ jQuery(document).ready(function() {
     //geo.addLayer(route);
 
     markers.sort(function(a, b) {
-        if (a.latitude < b.latitude) {
+        if (Number.parseFloat(a.latitude) < Number.parseFloat(b.latitude)) {
             return 1;
         }
 
