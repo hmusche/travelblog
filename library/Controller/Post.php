@@ -93,7 +93,7 @@ class Post extends Controller {
         }
 
         $this->_view->template  = 'post/post.phtml';
-        $this->_view->pageTitle = strip_tags($this->_view->post['heading']);
+        $this->_view->pageTitle = strip_tags($post['heading']);
         $this->_view->og        = Content::getOpenGraph($post);
         $this->_view->canonical = $this->_view->og['url'];
 
